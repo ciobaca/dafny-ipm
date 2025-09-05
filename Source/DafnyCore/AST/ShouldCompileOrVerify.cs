@@ -35,6 +35,9 @@ public static class ShouldCompileOrVerify {
   }
 
   public static bool ShouldVerify(this INode declaration, CompilationData compilation) {
+    if (declaration is Function f && f.Name == "protect") {
+      return false;
+    }
     if (ReferenceEquals(declaration.Origin, Token.NoToken)) {
       // Required for DefaultModuleDefinition.
       return true;

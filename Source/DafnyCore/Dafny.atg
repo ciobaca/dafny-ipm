@@ -237,6 +237,90 @@ Dafny
                                }
                             .)
   }
+  (.
+   var protect = new Function(
+      origin: SourceOrigin.NoToken, //?
+      nameNode: new Name("protect"),
+      hasStaticKeyword: false,
+      isGhost: true,
+      isOpaque: false,
+      typeArgs: [
+        new TypeParameter(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("T"),
+          varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
+          characteristics: Microsoft.Dafny.TypeParameterCharacteristics.Default(),
+          typeBounds: [],
+          attributes: null
+        )
+      ],
+      ins: [
+        new Formal(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("x"),
+          syntacticType: new UserDefinedType(
+            origin: SourceOrigin.NoToken,
+            namePath: new NameSegment(
+              origin: SourceOrigin.NoToken,
+              name: "T",
+              optTypeArguments: null
+            )
+          ),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
+        ),
+        new Formal(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("name"),
+          syntacticType: new UserDefinedType(
+            origin: SourceOrigin.NoToken,
+            name: "string",
+            optTypeArgs: null
+          ),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
+        )
+      ], //?
+      result: null,
+      resultType: new UserDefinedType(
+        origin: SourceOrigin.NoToken,
+        namePath: new NameSegment(
+          origin: SourceOrigin.NoToken,
+          name: "T",
+          optTypeArguments: null
+        )
+      ), //? (see if you can use the "T" type arg like "new UserDefinedType(new TypeParameter(...))"
+      req: [],
+      reads: new Specification<FrameExpression>(),
+      ens: [],
+      decreases: new Specification<Expression>(),
+      body: new NameSegment(
+        origin: SourceOrigin.NoToken,
+        name: "x",
+        optTypeArguments: null
+      ),
+      byMethodTok: null, byMethodBody: null,
+      attributes: new Attributes(
+        name: "auto_generated", args: [],
+        prev: null
+      ),
+      signatureEllipsis: null
+    );
+    theModule.DefaultClass.Members.Add(protect);
+    SystemModuleModifiers.Add(b => b.CreateArrowTypeDecl(2));
+  .)
   { AtAttributes<ref attrs>
     TopDecl<theModule, /* isTopLevel */ true, ref attrs> }
   (. CheckNoAttributes(ref attrs); .)
@@ -1303,7 +1387,7 @@ RequiresClause<.List<AttributedExpression> req, bool allowLabel.>
     LabelName<out lbl> ":"
   ]
   Expression<out e, false, false>
-  OldSemi       (. req.Add(new AttributedExpression(e, lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); .)
+  OldSemi       (. req.Add(new AttributedExpression(Util.WithProtect(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); .)
   .
 
 /*------------------------------------------------------------------------*/
@@ -1313,7 +1397,7 @@ EnsuresClause<.List<AttributedExpression> ens, bool allowLambda.>
                  .)
   { Attribute<ref attrs> }
   Expression<out e, false, allowLambda>
-    OldSemi       (. ens.Add(new AttributedExpression(e, attrs)); .)
+    OldSemi       (. ens.Add(new AttributedExpression(Util.WithProtect(e), attrs)); .)
   .
 
 /*------------------------------------------------------------------------*/

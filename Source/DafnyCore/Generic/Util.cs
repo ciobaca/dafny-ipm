@@ -24,6 +24,10 @@ namespace Microsoft.Dafny {
   }
 
   public static class Util {
+    public static ApplySuffix WithProtect(Expression e) => new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+      new ActualBinding(null, e, false),
+      new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+    ], null);
 
     public static IEnumerable<T> IgnoreNulls<T>(params T[] values) {
       var result = new List<T>();
