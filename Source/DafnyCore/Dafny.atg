@@ -323,7 +323,7 @@ Dafny
       nameNode: new Name("protect"),
       hasStaticKeyword: false,
       isGhost: true,
-      isOpaque: false,
+      isOpaque: true,
       typeArgs: [
         new TypeParameter(
           origin: SourceOrigin.NoToken,
