@@ -16,37 +16,611 @@ using Microsoft.Boogie;
 using static Microsoft.Dafny.GenericErrors;
 
 
-namespace Microsoft.Dafny {
-  public static class Sets {
-    public static ISet<T> Empty<T>() {
+namespace Microsoft.Dafny
+{
+  public static class Sets
+  {
+    public static ISet<T> Empty<T>()
+    {
       return new HashSet<T>();
     }
   }
 
-  public static class Util {
-    public static ApplySuffix WithProtect(Expression e) => new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+  public static class Util
+  {
+    // public static ApplySuffix WithProtect(Expression e) => new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+    //   new ActualBinding(null, e, false),
+    //   new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+    // ], null);
+
+
+    public static Expression WithProtect(Expression expr)
+    {
+      Contract.Requires(expr != null);
+
+      if (expr is StaticReceiverExpr)
+      {
+        Console.WriteLine("Dafny IPM: StaticReceiverExpr not implemented yet.");
+        StaticReceiverExpr e = (StaticReceiverExpr)expr;
+        return e;
+      }
+      else if (expr is LiteralExpr)
+      {
+        LiteralExpr e = (LiteralExpr)expr;
+        return e;
+        // return new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+        //   new ActualBinding(null, e, false),
+        //   new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+        //   ], null);
+      }
+      else if (expr is ThisExpr)
+      {
+        ThisExpr e = (ThisExpr)expr;
+        return new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+          new ActualBinding(null, e, false),
+            new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+          ], null);
+      }
+      else if (expr is IdentifierExpr)
+      {
+        IdentifierExpr e = (IdentifierExpr)expr;
+        return new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+          new ActualBinding(null, e, false),
+            new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+          ], null);
+      }
+      else if (expr is DatatypeValue)
+      {
+        Console.WriteLine("Dafny IPM: DatatypeValue not implemented yet.");
+        DatatypeValue e = (DatatypeValue)expr;
+        return new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+          new ActualBinding(null, e, false),
+            new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+          ], null);
+      }
+      else if (expr is DisplayExpression)
+      {
+        DisplayExpression e = (DisplayExpression)expr;
+        Console.WriteLine("Dafny IPM: DisplayExpression not implemented yet.");
+        return e;
+      }
+      else if (expr is MapDisplayExpr)
+      {
+        Console.WriteLine("Dafny IPM: MapDisplayExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is NameSegment)
+      {
+        NameSegment e = (NameSegment)expr;
+        return new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protect", null), [
+            new ActualBinding(null, e, false),
+            new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
+          ], null);
+      }
+      else if (expr is ExprDotName)
+      {
+        Console.WriteLine("Dafny IPM: ExprDotName not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is ApplySuffix)
+      {
+        Console.WriteLine("Dafny IPM: ApplySufix not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is MemberSelectExpr)
+      {
+        Console.WriteLine("Dafny IPM: MemberSelectExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is SeqSelectExpr)
+      {
+        Console.WriteLine("Dafny IPM: SeqSelectExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is MultiSelectExpr)
+      {
+        Console.WriteLine("Dafny IPM: MultiSelectExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is SeqUpdateExpr)
+      {
+        Console.WriteLine("Dafny IPM: SeqUpdateExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is DatatypeUpdateExpr)
+      {
+        Console.WriteLine("Dafny IPM: DatatypeUpdateExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is ApplyExpr)
+      {
+        Console.WriteLine("Dafny IPM: ApplyExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is FunctionCallExpr)
+      {
+        Console.WriteLine("Dafny IPM: FunctionCallExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is SeqConstructionExpr)
+      {
+        Console.WriteLine("Dafny IPM: SeqConstructionExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is MultiSetFormingExpr)
+      {
+        Console.WriteLine("Dafny IPM: MultiSetFormingExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is OldExpr)
+      {
+        Console.WriteLine("Dafny IPM: OldExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is UnchangedExpr)
+      {
+        Console.WriteLine("Dafny IPM: UnchangedExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is FreshExpr)
+      {
+        Console.WriteLine("Dafny IPM: FreshExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is UnaryOpExpr)
+      {
+        var e = (UnaryOpExpr)expr;
+        if (e.Op == UnaryOpExpr.Opcode.Cardinality)
+        {
+          Console.WriteLine("Dafny IPM: UnaryOpExpr.Opcode.Cardinality not yet implemented.");
+          Console.WriteLine(expr.ToString());
+          return expr;
+        }
+        else if (e.Op == UnaryOpExpr.Opcode.Allocated)
+        {
+          Console.WriteLine("Dafny IPM: UnaryOpExpr.Opcode.Allocated not yet implemented.");
+          Console.WriteLine(expr.ToString());
+          return expr;
+        }
+        else if (e.Op == UnaryOpExpr.Opcode.Lit)
+        {
+          Console.WriteLine("Dafny IPM: UnaryOpExpr.Opcode.Lit not yet implemented.");
+          Console.WriteLine(expr.ToString());
+          return expr;
+        }
+        else if (e.Op == UnaryOpExpr.Opcode.Assigned)
+        {
+          Console.WriteLine("Dafny IPM: UnaryOpExpr.Opcode.Assigned not yet implemented.");
+          Console.WriteLine(expr.ToString());
+          return expr;
+        }
+        else
+        {
+          Contract.Assert(e.Op != UnaryOpExpr.Opcode.Fresh); // this is handled is "is FreshExpr" case above
+                                                             // Prefix operator.
+                                                             // determine if parens are needed
+          switch (e.Op)
+          {
+            case UnaryOpExpr.Opcode.Not:
+              Console.WriteLine("Dafny IPM: UnaryOpExpr.Opcode.Not not yet implemented.");
+              Console.WriteLine(expr.ToString());
+              return expr;
+            default:
+              Contract.Assert(false);
+              throw new Cce.UnreachableException(); // unexpected unary opcode
+          }
+        }
+      }
+      else if (expr is TypeUnaryExpr)
+      {
+        Console.WriteLine("Dafny IPM: TypeUnaryExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is BinaryExpr)
+      {
+        var e = (BinaryExpr)expr;
+        return new BinaryExpr(e.Origin, e.Op, WithProtect(e.E0), WithProtect(e.E1));
+        // switch (e.Op)
+        // {
+        //   case BinaryExpr.Opcode.LeftShift:
+        //   case BinaryExpr.Opcode.RightShift:
+        //     opBindingStrength = BindingStrengthShift;
+        //     fragileRightContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.Add:
+        //     {
+        //       opBindingStrength = BindingStrengthAdd;
+        //       var t1 = e.E1.Type;
+        //       fragileRightContext = t1 == null ||
+        //                             !(t1.IsIntegerType || t1.IsRealType || t1.IsBigOrdinalType || t1.IsBitVectorType);
+        //       break;
+        //     }
+        //   case BinaryExpr.Opcode.Sub:
+        //     opBindingStrength = BindingStrengthAdd;
+        //     fragileRightContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.Mul:
+        //     {
+        //       opBindingStrength = BindingStrengthMul;
+        //       var t1 = e.E1.Type;
+        //       fragileRightContext = t1 == null ||
+        //                             !(t1.IsIntegerType || t1.IsRealType || t1.IsBigOrdinalType || t1.IsBitVectorType);
+        //       break;
+        //     }
+        //   case BinaryExpr.Opcode.Div:
+        //   case BinaryExpr.Opcode.Mod:
+        //     opBindingStrength = BindingStrengthMul;
+        //     fragileRightContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.BitwiseAnd:
+        //     opBindingStrength = BindingStrengthBitwiseAnd; break;
+        //   case BinaryExpr.Opcode.BitwiseOr:
+        //     opBindingStrength = BindingStrengthBitwiseOr; break;
+        //   case BinaryExpr.Opcode.BitwiseXor:
+        //     opBindingStrength = BindingStrengthBitwiseXor; break;
+        //   case BinaryExpr.Opcode.Eq:
+        //   case BinaryExpr.Opcode.Neq:
+        //   case BinaryExpr.Opcode.Gt:
+        //   case BinaryExpr.Opcode.Ge:
+        //   case BinaryExpr.Opcode.Lt:
+        //   case BinaryExpr.Opcode.Le:
+        //   case BinaryExpr.Opcode.Disjoint:
+        //   case BinaryExpr.Opcode.In:
+        //   case BinaryExpr.Opcode.NotIn:
+        //     opBindingStrength = BindingStrengthCompare;
+        //     fragileLeftContext = fragileRightContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.And:
+        //     opBindingStrength = BindingStrengthAnd; break;
+        //   case BinaryExpr.Opcode.Or:
+        //     opBindingStrength = BindingStrengthOr; break;
+        //   case BinaryExpr.Opcode.Imp:
+        //     opBindingStrength = BindingStrengthImplies;
+        //     fragileLeftContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.Exp:
+        //     opBindingStrength = BindingStrengthExplies;
+        //     fragileRightContext = true;
+        //     break;
+        //   case BinaryExpr.Opcode.Iff:
+        //     opBindingStrength = BindingStrengthEquiv; break;
+        //   default:
+        //     Contract.Assert(false);
+        //     throw new Cce.UnreachableException(); // unexpected binary operator
+        // }
+
+        // bool parensNeeded = ParensNeeded(opBindingStrength, contextBindingStrength, fragileContext);
+
+        // string op = BinaryExpr.OpcodeString(e.Op);
+        // if (parensNeeded)
+        // {
+        //   wr.Write("(");
+        // }
+
+        // var sem = !parensNeeded && isFollowedBySemicolon;
+        // if (0 <= indent && e.Op == BinaryExpr.Opcode.And)
+        // {
+        //   PrintExpr(e.E0, opBindingStrength, fragileLeftContext, false, sem, indent, keyword);
+        //   wr.WriteLine(" {0}", op);
+        //   Indent(indent);
+        //   PrintExpr(e.E1, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, indent, keyword);
+        // }
+        // else if (0 <= indent && e.Op == BinaryExpr.Opcode.Imp)
+        // {
+        //   PrintExpr(e.E0, opBindingStrength, fragileLeftContext, false, sem, indent, keyword);
+        //   wr.WriteLine(" {0}", op);
+        //   int ind = indent + IndentAmount;
+        //   Indent(ind);
+        //   PrintExpr(e.E1, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, ind, keyword);
+        // }
+        // else if (0 <= indent && e.Op == BinaryExpr.Opcode.Exp)
+        // {
+        //   PrintExpr(e.E1, opBindingStrength, fragileLeftContext, false, sem, indent, keyword);
+        //   wr.WriteLine(" {0}", op);
+        //   int ind = indent + IndentAmount;
+        //   Indent(ind);
+        //   PrintExpr(e.E0, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, ind, keyword);
+        // }
+        // else if (e.Op == BinaryExpr.Opcode.Exp)
+        // {
+        //   PrintExpr(e.E1, opBindingStrength, fragileLeftContext, false, sem, -1, keyword);
+        //   wr.Write(" {0} ", op);
+        //   PrintExpr(e.E0, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, -1, keyword);
+        // }
+        // else
+        // {
+        //   PrintExpr(e.E0, opBindingStrength, fragileLeftContext, false, sem, -1, keyword);
+        //   wr.Write(" {0} ", op);
+        //   PrintExpr(e.E1, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, -1, keyword);
+        // }
+
+        // if (parensNeeded)
+        // {
+        //   wr.Write(")");
+        // }
+      }
+      else if (expr is TernaryExpr)
+      {
+        Console.WriteLine("Dafny IPM: TernaryExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+        // var e = (TernaryExpr)expr;
+        // switch (e.Op)
+        // {
+        //   case TernaryExpr.Opcode.PrefixEqOp:
+        //   case TernaryExpr.Opcode.PrefixNeqOp:
+        //     var opBindingStrength = BindingStrengthCompare;
+        //     var fragileLeftContext = true;
+        //     var fragileRightContext = true;
+        //     bool parensNeeded = ParensNeeded(opBindingStrength, contextBindingStrength, fragileContext);
+
+        //     if (parensNeeded)
+        //     {
+        //       wr.Write("(");
+        //     }
+
+        //     var sem = !parensNeeded && isFollowedBySemicolon;
+        //     PrintExpr(e.E1, opBindingStrength, fragileLeftContext, false, sem, -1, keyword);
+        //     wr.Write(" {0}#[", e.Op == TernaryExpr.Opcode.PrefixEqOp ? "==" : "!=");
+        //     PrintExpression(e.E0, false);
+        //     wr.Write("] ");
+        //     PrintExpr(e.E2, opBindingStrength, fragileRightContext, parensNeeded || isRightmost, sem, -1, keyword);
+        //     if (parensNeeded)
+        //     {
+        //       wr.Write(")");
+        //     }
+
+        //     break;
+        //   default:
+        //     Contract.Assert(false); // unexpected ternary operator
+        //     break;
+        // }
+      }
+      else if (expr is ChainingExpression)
+      {
+        Console.WriteLine("Dafny IPM: ChainingExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+        // var e = (ChainingExpression)expr;
+        // // determine if parens are needed
+        // int opBindingStrength = BindingStrengthCompare;
+        // bool parensNeeded = ParensNeeded(opBindingStrength, contextBindingStrength, fragileContext);
+
+        // if (parensNeeded)
+        // {
+        //   wr.Write("(");
+        // }
+
+        // var sem = !parensNeeded && isFollowedBySemicolon;
+        // PrintExpr(e.Operands[0], opBindingStrength, true, false, sem, -1, keyword);
+        // for (int i = 0; i < e.Operators.Count; i++)
+        // {
+        //   string op = BinaryExpr.OpcodeString(e.Operators[i]);
+        //   if (e.PrefixLimits[i] == null)
+        //   {
+        //     wr.Write(" {0} ", op);
+        //   }
+        //   else
+        //   {
+        //     wr.Write(" {0}#[", op);
+        //     PrintExpression(e.PrefixLimits[i], false);
+        //     wr.Write("] ");
+        //   }
+
+        //   PrintExpr(e.Operands[i + 1], opBindingStrength, true,
+        //     i == e.Operators.Count - 1 && (parensNeeded || isRightmost), sem, -1, keyword);
+        // }
+
+        // if (parensNeeded)
+        // {
+        //   wr.Write(")");
+        // }
+
+      }
+      else if (expr is LetExpr)
+      {
+        Console.WriteLine("Dafny IPM: LetExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is LetOrFailExpr)
+      {
+        Console.WriteLine("Dafny IPM: LetOrFailExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is QuantifierExpr)
+      {
+        Console.WriteLine("Dafny IPM: QuantifierExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is SetComprehension)
+      {
+        Console.WriteLine("Dafny IPM: SetComprehension not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is MapComprehension)
+      {
+        Console.WriteLine("Dafny IPM: MapComprehension not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is LambdaExpr)
+      {
+        Console.WriteLine("Dafny IPM: LambdaExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is WildcardExpr)
+      {
+        Console.WriteLine("Dafny IPM: WildcardExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is StmtExpr)
+      {
+        Console.WriteLine("Dafny IPM: StmtExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is ITEExpr)
+      {
+        Console.WriteLine("Dafny IPM: ITEExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is ParensExpression)
+      {
+        Console.WriteLine("Dafny IPM: ParensExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is NegationExpression)
+      {
+        Console.WriteLine("Dafny IPM: NegationExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is NestedMatchExpr)
+      {
+        Console.WriteLine("Dafny IPM: NestedMatchExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is MatchExpr)
+      {
+        Console.WriteLine("Dafny IPM: MatchExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is DefaultValueExpression)
+      {
+        Console.WriteLine("Dafny IPM: DefaultValueExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        var e = (DefaultValueExpression)expr;
+        // DefaultValueExpression's are introduced during resolution, so we expect .Resolved to be non-null
+        Contract.Assert(e.WasResolved());
+        Contract.Assert(e.Resolved != null);
+        return expr;
+      }
+      else if (expr is BoxingCastExpr)
+      {
+        Console.WriteLine("Dafny IPM: BoxingCastExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is BoogieGenerator.BoogieWrapper)
+      {
+        Console.WriteLine("Dafny IPM: BoogieGenerator.BoogieWrapper not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is BoogieGenerator.BoogieFunctionCall)
+      {
+        Console.WriteLine("Dafny IPM: BoogieGenerator.BoogieFunctionCall not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is ResolverIdentifierExpr)
+      {
+        Console.WriteLine("Dafny IPM: ResolverIdentifierExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is DecreasesToExpr decreasesToExpr)
+      {
+        Console.WriteLine("Dafny IPM: DecreasesToExpr not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is IndexFieldLocationExpression)
+      {
+        Console.WriteLine("Dafny IPM: IndexFieldLocationExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is FieldLocationExpression fle)
+      {
+        Console.WriteLine("Dafny IPM: FieldLocationExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is FieldLocation)
+      {
+        Console.WriteLine("Dafny IPM: FieldLocation not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is IndexFieldLocation)
+      {
+        Console.WriteLine("Dafny IPM: IndexFieldLocation not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else if (expr is LocalsObjectExpression)
+      {
+        Console.WriteLine("Dafny IPM: LocalsObjectExpression not yet implemented.");
+        Console.WriteLine(expr.ToString());
+        return expr;
+      }
+      else
+      {
+        Console.WriteLine("Dafny IPM: Unexpected expression type.");
+        Console.WriteLine(expr.ToString());
+        Contract.Assert(false);
+        return expr;
+      }
+    }
+
+
+    public static ApplySuffix WithProtectToProve(Expression e) => new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protectToProve", null), [
       new ActualBinding(null, e, false),
       new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
     ], null);
 
-    public static IEnumerable<T> IgnoreNulls<T>(params T[] values) {
+
+    public static IEnumerable<T> IgnoreNulls<T>(params T[] values)
+    {
       var result = new List<T>();
-      foreach (var value in values) {
-        if (value != null) {
+      foreach (var value in values)
+      {
+        if (value != null)
+        {
           result.Add(value);
         }
       }
 
       return result;
     }
-    public static Task WaitForComplete<T>(this IObservable<T> observable) {
+    public static Task WaitForComplete<T>(this IObservable<T> observable)
+    {
       var result = new TaskCompletionSource();
       observable.Subscribe(_ => { }, e => result.SetException(e), () => result.SetResult());
       return result.Task;
     }
 
-    public static string CapitaliseFirstLetter(this string input) {
-      if (input.Length > 0) {
+    public static string CapitaliseFirstLetter(this string input)
+    {
+      if (input.Length > 0)
+      {
         return char.ToUpper(input[0]) + input.Substring(1);
       }
 
@@ -54,44 +628,53 @@ namespace Microsoft.Dafny {
     }
 
     public static bool LessThanOrEquals<T>(this T first, T second)
-      where T : IComparable<T> {
+      where T : IComparable<T>
+    {
       return first.CompareTo(second) != 1;
     }
 
-    public static Task<U> SelectMany<T, U>(this Task<T> task, Func<T, Task<U>> f) {
+    public static Task<U> SelectMany<T, U>(this Task<T> task, Func<T, Task<U>> f)
+    {
 #pragma warning disable VSTHRD003
       return Select(task, f).Unwrap();
 #pragma warning restore VSTHRD003
     }
 
-    public static Task<U> Select<T, U>(this Task<T> task, Func<T, U> f) {
+    public static Task<U> Select<T, U>(this Task<T> task, Func<T, U> f)
+    {
 #pragma warning disable VSTHRD105
       return task.ContinueWith(completedTask => f(completedTask.Result), TaskContinuationOptions.OnlyOnRanToCompletion);
 #pragma warning restore VSTHRD105
     }
 
-    public static string Comma<T>(this IEnumerable<T> l) {
+    public static string Comma<T>(this IEnumerable<T> l)
+    {
       return Comma(l, s => s.ToString());
     }
 
-    public static string Comma<T>(this IEnumerable<T> l, Func<T, string> f) {
+    public static string Comma<T>(this IEnumerable<T> l, Func<T, string> f)
+    {
       return Comma(", ", l, (element, index) => f(element));
     }
 
-    public static string Comma<T>(this IEnumerable<T> l, Func<T, int, string> f) {
+    public static string Comma<T>(this IEnumerable<T> l, Func<T, int, string> f)
+    {
       return Comma(", ", l, f);
     }
 
-    public static string Comma<T>(string comma, IEnumerable<T> l, Func<T, string> f) {
+    public static string Comma<T>(string comma, IEnumerable<T> l, Func<T, string> f)
+    {
       return Comma(comma, l, (element, index) => f(element));
     }
 
-    public static string Comma<T>(string comma, IEnumerable<T> l, Func<T, int, string> f) {
+    public static string Comma<T>(string comma, IEnumerable<T> l, Func<T, int, string> f)
+    {
       Contract.Requires(comma != null);
       string res = "";
       string c = "";
       int index = 0;
-      foreach (var t in l) {
+      foreach (var t in l)
+      {
         res += c + f(t, index);
         c = comma;
         index++;
@@ -99,115 +682,146 @@ namespace Microsoft.Dafny {
       return res;
     }
 
-    public static string Comma(int count, Func<int, string> f) {
+    public static string Comma(int count, Func<int, string> f)
+    {
       Contract.Requires(0 <= count);
       return Comma(", ", count, f);
     }
 
-    public static string Comma(string comma, int count, Func<int, string> f) {
+    public static string Comma(string comma, int count, Func<int, string> f)
+    {
       Contract.Requires(comma != null);
       Contract.Requires(0 <= count);
       string res = "";
       string c = "";
-      for (int i = 0; i < count; i++) {
+      for (int i = 0; i < count; i++)
+      {
         res += c + f(i);
         c = comma;
       }
       return res;
     }
 
-    public static IEnumerable<(T, int)> Indexed<T>(this IEnumerable<T> enumerable) {
+    public static IEnumerable<(T, int)> Indexed<T>(this IEnumerable<T> enumerable)
+    {
       return enumerable.Select((value, index) => (value, index));
     }
 
-    public static string PrintableNameList(List<string> names, string grammaticalConjunction) {
+    public static string PrintableNameList(List<string> names, string grammaticalConjunction)
+    {
       Contract.Requires(names != null);
       Contract.Requires(1 <= names.Count);
       Contract.Requires(grammaticalConjunction != null);
       var n = names.Count;
-      if (n == 1) {
+      if (n == 1)
+      {
         return string.Format("'{0}'", names[0]);
-      } else if (n == 2) {
+      }
+      else if (n == 2)
+      {
         return string.Format("'{0}' {1} '{2}'", names[0], grammaticalConjunction, names[1]);
-      } else {
+      }
+      else
+      {
         var s = "";
-        for (int i = 0; i < n - 1; i++) {
+        for (int i = 0; i < n - 1; i++)
+        {
           s += string.Format("'{0}', ", names[i]);
         }
         return s + string.Format("{0} '{1}'", grammaticalConjunction, names[n - 1]);
       }
     }
 
-    public static string Repeat(int count, string s) {
+    public static string Repeat(int count, string s)
+    {
       Contract.Requires(0 <= count);
       Contract.Requires(s != null);
       // special-case trivial cases
-      if (count == 0) {
+      if (count == 0)
+      {
         return "";
-      } else if (count == 1) {
+      }
+      else if (count == 1)
+      {
         return s;
-      } else {
+      }
+      else
+      {
         return Comma("", count, _ => s);
       }
     }
 
-    public static string Plural(int n) {
+    public static string Plural(int n)
+    {
       Contract.Requires(0 <= n);
       return n == 1 ? "" : "s";
     }
 
-    public static List<B> Map<A, B>(IEnumerable<A> xs, Func<A, B> f) {
+    public static List<B> Map<A, B>(IEnumerable<A> xs, Func<A, B> f)
+    {
       List<B> ys = [];
-      foreach (A x in xs) {
+      foreach (A x in xs)
+      {
         ys.Add(f(x));
       }
       return ys;
     }
 
-    public static List<A> Nil<A>() {
+    public static List<A> Nil<A>()
+    {
       return [];
     }
 
-    public static List<A> Singleton<A>(A x) {
+    public static List<A> Singleton<A>(A x)
+    {
       return [x];
     }
 
-    public static List<A> List<A>(params A[] xs) {
+    public static List<A> List<A>(params A[] xs)
+    {
       return xs.ToList();
     }
 
-    public static List<A> Cons<A>(A x, List<A> xs) {
+    public static List<A> Cons<A>(A x, List<A> xs)
+    {
       return Concat(Singleton(x), xs);
     }
 
-    public static List<A> Snoc<A>(List<A> xs, A x) {
+    public static List<A> Snoc<A>(List<A> xs, A x)
+    {
       return Concat(xs, Singleton(x));
     }
 
-    public static List<A> Concat<A>(List<A> xs, List<A> ys) {
+    public static List<A> Concat<A>(List<A> xs, List<A> ys)
+    {
       List<A> cpy = [.. xs];
       cpy.AddRange(ys);
       return cpy;
     }
 
-    public static Dictionary<A, B> Dict<A, B>(IEnumerable<A> xs, IEnumerable<B> ys) {
+    public static Dictionary<A, B> Dict<A, B>(IEnumerable<A> xs, IEnumerable<B> ys)
+    {
       return Dict<A, B>(Enumerable.Zip(xs, ys).Select(x => new Tuple<A, B>(x.First, x.Second)));
     }
 
-    public static Dictionary<A, B> Dict<A, B>(IEnumerable<Tuple<A, B>> xys) {
+    public static Dictionary<A, B> Dict<A, B>(IEnumerable<Tuple<A, B>> xys)
+    {
       Dictionary<A, B> res = new Dictionary<A, B>();
-      foreach (var p in xys) {
+      foreach (var p in xys)
+      {
         res[p.Item1] = p.Item2;
       }
       return res;
     }
 
-    public static void AddToDict<A, B>(Dictionary<A, B> dict, List<A> xs, List<B> ys) {
+    public static void AddToDict<A, B>(Dictionary<A, B> dict, List<A> xs, List<B> ys)
+    {
       Contract.Requires(dict != null);
       Contract.Requires(xs != null);
       Contract.Requires(ys != null);
       Contract.Requires(xs.Count == ys.Count);
-      for (var i = 0; i < xs.Count; i++) {
+      for (var i = 0; i < xs.Count; i++)
+      {
         dict.Add(xs[i], ys[i]);
       }
     }
@@ -215,7 +829,8 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Returns s but with all occurrences of '_' removed.
     /// </summary>
-    public static string RemoveUnderscores(string s) {
+    public static string RemoveUnderscores(string s)
+    {
       Contract.Requires(s != null);
       return s.Replace("_", "");
     }
@@ -225,50 +840,69 @@ namespace Microsoft.Dafny {
     /// For @"S" return S and true.
     /// Assumes that s has one of these forms.
     /// </summary>
-    public static string RemoveParsedStringQuotes(string s, out bool isVerbatimString) {
+    public static string RemoveParsedStringQuotes(string s, out bool isVerbatimString)
+    {
       Contract.Requires(s != null);
       var len = s.Length;
-      if (s[0] == '@') {
+      if (s[0] == '@')
+      {
         isVerbatimString = true;
         return s.Substring(2, len - 3);
-      } else {
+      }
+      else
+      {
         isVerbatimString = false;
         return s.Substring(1, len - 2);
       }
     }
 
-    public static void ValidateEscaping(DafnyOptions options, IOrigin t, string s, bool isVerbatimString, Errors errors) {
-      if (options.Get(CommonOptionBag.UnicodeCharacters)) {
-        foreach (var token in TokensWithEscapes(s, isVerbatimString)) {
-          if (token.StartsWith("\\u")) {
+    public static void ValidateEscaping(DafnyOptions options, IOrigin t, string s, bool isVerbatimString, Errors errors)
+    {
+      if (options.Get(CommonOptionBag.UnicodeCharacters))
+      {
+        foreach (var token in TokensWithEscapes(s, isVerbatimString))
+        {
+          if (token.StartsWith("\\u"))
+          {
             errors.SemErr(ErrorId.g_no_old_unicode_char, t, "\\u escape sequences are not permitted when Unicode chars are enabled");
           }
 
-          if (token.StartsWith("\\U")) {
+          if (token.StartsWith("\\U"))
+          {
             var hexDigits = RemoveUnderscores(token[3..^1]);
-            if (hexDigits.Length > 6) {
+            if (hexDigits.Length > 6)
+            {
               errors.SemErr(ErrorId.g_unicode_escape_must_have_six_digits, t, "\\U{X..X} escape sequence must have at most six hex digits");
-            } else {
+            }
+            else
+            {
               var codePoint = Convert.ToInt32(hexDigits, 16);
-              if (codePoint >= 0x11_0000) {
+              if (codePoint >= 0x11_0000)
+              {
                 errors.SemErr(ErrorId.g_unicode_escape_is_too_large, t, "\\U{X..X} escape sequence must be less than 0x110000");
               }
-              if (codePoint is >= 0xD800 and < 0xE000) {
+              if (codePoint is >= 0xD800 and < 0xE000)
+              {
                 errors.SemErr(ErrorId.g_unicode_escape_may_not_be_surrogate, t, "\\U{X..X} escape sequence must not be a surrogate");
               }
             }
           }
         }
-      } else {
-        foreach (var token2 in TokensWithEscapes(s, isVerbatimString)) {
-          if (token2.StartsWith("\\U")) {
+      }
+      else
+      {
+        foreach (var token2 in TokensWithEscapes(s, isVerbatimString))
+        {
+          if (token2.StartsWith("\\U"))
+          {
             errors.SemErr(ErrorId.g_U_unicode_chars_are_disallowed, t, "\\U escape sequences are not permitted when Unicode chars are disabled");
           }
         }
       }
     }
 
-    public static bool MightContainNonAsciiCharacters(string s, bool isVerbatimString) {
+    public static bool MightContainNonAsciiCharacters(string s, bool isVerbatimString)
+    {
       // This is conservative since \u and \U escapes could be ASCII characters,
       // but that's fine since this method is just used as a conservative guard.
       return TokensWithEscapes(s, isVerbatimString).Any(e =>
@@ -279,12 +913,16 @@ namespace Microsoft.Dafny {
     /// Replaced any escaped characters in s by the actual character that the escaping represents.
     /// Assumes s to be a well-parsed string.
     /// </summary>
-    public static string RemoveEscaping(DafnyOptions options, string s, bool isVerbatimString) {
+    public static string RemoveEscaping(DafnyOptions options, string s, bool isVerbatimString)
+    {
       Contract.Requires(s != null);
       var sb = new StringBuilder();
-      if (options.Get(CommonOptionBag.UnicodeCharacters)) {
+      if (options.Get(CommonOptionBag.UnicodeCharacters))
+      {
         UnescapedCharacters(options, s, isVerbatimString).ForEach(ch => sb.Append(new Rune(ch)));
-      } else {
+      }
+      else
+      {
         UnescapedCharacters(options, s, isVerbatimString).ForEach(ch => sb.Append((char)ch));
       }
       return sb.ToString();
@@ -294,52 +932,67 @@ namespace Microsoft.Dafny {
     public static readonly Regex UnicodeEscape = new Regex(@"\\U\{([0-9a-fA-F_]+)\}");
     private static readonly Regex NullEscape = new Regex(@"\\0");
 
-    private static string ToUtf16Escape(char c, bool addBraces = false) {
-      if (addBraces) {
+    private static string ToUtf16Escape(char c, bool addBraces = false)
+    {
+      if (addBraces)
+      {
         return $"\\u{{{(int)c:x4}}}";
-      } else {
+      }
+      else
+      {
         return $"\\u{(int)c:x4}";
       }
     }
 
-    public static string ReplaceTokensWithEscapes(string s, Regex pattern, MatchEvaluator evaluator) {
+    public static string ReplaceTokensWithEscapes(string s, Regex pattern, MatchEvaluator evaluator)
+    {
       return string.Join("",
         TokensWithEscapes(s, false)
           .Select(token => pattern.Replace(token, evaluator)));
     }
 
-    public static string ExpandUnicodeEscapes(string s, bool lowerCaseU) {
-      return ReplaceTokensWithEscapes(s, UnicodeEscape, match => {
+    public static string ExpandUnicodeEscapes(string s, bool lowerCaseU)
+    {
+      return ReplaceTokensWithEscapes(s, UnicodeEscape, match =>
+      {
         var hexDigits = RemoveUnderscores(match.Groups[1].Value);
         var padChars = 8 - hexDigits.Length;
         return (lowerCaseU ? "\\u" : "\\U") + new string('0', padChars) + hexDigits;
       });
     }
 
-    public static string UnicodeEscapesToLowercase(string s) {
+    public static string UnicodeEscapesToLowercase(string s)
+    {
       return ReplaceTokensWithEscapes(s, UnicodeEscape, match =>
         $"\\u{{{RemoveUnderscores(match.Groups[1].Value)}}}");
     }
 
-    public static string UnicodeEscapesToUtf16Escapes(string s) {
-      return ReplaceTokensWithEscapes(s, UnicodeEscape, match => {
+    public static string UnicodeEscapesToUtf16Escapes(string s)
+    {
+      return ReplaceTokensWithEscapes(s, UnicodeEscape, match =>
+      {
         var utf16CodeUnits = new char[2];
         var hexDigits = RemoveUnderscores(match.Groups[1].Value);
         var codePoint = new Rune(Convert.ToInt32(hexDigits, 16));
         var codeUnits = codePoint.EncodeToUtf16(utf16CodeUnits);
-        if (codeUnits == 2) {
+        if (codeUnits == 2)
+        {
           return ToUtf16Escape(utf16CodeUnits[0]) + ToUtf16Escape(utf16CodeUnits[1]); ;
-        } else {
+        }
+        else
+        {
           return ToUtf16Escape(utf16CodeUnits[0]);
         }
       });
     }
 
-    public static string ReplaceNullEscapesWithCharacterEscapes(string s) {
+    public static string ReplaceNullEscapesWithCharacterEscapes(string s)
+    {
       return ReplaceTokensWithEscapes(s, NullEscape, match => "\\u0000");
     }
 
-    public static IEnumerable<int> UnescapedCharacters(DafnyOptions options, string p, bool isVerbatimString) {
+    public static IEnumerable<int> UnescapedCharacters(DafnyOptions options, string p, bool isVerbatimString)
+    {
       return UnescapedCharacters(options.Get(CommonOptionBag.UnicodeCharacters), p, isVerbatimString);
     }
 
@@ -351,20 +1004,31 @@ namespace Microsoft.Dafny {
     /// if --unicode-char is enabled - these are synthesized by the parser when
     /// reading the original UTF-8 source, but don't represent the true character values.
     /// </summary>
-    public static IEnumerable<int> UnescapedCharacters(bool unicodeChars, string p, bool isVerbatimString) {
-      if (isVerbatimString) {
-        foreach (var s in TokensWithEscapes(p, true)) {
-          if (s == "\"\"") {
+    public static IEnumerable<int> UnescapedCharacters(bool unicodeChars, string p, bool isVerbatimString)
+    {
+      if (isVerbatimString)
+      {
+        foreach (var s in TokensWithEscapes(p, true))
+        {
+          if (s == "\"\"")
+          {
             yield return '"';
-          } else {
-            foreach (var c in s) {
+          }
+          else
+          {
+            foreach (var c in s)
+            {
               yield return c;
             }
           }
         }
-      } else {
-        foreach (var s in TokensWithEscapes(p, false)) {
-          switch (s) {
+      }
+      else
+      {
+        foreach (var s in TokensWithEscapes(p, false))
+        {
+          switch (s)
+          {
             case @"\'": yield return '\''; break;
             case @"\""": yield return '"'; break;
             case @"\\": yield return '\\'; break;
@@ -382,7 +1046,8 @@ namespace Microsoft.Dafny {
               yield return char.ConvertToUtf32(s[0], s[1]);
               break;
             default:
-              foreach (var c in s) {
+              foreach (var c in s)
+              {
                 yield return c;
               }
               break;
@@ -396,27 +1061,41 @@ namespace Microsoft.Dafny {
     /// For example, "ab\tuv\u12345" may be broken up as ["a", "b", "\t", "u", "v", "\u1234", "5"].
     /// Consecutive non-escaped characters may or may not be enumerated as a single string.
     /// </summary>
-    public static IEnumerable<string> TokensWithEscapes(string p, bool isVerbatimString) {
+    public static IEnumerable<string> TokensWithEscapes(string p, bool isVerbatimString)
+    {
       Contract.Requires(p != null);
-      if (isVerbatimString) {
+      if (isVerbatimString)
+      {
         var skipNext = false;
-        foreach (var ch in p) {
-          if (skipNext) {
+        foreach (var ch in p)
+        {
+          if (skipNext)
+          {
             skipNext = false;
-          } else {
-            if (ch == '"') {
+          }
+          else
+          {
+            if (ch == '"')
+            {
               skipNext = true;
               yield return "\"";
-            } else {
+            }
+            else
+            {
               yield return ch.ToString();
             }
           }
         }
-      } else {
+      }
+      else
+      {
         var i = 0;
-        while (i < p.Length) {
-          if (p[i] == '\\') {
-            switch (p[i + 1]) {
+        while (i < p.Length)
+        {
+          if (p[i] == '\\')
+          {
+            switch (p[i + 1])
+            {
               case 'u':
                 yield return p[i..(i + 6)];
                 i += 6;
@@ -431,10 +1110,14 @@ namespace Microsoft.Dafny {
                 i += 2;
                 break;
             }
-          } else if (char.IsHighSurrogate(p[i])) {
+          }
+          else if (char.IsHighSurrogate(p[i]))
+          {
             yield return p[i..(i + 2)];
             i += 2;
-          } else {
+          }
+          else
+          {
             yield return p[i].ToString();
             i++;
           }
@@ -446,12 +1129,18 @@ namespace Microsoft.Dafny {
     /// Converts a hexadecimal digit to an integer.
     /// Assumes ch does represent a hexadecimal digit; alphabetic digits can be in either case.
     /// </summary>
-    public static int HexValue(char ch) {
-      if ('a' <= ch && ch <= 'f') {
+    public static int HexValue(char ch)
+    {
+      if ('a' <= ch && ch <= 'f')
+      {
         return ch - 'a' + 10;
-      } else if ('A' <= ch && ch <= 'F') {
+      }
+      else if ('A' <= ch && ch <= 'F')
+      {
         return ch - 'A' + 10;
-      } else {
+      }
+      else
+      {
         return ch - '0';
       }
     }
@@ -462,23 +1151,31 @@ namespace Microsoft.Dafny {
     /// that "this" is deprecated in modifies clauses of constructors.
     /// This method may modify "fe" and the subexpressions contained within "fe".
     /// </summary>
-    public static void AddFrameExpression(List<FrameExpression> mod, FrameExpression fe, bool performThisDeprecationCheck, Errors errors) {
+    public static void AddFrameExpression(List<FrameExpression> mod, FrameExpression fe, bool performThisDeprecationCheck, Errors errors)
+    {
       Contract.Requires(mod != null);
       Contract.Requires(fe != null);
       Contract.Requires(errors != null);
-      if (performThisDeprecationCheck) {
-        if (fe.E is ThisExpr) {
+      if (performThisDeprecationCheck)
+      {
+        if (fe.E is ThisExpr)
+        {
           errors.Deprecated(ErrorId.g_deprecated_this_in_constructor_modifies_clause, fe.E.Origin, "constructors no longer need 'this' to be listed in modifies clauses");
           return;
-        } else if (fe.E is SetDisplayExpr) {
+        }
+        else if (fe.E is SetDisplayExpr)
+        {
           var s = (SetDisplayExpr)fe.E;
           var deprecated = s.Elements.FindAll(e => e is ThisExpr);
-          if (deprecated.Count != 0) {
-            foreach (var e in deprecated) {
+          if (deprecated.Count != 0)
+          {
+            foreach (var e in deprecated)
+            {
               errors.Deprecated(ErrorId.g_deprecated_this_in_constructor_modifies_clause, e.Origin, "constructors no longer need 'this' to be listed in modifies clauses");
             }
             s.Elements.RemoveAll(e => e is ThisExpr);
-            if (s.Elements.Count == 0) {
+            if (s.Elements.Count == 0)
+            {
               return;
             }
           }
@@ -490,33 +1187,44 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Class dedicated to traversing the function call graph
     /// </summary>
-    class FunctionCallFinder : TopDownVisitor<List<Function>> {
-      protected override bool VisitOneExpr(Expression expr, ref List<Function> calls) {
-        if (expr is FunctionCallExpr) {
+    class FunctionCallFinder : TopDownVisitor<List<Function>>
+    {
+      protected override bool VisitOneExpr(Expression expr, ref List<Function> calls)
+      {
+        if (expr is FunctionCallExpr)
+        {
           calls.Add(((FunctionCallExpr)expr).Function);
         }
         return true;
       }
     }
 
-    static Graph<Function> BuildFunctionCallGraph(Dafny.Program program) {
+    static Graph<Function> BuildFunctionCallGraph(Dafny.Program program)
+    {
       Graph<Function> functionCallGraph = new Graph<Function>();
       FunctionCallFinder callFinder = new FunctionCallFinder();
 
-      foreach (var module in program.Modules()) {
-        foreach (var decl in module.TopLevelDecls) {
-          if (decl is TopLevelDeclWithMembers c) {
-            foreach (var member in c.Members) {
-              if (member is Function f) {
+      foreach (var module in program.Modules())
+      {
+        foreach (var decl in module.TopLevelDecls)
+        {
+          if (decl is TopLevelDeclWithMembers c)
+          {
+            foreach (var member in c.Members)
+            {
+              if (member is Function f)
+              {
                 List<Function> calls = [];
                 foreach (var e in f.Reads.Expressions) { if (e != null && e.E != null) { callFinder.Visit(e.E, calls); } }
                 foreach (var e in f.Req) { if (e != null) { callFinder.Visit(e, calls); } }
                 foreach (var e in f.Ens) { if (e != null) { callFinder.Visit(e, calls); } }
-                if (f.Body != null) {
+                if (f.Body != null)
+                {
                   callFinder.Visit(f.Body, calls);
                 }
 
-                foreach (var callee in calls) {
+                foreach (var callee in calls)
+                {
                   functionCallGraph.AddEdge(f, callee);
                 }
               }
@@ -531,14 +1239,17 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Prints the program's function call graph in a format suitable for consumption in other tools
     /// </summary>
-    public static async Task PrintFunctionCallGraph(Dafny.Program program) {
+    public static async Task PrintFunctionCallGraph(Dafny.Program program)
+    {
       var functionCallGraph = BuildFunctionCallGraph(program);
 
       var sb = new StringBuilder();
-      foreach (var vertex in functionCallGraph.GetVertices()) {
+      foreach (var vertex in functionCallGraph.GetVertices())
+      {
         var func = vertex.N;
         sb.Append($"{func.SanitizedName},{func.EnclosingClass.EnclosingModuleDefinition.SanitizedName}=");
-        foreach (var callee in vertex.Successors) {
+        foreach (var callee in vertex.Successors)
+        {
           sb.Append($"{callee.N.SanitizedName} ");
         }
         sb.Append("\n");
@@ -547,23 +1258,29 @@ namespace Microsoft.Dafny {
     }
 
     public static V GetOrDefault<K, V, V2>(this IReadOnlyDictionary<K, V2> dictionary, K key, Func<V> createValue)
-      where V2 : V {
-      if (dictionary.TryGetValue(key, out var result)) {
+      where V2 : V
+    {
+      if (dictionary.TryGetValue(key, out var result))
+      {
         return result;
       }
 
       return createValue();
     }
 
-    public static Action<T> Concat<T>(Action<T> first, Action<T> second) {
-      return v => {
+    public static Action<T> Concat<T>(Action<T> first, Action<T> second)
+    {
+      return v =>
+      {
         first(v);
         second(v);
       };
     }
 
-    public static V AddOrUpdate<K, V>(this IDictionary<K, V> dictionary, K key, V newValue, Func<V, V, V> update) {
-      if (dictionary.TryGetValue(key, out var existingValue)) {
+    public static V AddOrUpdate<K, V>(this IDictionary<K, V> dictionary, K key, V newValue, Func<V, V, V> update)
+    {
+      if (dictionary.TryGetValue(key, out var existingValue))
+      {
         var updated = update(existingValue, newValue);
         dictionary[key] = updated;
         return updated;
@@ -573,8 +1290,10 @@ namespace Microsoft.Dafny {
       return newValue;
     }
 
-    public static V GetOrCreate<K, V>(this IDictionary<K, V> dictionary, K key, Func<V> createValue) {
-      if (dictionary.TryGetValue(key, out var result)) {
+    public static V GetOrCreate<K, V>(this IDictionary<K, V> dictionary, K key, Func<V> createValue)
+    {
+      if (dictionary.TryGetValue(key, out var result))
+      {
         return result;
       }
 
@@ -586,10 +1305,14 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Generic statistic counter
     /// </summary>
-    static void IncrementStat(IDictionary<string, ulong> stats, string stat) {
-      if (stats.TryGetValue(stat, out var currentValue)) {
+    static void IncrementStat(IDictionary<string, ulong> stats, string stat)
+    {
+      if (stats.TryGetValue(stat, out var currentValue))
+      {
         stats[stat] += 1;
-      } else {
+      }
+      else
+      {
         stats.Add(stat, 1);
       }
     }
@@ -597,12 +1320,17 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Track the maximum value of some statistic
     /// </summary>
-    static void UpdateMax(IDictionary<string, ulong> stats, string stat, ulong val) {
-      if (stats.TryGetValue(stat, out var currentValue)) {
-        if (val > currentValue) {
+    static void UpdateMax(IDictionary<string, ulong> stats, string stat, ulong val)
+    {
+      if (stats.TryGetValue(stat, out var currentValue))
+      {
+        if (val > currentValue)
+        {
           stats[stat] = val;
         }
-      } else {
+      }
+      else
+      {
         stats.Add(stat, val);
       }
     }
@@ -610,39 +1338,53 @@ namespace Microsoft.Dafny {
     /// <summary>
     /// Compute various interesting statistics about the Dafny program
     /// </summary>
-    public static async Task PrintStats(Dafny.Program program) {
+    public static async Task PrintStats(Dafny.Program program)
+    {
       SortedDictionary<string, ulong> stats = new SortedDictionary<string, ulong>();
 
-      foreach (var module in program.Modules()) {
+      foreach (var module in program.Modules())
+      {
         IncrementStat(stats, "Modules");
         UpdateMax(stats, "Module height (max)", (ulong)module.Height);
 
         ulong numScc = (ulong)module.CallGraph.TopologicallySortedComponents().Count;
         UpdateMax(stats, "Call graph width (max)", numScc);
 
-        foreach (var decl in module.TopLevelDecls) {
-          if (decl is DatatypeDecl) {
+        foreach (var decl in module.TopLevelDecls)
+        {
+          if (decl is DatatypeDecl)
+          {
             IncrementStat(stats, "Datatypes");
-          } else if (decl is ClassLikeDecl) {
+          }
+          else if (decl is ClassLikeDecl)
+          {
             var c = (ClassLikeDecl)decl;
-            if (c.Name != "_default") {
+            if (c.Name != "_default")
+            {
               IncrementStat(stats, "Classes");
             }
 
-            foreach (var member in c.Members) {
-              if (member is Function) {
+            foreach (var member in c.Members)
+            {
+              if (member is Function)
+              {
                 IncrementStat(stats, "Functions (total)");
                 var f = (Function)member;
-                if (f.IsRecursive) {
+                if (f.IsRecursive)
+                {
                   IncrementStat(stats, "Functions recursive");
                 }
-              } else if (member is MethodOrConstructor) {
+              }
+              else if (member is MethodOrConstructor)
+              {
                 IncrementStat(stats, "Methods (total)");
                 var method = (MethodOrConstructor)member;
-                if (method.IsRecursive) {
+                if (method.IsRecursive)
+                {
                   IncrementStat(stats, "Methods recursive");
                 }
-                if (method.IsGhost) {
+                if (method.IsGhost)
+                {
                   IncrementStat(stats, "Methods ghost");
                 }
               }
@@ -658,13 +1400,16 @@ namespace Microsoft.Dafny {
       sb.AppendLine("----------");
 
       int maxKeyLength = 0;
-      foreach (var key in stats.Keys) {
-        if (key.Length > maxKeyLength) {
+      foreach (var key in stats.Keys)
+      {
+        if (key.Length > maxKeyLength)
+        {
           maxKeyLength = key.Length;
         }
       }
 
-      foreach (var keypair in stats) {
+      foreach (var keypair in stats)
+      {
         string keyString = keypair.Key.PadRight(maxKeyLength + 2);
         sb.AppendLine($"{keyString} {keypair.Value,4}");
       }
@@ -672,51 +1417,65 @@ namespace Microsoft.Dafny {
       await program.Options.OutputWriter.Status(sb.ToString());
     }
 
-    public static IEnumerable<string> Lines(TextReader reader) {
+    public static IEnumerable<string> Lines(TextReader reader)
+    {
       return new LinesEnumerable(reader);
     }
   }
 
-  public class DependencyMap {
+  public class DependencyMap
+  {
     private Dictionary<string, SortedSet<string>> dependencies;
 
-    public DependencyMap() {
+    public DependencyMap()
+    {
       dependencies = new Dictionary<string, SortedSet<string>>();
     }
 
-    public void AddInclude(Include include) {
+    public void AddInclude(Include include)
+    {
       SortedSet<string> existingDependencies = null;
       string key = include.IncluderFilename.LocalPath ?? "roots";
       bool found = dependencies.TryGetValue(key, out existingDependencies);
-      if (found) {
+      if (found)
+      {
         existingDependencies.Add(include.CanonicalPath);
-      } else {
+      }
+      else
+      {
         dependencies[key] = [include.CanonicalPath];
       }
     }
 
-    public void AddIncludes(IEnumerable<Include> includes) {
+    public void AddIncludes(IEnumerable<Include> includes)
+    {
       // Reconstruct the dependency map
       Dictionary<string, List<string>> dependencies = new Dictionary<string, List<string>>();
-      foreach (Include include in includes) {
+      foreach (Include include in includes)
+      {
         AddInclude(include);
       }
     }
 
-    public Task PrintMap(DafnyOptions options) {
+    public Task PrintMap(DafnyOptions options)
+    {
       SortedSet<string> leaves = []; // Files that don't themselves include any files
       var sb = new StringBuilder();
-      foreach (string target in dependencies.Keys) {
+      foreach (string target in dependencies.Keys)
+      {
         sb.Append(target);
-        foreach (string dependency in dependencies[target]) {
+        foreach (string dependency in dependencies[target])
+        {
           sb.Append(";" + dependency);
-          if (!dependencies.ContainsKey(dependency)) {
+          if (!dependencies.ContainsKey(dependency))
+          {
             leaves.Add(dependency);
           }
         }
         sb.AppendLine();
       }
-      foreach (string leaf in leaves) {
+      foreach (string leaf in leaves)
+      {
         sb.AppendLine(leaf);
       }
 
@@ -724,14 +1483,18 @@ namespace Microsoft.Dafny {
     }
   }
 
-  class IEnumerableComparer<T> : IEqualityComparer<IEnumerable<T>> {
-    public bool Equals(IEnumerable<T> x, IEnumerable<T> y) {
+  class IEnumerableComparer<T> : IEqualityComparer<IEnumerable<T>>
+  {
+    public bool Equals(IEnumerable<T> x, IEnumerable<T> y)
+    {
       return x.SequenceEqual(y);
     }
 
-    public int GetHashCode(IEnumerable<T> obj) {
+    public int GetHashCode(IEnumerable<T> obj)
+    {
       var hash = new HashCode();
-      foreach (T t in obj) {
+      foreach (T t in obj)
+      {
         hash.Add(t);
       }
       return hash.ToHashCode();
@@ -744,8 +1507,10 @@ namespace Microsoft.Dafny {
   // - Define a subclass of ProgramTraverser
   // - Implement the methods (TopDown|BottomUp)(Enter|Exit), override Traverse if needed.
   // - Call any Traverse() method.
-  public class ProgramTraverser {
-    public enum ContinuationStatus {
+  public class ProgramTraverser
+  {
+    public enum ContinuationStatus
+    {
       Ok,    // Continue exploration
       Skip,  // Skip this node and its descendants  (valid only on entering a node)
       Stop,  // Stop the entire traversal here, but traverse ancestors in bottom-up
@@ -754,51 +1519,64 @@ namespace Microsoft.Dafny {
     protected const ContinuationStatus skip = ContinuationStatus.Skip;
     protected const ContinuationStatus stop = ContinuationStatus.Stop;
     // Returns true if statement needs to be traversed
-    protected virtual ContinuationStatus OnEnter(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent) {
+    protected virtual ContinuationStatus OnEnter(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent)
+    {
       return ok;
     }
     // Returns true if expression needs to be traversed
-    protected virtual ContinuationStatus OnEnter(Expression expr, [CanBeNull] string field, [CanBeNull] object parent) {
+    protected virtual ContinuationStatus OnEnter(Expression expr, [CanBeNull] string field, [CanBeNull] object parent)
+    {
       return ok;
     }
 
     // Returns true if need to stop the traversal entirely
-    protected virtual bool OnExit(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent) {
+    protected virtual bool OnExit(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent)
+    {
       return false;
     }
     // Returns true if need to stop the traversal entirely
-    protected virtual bool OnExit(Expression expr, [CanBeNull] string field, [CanBeNull] object parent) {
+    protected virtual bool OnExit(Expression expr, [CanBeNull] string field, [CanBeNull] object parent)
+    {
       return false;
     }
 
-    protected virtual ContinuationStatus OnEnter(MemberDecl memberDecl, [CanBeNull] string field, [CanBeNull] object parent) {
+    protected virtual ContinuationStatus OnEnter(MemberDecl memberDecl, [CanBeNull] string field, [CanBeNull] object parent)
+    {
       return ok;
     }
 
     // Traverse methods retun true to interrupt.
-    public bool Traverse(Program program) {
-      if (program == null) {
+    public bool Traverse(Program program)
+    {
+      if (program == null)
+      {
         return false;
       }
 
       return program.Modules().Any(Traverse);
     }
 
-    public bool Traverse(ModuleDefinition moduleDefinition) {
-      if (moduleDefinition == null) {
+    public bool Traverse(ModuleDefinition moduleDefinition)
+    {
+      if (moduleDefinition == null)
+      {
         return false;
       }
 
       return Traverse(moduleDefinition.TopLevelDecls);
     }
 
-    public bool Traverse(IEnumerable<TopLevelDecl> topLevelDecls) {
-      if (topLevelDecls == null) {
+    public bool Traverse(IEnumerable<TopLevelDecl> topLevelDecls)
+    {
+      if (topLevelDecls == null)
+      {
         return false;
       }
 
-      foreach (var topLevelDecl in topLevelDecls) {
-        if (Traverse(topLevelDecl)) {
+      foreach (var topLevelDecl in topLevelDecls)
+      {
+        if (Traverse(topLevelDecl))
+        {
           return true;
         }
       }
@@ -806,14 +1584,19 @@ namespace Microsoft.Dafny {
       return false;
     }
 
-    public bool Traverse(ModuleDecl moduleDecl) {
-      if (moduleDecl == null) {
+    public bool Traverse(ModuleDecl moduleDecl)
+    {
+      if (moduleDecl == null)
+      {
         return false;
       }
 
-      if (moduleDecl is LiteralModuleDecl l) {
+      if (moduleDecl is LiteralModuleDecl l)
+      {
         return Traverse(l.ModuleDef);
-      } else if (moduleDecl is AbstractModuleDecl a) {
+      }
+      else if (moduleDecl is AbstractModuleDecl a)
+      {
         return Traverse(a.CompileRoot);
       }/* else if (moduleDecl is AliasModuleDecl a) {
         
@@ -824,165 +1607,220 @@ namespace Microsoft.Dafny {
       return false;
     }
 
-    public bool Traverse(Formal formal) {
-      if (formal == null) {
+    public bool Traverse(Formal formal)
+    {
+      if (formal == null)
+      {
         return false;
       }
 
-      if (formal.DefaultValue != null && Traverse(formal.DefaultValue, "DefaultValue", formal)) {
+      if (formal.DefaultValue != null && Traverse(formal.DefaultValue, "DefaultValue", formal))
+      {
         return true;
       }
 
       return false;
     }
 
-    public bool Traverse(DatatypeCtor ctor) {
-      if (ctor == null) {
+    public bool Traverse(DatatypeCtor ctor)
+    {
+      if (ctor == null)
+      {
         return false;
       }
 
-      if (ctor.Formals.Any(Traverse)) {
+      if (ctor.Formals.Any(Traverse))
+      {
         return true;
       }
 
       return false;
     }
 
-    public bool Traverse(TopLevelDecl topd) {
-      if (topd == null) {
+    public bool Traverse(TopLevelDecl topd)
+    {
+      if (topd == null)
+      {
         return false;
       }
 
       var d = topd is ClassLikeDecl classDecl && classDecl.NonNullTypeDecl != null ? classDecl.NonNullTypeDecl : topd;
 
-      if (d is TopLevelDeclWithMembers tdm) {
+      if (d is TopLevelDeclWithMembers tdm)
+      {
         // ClassDecl, DatatypeDecl, AbstractTypeDecl, NewtypeDecl 
-        if (tdm.Members.Any(memberDecl => Traverse(memberDecl, "Members", tdm))) {
+        if (tdm.Members.Any(memberDecl => Traverse(memberDecl, "Members", tdm)))
+        {
           return true;
         }
 
-        if (tdm is IteratorDecl iter) {
+        if (tdm is IteratorDecl iter)
+        {
           // TODO: Import this
-          if (Attributes.SubExpressions(iter.Attributes).Any(e => Traverse(e, "Attributes.SubExpressions", iter))) {
+          if (Attributes.SubExpressions(iter.Attributes).Any(e => Traverse(e, "Attributes.SubExpressions", iter)))
+          {
             return true;
           }
-          if (Attributes.SubExpressions(iter.Reads.Attributes).Any(e => Traverse(e, "Reads.Attributes.SubExpressions", iter))) {
+          if (Attributes.SubExpressions(iter.Reads.Attributes).Any(e => Traverse(e, "Reads.Attributes.SubExpressions", iter)))
+          {
             return true;
           }
-          if (iter.Reads.Expressions.Any(e => Traverse(e.E, "Reads.Expressions.E", iter))) {
+          if (iter.Reads.Expressions.Any(e => Traverse(e.E, "Reads.Expressions.E", iter)))
+          {
             return true;
           }
-          if (Attributes.SubExpressions(iter.Modifies.Attributes).Any(e => Traverse(e, "Modifies.Attributes.SubExpressions", iter))) {
+          if (Attributes.SubExpressions(iter.Modifies.Attributes).Any(e => Traverse(e, "Modifies.Attributes.SubExpressions", iter)))
+          {
             return true;
           }
-          if (iter.Modifies.Expressions.Any(e => Traverse(e.E, "Modifies.Expressions.E", iter))) {
+          if (iter.Modifies.Expressions.Any(e => Traverse(e.E, "Modifies.Expressions.E", iter)))
+          {
             return true;
           }
-          if (Attributes.SubExpressions(iter.Decreases.Attributes).Any(e => Traverse(e, "Decreases.Attributes.SubExpressions", iter))) {
+          if (Attributes.SubExpressions(iter.Decreases.Attributes).Any(e => Traverse(e, "Decreases.Attributes.SubExpressions", iter)))
+          {
             return true;
           }
-          if (iter.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions.E", iter))) {
+          if (iter.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions.E", iter)))
+          {
             return true;
           }
-          if (iter.Requires.Any(e => Traverse(e.E, "Requires.E", iter))) {
+          if (iter.Requires.Any(e => Traverse(e.E, "Requires.E", iter)))
+          {
             return true;
           }
-          if (iter.Ensures.Any(e => Traverse(e.E, "Ensures.E", iter))) {
+          if (iter.Ensures.Any(e => Traverse(e.E, "Ensures.E", iter)))
+          {
             return true;
           }
-          if (iter.YieldRequires.Any(e => Traverse(e.E, "YieldRequires.E", iter))) {
+          if (iter.YieldRequires.Any(e => Traverse(e.E, "YieldRequires.E", iter)))
+          {
             return true;
           }
-          if (iter.YieldEnsures.Any(e => Traverse(e.E, "YieldEnsures.E", iter))) {
+          if (iter.YieldEnsures.Any(e => Traverse(e.E, "YieldEnsures.E", iter)))
+          {
             return true;
           }
-          if (Traverse(iter.Body, "Body", iter)) {
+          if (Traverse(iter.Body, "Body", iter))
+          {
             return true;
           }
         }
 
-        if (tdm is DatatypeDecl dtd) {
-          if (dtd.Ctors.Any(Traverse)) {
+        if (tdm is DatatypeDecl dtd)
+        {
+          if (dtd.Ctors.Any(Traverse))
+          {
             return true;
           }
         }
-      } else if (d is ModuleDecl md) {
+      }
+      else if (d is ModuleDecl md)
+      {
         return Traverse(md);
-      } else if (d is TypeSynonymDecl tsd) {
+      }
+      else if (d is TypeSynonymDecl tsd)
+      {
         // Nothing here.
       }
 
       return false;
     }
 
-    public bool Traverse(MemberDecl memberDeclaration, [CanBeNull] string field, [CanBeNull] object parent) {
-      if (memberDeclaration == null) {
+    public bool Traverse(MemberDecl memberDeclaration, [CanBeNull] string field, [CanBeNull] object parent)
+    {
+      if (memberDeclaration == null)
+      {
         return false;
       }
 
       var enterResult = OnEnter(memberDeclaration, field, parent);
-      if (enterResult is stop or skip) {
+      if (enterResult is stop or skip)
+      {
         return enterResult == stop;
       }
 
-      if (memberDeclaration is Field fi) {
-        if (fi.SubExpressions.Any(expr => Traverse(expr, "SubExpressions", fi))) {
+      if (memberDeclaration is Field fi)
+      {
+        if (fi.SubExpressions.Any(expr => Traverse(expr, "SubExpressions", fi)))
+        {
           return true;
         }
-      } else if (memberDeclaration is Function f) {
-        if (f.Ins.Any(Traverse)) {
+      }
+      else if (memberDeclaration is Function f)
+      {
+        if (f.Ins.Any(Traverse))
+        {
           return true;
         }
-        if (f.Result != null && f.Result.DefaultValue != null && Traverse(f.Result.DefaultValue, "Result.DefaultValue", f)) {
+        if (f.Result != null && f.Result.DefaultValue != null && Traverse(f.Result.DefaultValue, "Result.DefaultValue", f))
+        {
           return true;
         }
-        if (f.Req.Any(e => Traverse(e.E, "Req.E", f))) {
+        if (f.Req.Any(e => Traverse(e.E, "Req.E", f)))
+        {
           return true;
         }
-        if (f.Reads.Expressions.Any(e => Traverse(e.E, "Reads.E", f))) {
+        if (f.Reads.Expressions.Any(e => Traverse(e.E, "Reads.E", f)))
+        {
           return true;
         }
-        if (f.Ens.Any(e => Traverse(e.E, "Ens.E", f))) {
+        if (f.Ens.Any(e => Traverse(e.E, "Ens.E", f)))
+        {
           return true;
         }
-        if (f.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions", f))) {
+        if (f.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions", f)))
+        {
           return true;
         }
-        if (Traverse(f.Body, "Body", f)) {
+        if (Traverse(f.Body, "Body", f))
+        {
           return true;
         }
 
-        if (f.ByMethodDecl != null && Traverse(f.ByMethodDecl, "ByMethodDecl", f)) {
+        if (f.ByMethodDecl != null && Traverse(f.ByMethodDecl, "ByMethodDecl", f))
+        {
           return true;
         }
 
-        if (f.ByMethodDecl == null || f.ByMethodDecl.Body != f.ByMethodBody) {
-          if (f.ByMethodBody != null && Traverse(f.ByMethodBody, "ByMethodBody", f)) {
+        if (f.ByMethodDecl == null || f.ByMethodDecl.Body != f.ByMethodBody)
+        {
+          if (f.ByMethodBody != null && Traverse(f.ByMethodBody, "ByMethodBody", f))
+          {
             return true;
           }
         }
-      } else if (memberDeclaration is Method m) {
+      }
+      else if (memberDeclaration is Method m)
+      {
         // For example, default value of formals is non-ghost
         if (m.Ins.Any(formal => formal.DefaultValue != null
-                                && Traverse(formal.DefaultValue, "Ins.DefaultValue", m))) {
+                                && Traverse(formal.DefaultValue, "Ins.DefaultValue", m)))
+        {
           return true;
         }
-        if (m.Req.Any(e => Traverse(e.E, "Req.E", m))) {
+        if (m.Req.Any(e => Traverse(e.E, "Req.E", m)))
+        {
           return true;
         }
-        if (m.Reads.Expressions.Any(e => Traverse(e.E, "Reads.E", m))) {
+        if (m.Reads.Expressions.Any(e => Traverse(e.E, "Reads.E", m)))
+        {
           return true;
         }
-        if (m.Mod.Expressions.Any(e => Traverse(e.E, "Mod.E", m) == true)) {
+        if (m.Mod.Expressions.Any(e => Traverse(e.E, "Mod.E", m) == true))
+        {
           return true;
         }
-        if (m.Ens.Any(e => Traverse(e.E, "Ens.E", m))) {
+        if (m.Ens.Any(e => Traverse(e.E, "Ens.E", m)))
+        {
           return true;
         }
-        if (m.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions", m))) {
+        if (m.Decreases.Expressions.Any(e => Traverse(e, "Decreases.Expressions", m)))
+        {
           return true;
         }
-        if (Traverse(m.Body, "Body", m)) {
+        if (Traverse(m.Body, "Body", m))
+        {
           return true;
         }
       }
@@ -990,13 +1828,16 @@ namespace Microsoft.Dafny {
       return false;
     }
 
-    public virtual bool Traverse(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent) {
-      if (stmt == null) {
+    public virtual bool Traverse(Statement stmt, [CanBeNull] string field, [CanBeNull] object parent)
+    {
+      if (stmt == null)
+      {
         return false;
       }
 
       var enterResult = OnEnter(stmt, field, parent);
-      if (enterResult is stop or skip) {
+      if (enterResult is stop or skip)
+      {
         return enterResult == stop;
       }
 
@@ -1006,13 +1847,16 @@ namespace Microsoft.Dafny {
              OnExit(stmt, field, parent);
     }
 
-    public virtual bool Traverse(Expression expr, [CanBeNull] string field, [CanBeNull] object parent) {
-      if (expr == null) {
+    public virtual bool Traverse(Expression expr, [CanBeNull] string field, [CanBeNull] object parent)
+    {
+      if (expr == null)
+      {
         return false;
       }
 
       var enterResult = OnEnter(expr, field, parent);
-      if (enterResult is stop or skip) {
+      if (enterResult is stop or skip)
+      {
         return enterResult == stop;
       }
 
@@ -1021,36 +1865,44 @@ namespace Microsoft.Dafny {
     }
   }
 
-  class LinesEnumerable : IEnumerable<string> {
+  class LinesEnumerable : IEnumerable<string>
+  {
     private readonly TextReader Reader;
 
-    public LinesEnumerable(TextReader reader) {
+    public LinesEnumerable(TextReader reader)
+    {
       Reader = reader;
     }
 
-    public IEnumerator<string> GetEnumerator() {
+    public IEnumerator<string> GetEnumerator()
+    {
       return new LinesEnumerator(Reader);
     }
 
-    IEnumerator IEnumerable.GetEnumerator() {
+    IEnumerator IEnumerable.GetEnumerator()
+    {
       return GetEnumerator();
     }
   }
 
-  class LinesEnumerator : IEnumerator<string> {
+  class LinesEnumerator : IEnumerator<string>
+  {
 
     private readonly TextReader Reader;
 
-    public LinesEnumerator(TextReader reader) {
+    public LinesEnumerator(TextReader reader)
+    {
       Reader = reader;
     }
 
-    public bool MoveNext() {
+    public bool MoveNext()
+    {
       Current = Reader.ReadLine();
       return Current != null;
     }
 
-    public void Reset() {
+    public void Reset()
+    {
       throw new NotImplementedException();
     }
 
@@ -1058,7 +1910,8 @@ namespace Microsoft.Dafny {
 
     object IEnumerator.Current => Current;
 
-    public void Dispose() {
+    public void Dispose()
+    {
     }
   }
 }

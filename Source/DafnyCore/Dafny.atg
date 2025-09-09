@@ -238,6 +238,86 @@ Dafny
                             .)
   }
   (.
+   var protectToProve = new Function(
+      origin: SourceOrigin.NoToken, //?
+      nameNode: new Name("protectToProve"),
+      hasStaticKeyword: false,
+      isGhost: true,
+      isOpaque: true,
+      typeArgs: [
+        new TypeParameter(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("T"),
+          varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
+          characteristics: Microsoft.Dafny.TypeParameterCharacteristics.Default(),
+          typeBounds: [],
+          attributes: null
+        )
+      ],
+      ins: [
+        new Formal(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("x"),
+          syntacticType: new UserDefinedType(
+            origin: SourceOrigin.NoToken,
+            namePath: new NameSegment(
+              origin: SourceOrigin.NoToken,
+              name: "T",
+              optTypeArguments: null
+            )
+          ),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
+        ),
+        new Formal(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("name"),
+          syntacticType: new UserDefinedType(
+            origin: SourceOrigin.NoToken,
+            name: "string",
+            optTypeArgs: null
+          ),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
+        )
+      ], //?
+      result: null,
+      resultType: new UserDefinedType(
+        origin: SourceOrigin.NoToken,
+        namePath: new NameSegment(
+          origin: SourceOrigin.NoToken,
+          name: "T",
+          optTypeArguments: null
+        )
+      ), //? (see if you can use the "T" type arg like "new UserDefinedType(new TypeParameter(...))"
+      req: [],
+      reads: new Specification<FrameExpression>(),
+      ens: [],
+      decreases: new Specification<Expression>(),
+      body: new NameSegment(
+        origin: SourceOrigin.NoToken,
+        name: "x",
+        optTypeArguments: null
+      ),
+      byMethodTok: null, byMethodBody: null,
+      attributes: new Attributes(
+        name: "auto_generated", args: [],
+        prev: null
+      ),
+      signatureEllipsis: null
+    );
    var protect = new Function(
       origin: SourceOrigin.NoToken, //?
       nameNode: new Name("protect"),
@@ -319,6 +399,7 @@ Dafny
       signatureEllipsis: null
     );
     theModule.DefaultClass.Members.Add(protect);
+    theModule.DefaultClass.Members.Add(protectToProve);
     SystemModuleModifiers.Add(b => b.CreateArrowTypeDecl(2));
   .)
   { AtAttributes<ref attrs>
@@ -1387,7 +1468,17 @@ RequiresClause<.List<AttributedExpression> req, bool allowLabel.>
     LabelName<out lbl> ":"
   ]
   Expression<out e, false, false>
-  OldSemi       (. req.Add(new AttributedExpression(Util.WithProtect(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); .)
+  OldSemi       (. 
+//    if (attrs != null && attrs.Name == "itp") 
+//    { 
+//      Console.WriteLine("Protecting " + e.ToString()); 
+//      req.Add(new AttributedExpression(Util.WithProtectToProve(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); 
+//    }
+//    else
+//    {
+      req.Add(new AttributedExpression(Util.WithProtect(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); 
+//    }
+  .)
   .
 
 /*------------------------------------------------------------------------*/
@@ -1397,7 +1488,17 @@ EnsuresClause<.List<AttributedExpression> ens, bool allowLambda.>
                  .)
   { Attribute<ref attrs> }
   Expression<out e, false, allowLambda>
-    OldSemi       (. ens.Add(new AttributedExpression(Util.WithProtect(e), attrs)); .)
+    OldSemi       (. 
+      if (attrs != null && attrs.Name == "itp") 
+      { 
+        Console.WriteLine("Protecting " + e.ToString());
+        ens.Add(new AttributedExpression(Util.WithProtectToProve(e), attrs)); 
+      }
+      else
+      {
+        ens.Add(new AttributedExpression(Util.WithProtect(e), attrs)); 
+      }
+    .)
   .
 
 /*------------------------------------------------------------------------*/
@@ -3120,10 +3221,15 @@ AssertStmt<out Statement/*!*/ s>
        s = new AssertStmt(new SourceOrigin(startToken, t, startToken), new LiteralExpr(x, true), null, attrs);
        s = new SkeletonStatement(s, dotdotdot, null);
      } else {
-       s = new AssertStmt(new SourceOrigin(startToken, t, startToken), e, lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs);
-       if (proof != null) {
-         s = new BlockByProofStmt(s.Origin, proof, s);
-       }
+      if (attrs != null && attrs.Name == "itp") 
+      { 
+        Console.WriteLine("Protecting assertion " + e.ToString()); 
+        e = Util.WithProtectToProve(e);
+      } 
+      s = new AssertStmt(new SourceOrigin(startToken, t, startToken), e, lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs);
+      if (proof != null) {
+        s = new BlockByProofStmt(s.Origin, proof, s);
+      }
      }
   .)
   .
