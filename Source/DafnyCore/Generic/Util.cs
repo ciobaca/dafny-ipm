@@ -394,10 +394,26 @@ namespace Microsoft.Dafny
       }
       else if (expr is ChainingExpression)
       {
-        Console.WriteLine("Dafny IPM: ChainingExpression not yet implemented.");
-        Console.WriteLine(expr.ToString());
-        return expr;
-        // var e = (ChainingExpression)expr;
+        // Console.WriteLine("Dafny IPM: ChainingExpression not yet implemented.");
+        // Console.WriteLine(expr.ToString());
+        // return expr;
+        var e = (ChainingExpression)expr;
+        for (int i = 0; i < e.Operators.Count; ++i)
+        {
+          if (e.PrefixLimits[i] != null)
+          {
+            Console.WriteLine("Dafny IPM: ChainingExpression prefixLimits not yet implemented.");
+            Console.WriteLine(expr.ToString());
+            return expr;
+          }
+        }
+        List<Expression> newOperands = new List<Expression>(e.Operands.Count);
+        for (int i = 0; i < e.Operands.Count; ++i)
+        {
+          newOperands.Add(WithProtect(e.Operands[i]));
+        }
+        // ChainingExpression(IOrigin origin, List<Expression> operands, List<BinaryExpr.Opcode> operators, List<IOrigin> operatorLocs, List<Expression?> prefixLimits)
+        return new ChainingExpression(e.Origin, newOperands, e.Operators, e.OperatorLocs, e.PrefixLimits);
         // // determine if parens are needed
         // int opBindingStrength = BindingStrengthCompare;
         // bool parensNeeded = ParensNeeded(opBindingStrength, contextBindingStrength, fragileContext);
@@ -592,7 +608,7 @@ namespace Microsoft.Dafny
 
 
     public static ApplySuffix WithProtectToProve(Expression e) => new ApplySuffix(e.Origin, null, new NameSegment(Token.NoToken, "protectToProve", null), [
-      new ActualBinding(null, e, false),
+      new ActualBinding(null, WithProtect(e), false),
       new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
     ], null);
 

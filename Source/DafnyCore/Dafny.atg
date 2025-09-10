@@ -3225,7 +3225,11 @@ AssertStmt<out Statement/*!*/ s>
       { 
         Console.WriteLine("Protecting assertion " + e.ToString()); 
         e = Util.WithProtectToProve(e);
-      } 
+      }
+      else 
+      {
+        e = Util.WithProtect(e);
+      }
       s = new AssertStmt(new SourceOrigin(startToken, t, startToken), e, lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs);
       if (proof != null) {
         s = new BlockByProofStmt(s.Origin, proof, s);
