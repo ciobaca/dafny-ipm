@@ -238,9 +238,9 @@ Dafny
                             .)
   }
   (.
-   var protectToProve = new Function(
+   var _protectToProve = new Function(
       origin: SourceOrigin.NoToken, //?
-      nameNode: new Name("protectToProve"),
+      nameNode: new Name("_protectToProve"),
       hasStaticKeyword: false,
       isGhost: true,
       isOpaque: true,
@@ -318,9 +318,9 @@ Dafny
       ),
       signatureEllipsis: null
     );
-   var protect = new Function(
+   var _protect = new Function(
       origin: SourceOrigin.NoToken, //?
-      nameNode: new Name("protect"),
+      nameNode: new Name("_protect"),
       hasStaticKeyword: false,
       isGhost: true,
       isOpaque: true,
@@ -398,8 +398,8 @@ Dafny
       ),
       signatureEllipsis: null
     );
-    theModule.DefaultClass.Members.Add(protect);
-    theModule.DefaultClass.Members.Add(protectToProve);
+    theModule.DefaultClass.Members.Add(_protect);
+    theModule.DefaultClass.Members.Add(_protectToProve);
     SystemModuleModifiers.Add(b => b.CreateArrowTypeDecl(2));
   .)
   { AtAttributes<ref attrs>
@@ -1468,17 +1468,7 @@ RequiresClause<.List<AttributedExpression> req, bool allowLabel.>
     LabelName<out lbl> ":"
   ]
   Expression<out e, false, false>
-  OldSemi       (. 
-//    if (attrs != null && attrs.Name == "itp") 
-//    { 
-//      Console.WriteLine("Protecting " + e.ToString()); 
-//      req.Add(new AttributedExpression(Util.WithProtectToProve(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); 
-//    }
-//    else
-//    {
-      req.Add(new AttributedExpression(Util.WithProtect(e), lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); 
-//    }
-  .)
+  OldSemi       (. req.Add(new AttributedExpression(e, lbl == null ? null : new AssertLabel(lbl, lbl.val), attrs)); .)
   .
 
 /*------------------------------------------------------------------------*/
@@ -1488,17 +1478,7 @@ EnsuresClause<.List<AttributedExpression> ens, bool allowLambda.>
                  .)
   { Attribute<ref attrs> }
   Expression<out e, false, allowLambda>
-    OldSemi       (. 
-      if (attrs != null && attrs.Name == "itp") 
-      { 
-        Console.WriteLine("Protecting " + e.ToString());
-        ens.Add(new AttributedExpression(Util.WithProtectToProve(e), attrs)); 
-      }
-      else
-      {
-        ens.Add(new AttributedExpression(Util.WithProtect(e), attrs)); 
-      }
-    .)
+    OldSemi       (. ens.Add(new AttributedExpression(e, attrs)); .)
   .
 
 /*------------------------------------------------------------------------*/

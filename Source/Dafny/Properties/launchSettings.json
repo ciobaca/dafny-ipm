@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "Dafny": {
+      "commandName": "Project",
+      "commandLineArgs": "verify\r\n\"..\\..\\test.dfy\"\r\n\"..\\..\\test2.dfy\"\r\n--analyze-proofs\r\n--allow-warnings\r\n"
+    }
+  }
+}

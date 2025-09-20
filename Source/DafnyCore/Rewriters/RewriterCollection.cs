@@ -1,4 +1,5 @@
 using System.Collections.Generic;
+using System.CommandLine.Parsing;
 using Microsoft.Dafny.Compilers;
 
 namespace Microsoft.Dafny;
@@ -49,6 +50,10 @@ public static class RewriterCollection {
 
     if (reporter.Options.Get(CommonOptionBag.DefaultFunctionOpacity) == CommonOptionBag.DefaultFunctionOpacityOptions.AutoRevealDependencies) {
       result.Add(new AutoRevealFunctionDependencies(reporter));
+    }
+
+    if (true) { // TODO: an option needs to be created for this; potentially, this might have to be moved into a plugin instead
+      result.Add(new ProtectRewriter(reporter));
     }
 
     foreach (var plugin in reporter.Options.Plugins) {

@@ -1,0 +1,431 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<ClassDiagram MajorVersion="1" MinorVersion="1">
+  <Class Name="Microsoft.Dafny.TopLevelDecl" Collapsed="true">
+    <Position X="3.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BAAEAAAAAAACQIAAAAAEAAAAAAAAAgQAAAGUAgIIAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TopLevelDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TypeParameter" Collapsed="true">
+    <Position X="36.5" Y="13" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Interface Name="Microsoft.Dafny.TypeParameter.ParentType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Interface>
+      <Enum Name="Microsoft.Dafny.TypeParameter.TPVariance" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Microsoft.Dafny.TypeParameter.EqualitySupportValue" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>ACAAAgCAIABCAJQBKCABQBAAAAQAAARAwABFAAAAAAA=</HashCode>
+      <FileName>AST\Types\TypeParameter.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ModuleDecl" Collapsed="true">
+    <Position X="3.5" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAABABAAAAAICAAAAAAEAAAAAQAAAQAAABIAAE=</HashCode>
+      <FileName>AST\Modules\ModuleDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TopLevelDeclWithMembers" Collapsed="true">
+    <Position X="5.25" Y="13.25" Width="2" />
+    <TypeIdentifier>
+      <HashCode>EABFBCAAAEBCAAAAsAAUAAAQAgAAAAgAAQAEAAAIAJg=</HashCode>
+      <FileName>AST\TypeDeclarations\TopLevelDeclWithMembers.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TypeSynonymDeclBase" Collapsed="true">
+    <Position X="41" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAA0AAQBAAFQCAIAaABkAAgBCIQgCIQCQwAQAQAJAQA=</HashCode>
+      <FileName>AST\TypeDeclarations\TypeSynonymDeclBase.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AmbiguousTopLevelDecl" Collapsed="true">
+    <Position X="38.5" Y="13" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAIAAAABAAAAAAAEQAAAgABAAAAAA=</HashCode>
+      <FileName>Resolver\AmbiguousTopLevelDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AbstractModuleDecl" Collapsed="true">
+    <Position X="3.5" Y="19.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gABAAAAAAABAAAAAACAAAAAAEAAAAAAAAAAAAAAAIQA=</HashCode>
+      <FileName>AST\Modules\AbstractModuleDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AliasModuleDecl" Collapsed="true">
+    <Position X="5.25" Y="19.25" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ModuleDecl" ManuallyRouted="true">
+      <Path>
+        <Point X="4.25" Y="18.191" />
+        <Point X="4.25" Y="18.613" />
+        <Point X="6" Y="18.613" />
+        <Point X="6" Y="19.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gAACAAAIAABAAAAAACAEAACAEAAAAAAAAAAAAAAQAAA=</HashCode>
+      <FileName>AST\Modules\AliasModuleDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.LiteralModuleDecl" Collapsed="true">
+    <Position X="7" Y="19.25" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ModuleDecl" ManuallyRouted="true">
+      <Path>
+        <Point X="4.25" Y="18.191" />
+        <Point X="4.25" Y="18.477" />
+        <Point X="7.75" Y="18.477" />
+        <Point X="7.75" Y="19.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAABACAAADAAAAAACAEAAAAQAAAAAAAAAQgAAABAhA=</HashCode>
+      <FileName>AST\Modules\LiteralModuleDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ModuleExportDecl" Collapsed="true">
+    <Position X="8.75" Y="19.25" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ModuleDecl" ManuallyRouted="true">
+      <Path>
+        <Point X="4.25" Y="18.191" />
+        <Point X="4.25" Y="18.385" />
+        <Point X="9.5" Y="18.385" />
+        <Point X="9.5" Y="19.25" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>wAAABQgIAABgAAAACCAEACAAACAAAAQAAAAIAAAAEAA=</HashCode>
+      <FileName>AST\Modules\ModuleExportDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MethodOrFunction" Collapsed="true">
+    <Position X="28" Y="18.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAABCBBgQAAAUAAAAAAKAAABCACAIAAgBAECA=</HashCode>
+      <FileName>AST\Members\MethodOrFunction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.Function" Collapsed="true">
+    <Position X="25.25" Y="21.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.MethodOrFunction" ManuallyRouted="true">
+      <Path>
+        <Point X="28.75" Y="19.441" />
+        <Point X="28.75" Y="20.161" />
+        <Point X="26" Y="20.161" />
+        <Point X="26" Y="21.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>gIARBAiUAAPRDQIgYARFAAyBIThAKxYiQgEQKAAAAQQ=</HashCode>
+      <FileName>AST\Members\Function.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MethodOrConstructor" Collapsed="true">
+    <Position X="31.5" Y="21.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.MethodOrFunction" ManuallyRouted="true">
+      <Path>
+        <Point X="28.75" Y="19.441" />
+        <Point X="28.75" Y="20.183" />
+        <Point X="32.25" Y="20.183" />
+        <Point X="32.25" Y="21.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAARBRAAAEPUDEIBYAQFAAiBoCwAChQyQgEQAAAAARQ=</HashCode>
+      <FileName>AST\Members\MethodOrConstructor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ExtremePredicate" Collapsed="true">
+    <Position X="24" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AIAABAAAAAAAAAAAAAAkAAAAAgAAAAACBAAAAAAAAAg=</HashCode>
+      <FileName>AST\Members\ExtremePredicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.Predicate" Collapsed="true">
+    <Position X="24" Y="24.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAIAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\Predicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.PrefixPredicate" Collapsed="true">
+    <Position X="25.25" Y="25.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAAQAAAAAAIAAAAA=</HashCode>
+      <FileName>AST\Members\PrefixPredicate.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.SpecialFunction" Collapsed="true">
+    <Position X="26.5" Y="24.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAEAAAAAAAAAAAAAAAAAAAACAAAACAAAAAA=</HashCode>
+      <FileName>AST\Members\SpecialFunction.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TwoStateFunction" Collapsed="true">
+    <Position X="26.5" Y="23" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAQAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\TwoStateFunction.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.Constructor" Collapsed="true">
+    <Position X="30.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAABAAAAAAAgBAAAAoQAAAAYAAAAQgAAEAAA=</HashCode>
+      <FileName>AST\Members\Constructor.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.Method" Collapsed="true">
+    <Position X="32.5" Y="23.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAQAAAAAQAAAAAAABAAAAgQAAAAIAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\Method.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ExtremeLemma" Collapsed="true">
+    <Position X="30.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAAAAAAAAAAkAAAQAgAAAgAABAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\ExtremeLemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.Lemma" Collapsed="true">
+    <Position X="32.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\Lemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.TwoStateLemma" Collapsed="true">
+    <Position X="34.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAgAAAAAAAAAgQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\Lemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.PrefixLemma" Collapsed="true">
+    <Position X="36.5" Y="24.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAIAAAAAAAAAAAAAAAAgAAAAAAAAAgQAAAAAAIAAAAA=</HashCode>
+      <FileName>AST\Members\PrefixLemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.GreatestLemma" Collapsed="true">
+    <Position X="29.5" Y="26.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\GreatestLemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.LeastLemma" Collapsed="true">
+    <Position X="31.5" Y="26.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Members\LeastLemma.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.TypeSynonymDecl" Collapsed="true">
+    <Position X="40" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAIAAAAAAAAAAAAEQAAAAAAgAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TypeSynonymDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.InternalTypeSynonymDecl" Collapsed="true">
+    <Position X="42" Y="14.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABQAAAAYAAAAAAAAAAAAAQAAAAAAQAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TypeSynonymDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.SubsetTypeDecl" Collapsed="true">
+    <Position X="39" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgABQBAALSAAAAYAAkAAAAAAAgAAQAAiAQgYAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\SubsetTypeDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ConcreteTypeSynonymDecl" Collapsed="true">
+    <Position X="41" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAQAAAAQAAAAAAAAAAAAAAAAAAAAQAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TypeSynonymDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.NonNullTypeDecl" Collapsed="true">
+    <Position X="39" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABCAAAAIAIAAAAAAAAAAAQAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\NonNullTypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.DefaultClassDecl" Collapsed="true">
+    <Position X="9" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAAAAAAAAAAEQAAAAAAgAAAAA=</HashCode>
+      <FileName>AST\Modules\DefaultClassDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AbstractTypeDecl" Collapsed="true">
+    <Position X="4.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAABAAAAACAAAAAAAACQACEQAAAAAAgAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\AbstractTypeDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ClassLikeDecl" Collapsed="true">
+    <Position X="6.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAQAAAAAAACEQAAAAAAwgAAAI=</HashCode>
+      <FileName>AST\TypeDeclarations\ClassLikeDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DatatypeDecl" Collapsed="true">
+    <Position X="11.25" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAURAAAAANACAIAAAAEAAgBCKAAKEQCQAAQAkAIAVI=</HashCode>
+      <FileName>AST\TypeDeclarations\DatatypeDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.NewtypeDecl" Collapsed="true">
+    <Position X="15.75" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAA0ABQBAAGQiBIAQABgAAgBAKAgCMRKQyARw4ANAQA=</HashCode>
+      <FileName>AST\TypeDeclarations\NewtypeDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ValuetypeDecl" Collapsed="true">
+    <Position X="13.5" Y="14.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAIAAAAAAQAAAAAAAAAAAABAAAQAACAAAAAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\ValuetypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ClassDecl" Collapsed="true">
+    <Position X="5.5" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAAAAAAAAAAAAAAAAQAAAACAAAAwAAAAQAAAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\ClassDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.TraitDecl" Collapsed="true">
+    <Position X="8" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAJBAAAAAIAAAAABAAAQAAAACAAgAQABAAAAAAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TraitDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.CoDatatypeDecl" Collapsed="true">
+    <Position X="10.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAgAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAEAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\CoDatatypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.IndDatatypeDecl" Collapsed="true">
+    <Position X="12.25" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>EAAAAgAAAAAAAAAAAAAAAAAAAAAAAARCAAAAQEAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\IndDatatypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ArrowTypeDecl" Collapsed="true">
+    <Position X="14.75" Y="16.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAEQAAAAAAAAAAAAAAAQAAAAAAAACAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\ArrowTypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ArrayClassDecl" Collapsed="true">
+    <Position X="5.25" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAABAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\ArrayClassDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.IteratorDecl" Collapsed="true">
+    <Position X="7" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABASBBAAEAHRCAYAeAEDCAqBoIoAKAQCSgACAAQKASA=</HashCode>
+      <FileName>AST\TypeDeclarations\IteratorDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TupleTypeDecl" Collapsed="true">
+    <Position X="12.25" Y="17.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAACAQAAAAABAAAAAAQAABgQAAAAABAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\TupleTypeDecl.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.Declaration" Collapsed="true">
+    <Position X="3.5" Y="9.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AQAzBJQAAARgAhwEKAIEAAQUACACCIQAQgARAAdAAAI=</HashCode>
+      <FileName>AST\TypeDeclarations\Declaration.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.NodeWithOrigin" Collapsed="true">
+    <Position X="3.5" Y="8.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>CAAAAAAAAAAAAAAIAAAAAAAgAAAAAAAAAAAAAAggAAA=</HashCode>
+      <FileName>Generic\NodeWithOrigin.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.MemberDecl" Collapsed="true">
+    <Position X="5.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>BSABAAggAQAAAIQAAACgAACIAIAEAAYAQAGAABAAAAA=</HashCode>
+      <FileName>AST\Members\MemberDecl.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DatatypeCtor" Collapsed="true">
+    <Position X="1.5" Y="11.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAwAAJQQIAAYAAEAAAAAAAAAAQAAACQAAAAAAA=</HashCode>
+      <FileName>AST\TypeDeclarations\DatatypeCtor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Font Name="Segoe UI" Size="9" />
+</ClassDiagram>
