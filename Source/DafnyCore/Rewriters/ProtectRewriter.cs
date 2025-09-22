@@ -7,9 +7,89 @@ using System.Diagnostics.Contracts;
 using System.Linq;
 
 namespace Microsoft.Dafny;
-public class ProtectRewriter(ErrorReporter r) : IRewriter(r) {
+public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure out if the class can Extend Rewriter instead of IRewriter
+  //MASSIVE TODOs:
+  //  - figure out where you can call (some SystemModuleManager).CreateArrowTypeDecl(2) directly or deferred
+  //  - actually do what ciobaca asked you to (search for something that can change an expression
+  //    like a Substitutor and use it to present a way of protecting all Subclasses of Expression)
 
+  //internal override void PreResolve(Program program) {
+  //  program.SystemModuleManager.CreateArrowTypeDecl(2);// this doesn't work for some reason, prolly bcs it's done after parsing :(
+  //}
   internal override void PreResolve(ModuleDefinition moduleDefinition) {
+    if (moduleDefinition.EnclosingModule is null) {
+      Contract.Assert(moduleDefinition.DefaultClass is not null);
+      static Function protectorFunctionWithName(string name) {
+        var typeVarForProtect = new TypeParameter(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name("T"),
+          varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
+          characteristics: TypeParameterCharacteristics.Default(),
+          typeBounds: [],
+          attributes: null
+        );
+        return new(
+          origin: SourceOrigin.NoToken,
+          nameNode: new Name(name),
+          hasStaticKeyword: false,
+          isGhost: true,
+          isOpaque: true,
+          typeArgs: [typeVarForProtect],
+          ins: [
+            new Formal(
+              origin: SourceOrigin.NoToken,
+              nameNode: new Name("x"),
+              syntacticType: new UserDefinedType(typeVarForProtect),
+              inParam: true,
+              isGhost: false,
+              defaultValue: null,
+              attributes: null,
+              isOld: false,
+              isNameOnly: false,
+              isOlder: false,
+              nameForCompilation: null
+            ),
+            new Formal(
+              origin: SourceOrigin.NoToken,
+              nameNode: new Name("name"),
+              syntacticType: new UserDefinedType(
+                origin: SourceOrigin.NoToken,
+                name: "string",
+                optTypeArgs: null
+              ),
+              inParam: true,
+              isGhost: false,
+              defaultValue: null,
+              attributes: null,
+              isOld: false,
+              isNameOnly: false,
+              isOlder: false,
+              nameForCompilation: null
+            )
+          ],
+          result: null,
+          resultType: new UserDefinedType(typeVarForProtect),
+          req: [],
+          reads: new Specification<FrameExpression>(),
+          ens: [],
+          decreases: new Specification<Expression>(),
+          body: new NameSegment(
+            origin: SourceOrigin.NoToken,
+            name: "x",
+            optTypeArguments: null
+          ),
+          byMethodTok: null, byMethodBody: null,
+          attributes: new Attributes(
+            name: "auto_generated", args: [],
+            prev: null
+          ),
+          signatureEllipsis: null
+        );
+      }
+      moduleDefinition.DefaultClass.Members.AddRange(
+        new string[] { "_protect", "_protectToProve", }.Select(protectorFunctionWithName)
+      );
+    }
     Contract.Assert(!moduleDefinition.TopLevelDecls.OfType<AbstractModuleDecl>().Any());
     Contract.Assert(!moduleDefinition.TopLevelDecls.Any(d => d is TypeParameter or AmbiguousTopLevelDecl));
     Contract.Assert(!moduleDefinition.TopLevelDecls.Any(d => d is InternalTypeSynonymDecl or NonNullTypeDecl));
