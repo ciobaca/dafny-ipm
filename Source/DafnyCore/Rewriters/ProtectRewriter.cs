@@ -353,8 +353,8 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) {
       logNotImplementedMessage(expr, "ITEExpr");
       return expr;
     } else if (expr is ParensExpression) {
-      logNotImplementedMessage(expr, "ParensExpression");
-      return expr;
+      ParensExpression e = (ParensExpression)expr;
+      return new ParensExpression(expr.Origin, WithProtect(e.E));
     } else if (expr is NegationExpression) {
       logNotImplementedMessage(expr, "NegationExpression");
       return expr;
