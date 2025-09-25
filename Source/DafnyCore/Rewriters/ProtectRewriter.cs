@@ -104,14 +104,14 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       Console.WriteLine($"Dafny IPM: {e.GetType().Name} not yet implemented.");
       return e;
     }
-    public static Expression ReplaceExprParticular(Expression e) => NotImplemented(e);
-    public static Expression ReplaceExprParticular(StaticReceiverExpr e) => e;
-    public static Expression ReplaceExprParticular(LiteralExpr e) => e;
-    public static Expression ReplaceExprParticular(ThisExpr e) => ExpressionWrappedIn_Protect_Call(e);
-    public static Expression ReplaceExprParticular(IdentifierExpr e) => ExpressionWrappedIn_Protect_Call(e);
-    public static Expression ReplaceExprParticular(DatatypeValue e) => ExpressionWrappedIn_Protect_Call(e);
-    public static Expression ReplaceExprParticular(NameSegment e) => ExpressionWrappedIn_Protect_Call(e);
-    public static Expression ReplaceExprParticular(UnaryOpExpr e) {
+    private static Expression ReplaceExprParticular(Expression e) => NotImplemented(e);
+    private static Expression ReplaceExprParticular(StaticReceiverExpr e) => e;
+    private static Expression ReplaceExprParticular(LiteralExpr e) => e;
+    private static Expression ReplaceExprParticular(ThisExpr e) => ExpressionWrappedIn_Protect_Call(e);
+    private static Expression ReplaceExprParticular(IdentifierExpr e) => ExpressionWrappedIn_Protect_Call(e);
+    private static Expression ReplaceExprParticular(DatatypeValue e) => ExpressionWrappedIn_Protect_Call(e);
+    private static Expression ReplaceExprParticular(NameSegment e) => ExpressionWrappedIn_Protect_Call(e);
+    private static Expression ReplaceExprParticular(UnaryOpExpr e) {
       Contract.Assert(e.Op != UnaryOpExpr.Opcode.Fresh); // apparently this is unreachable since unary expressions are handled by the "FreshExpr" subclass
       return e.Op switch {
         UnaryOpExpr.Opcode.Cardinality  or
@@ -122,15 +122,15 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         _ => throw new UnreachableException(),
       };
     }
-    public static Expression ReplaceExprParticular(BinaryExpr e) => new BinaryExpr(e.Origin, e.Op, ReplaceExpr(e.E0), ReplaceExpr(e.E1));
-    public static Expression ReplaceExprParticular(ChainingExpression e) {
+    private static Expression ReplaceExprParticular(BinaryExpr e) => new BinaryExpr(e.Origin, e.Op, ReplaceExpr(e.E0), ReplaceExpr(e.E1));
+    private static Expression ReplaceExprParticular(ChainingExpression e) {
       if (e.PrefixLimits.Any(l => l is not null)) {
         return NotImplemented(e);
       }
       return new ChainingExpression(e.Origin, e.Operands.ConvertAll(ReplaceExpr), e.Operators, e.OperatorLocs, e.PrefixLimits);
     }
-    public static Expression ReplaceExprParticular(ParensExpression e) => new ParensExpression(e.Origin, ReplaceExpr(e.E));
-    public static Expression ReplaceExprParticular(DefaultValueExpression e) {
+    private static Expression ReplaceExprParticular(ParensExpression e) => new ParensExpression(e.Origin, ReplaceExpr(e.E));
+    private static Expression ReplaceExprParticular(DefaultValueExpression e) {
       Contract.Assert(e.WasResolved());
       Contract.Assert(e.Resolved is not null);
       return NotImplemented(e);
