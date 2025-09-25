@@ -13,23 +13,6 @@
     <Compartments>
       <Compartment Name="Nested Types" Collapsed="false" />
     </Compartments>
-    <NestedTypes>
-      <Interface Name="Microsoft.Dafny.TypeParameter.ParentType" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Interface>
-      <Enum Name="Microsoft.Dafny.TypeParameter.TPVariance" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-      <Enum Name="Microsoft.Dafny.TypeParameter.EqualitySupportValue" Collapsed="true">
-        <TypeIdentifier>
-          <NewMemberFileName>AST\Types\TypeParameter.cs</NewMemberFileName>
-        </TypeIdentifier>
-      </Enum>
-    </NestedTypes>
     <TypeIdentifier>
       <HashCode>ACAAAgCAIABCAJQBKCABQBAAAAQAAARAwABFAAAAAAA=</HashCode>
       <FileName>AST\Types\TypeParameter.cs</FileName>
@@ -424,6 +407,799 @@
     <TypeIdentifier>
       <HashCode>AAAAAAAwAAJQQIAAYAAEAAAAAAAAAAQAAACQAAAAAAA=</HashCode>
       <FileName>AST\TypeDeclarations\DatatypeCtor.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.Expression" Collapsed="true">
+    <Position X="3.5" Y="29.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAwBjMgDIVCkAAAGiAKEAACrkQiBSEAIAzZQKAASgSA=</HashCode>
+      <FileName>AST\Expressions\Expression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ApplyExpr" Collapsed="true">
+    <Position X="3.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAKAAAAAAAEAAAAAAAAEABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ApplyExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.FunctionCallExpr" Collapsed="true">
+    <Position X="4.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>oAAgBAAAAAAAAAAAggAAAAaAAAAEAAEgAENwAAAEkBA=</HashCode>
+      <FileName>AST\Expressions\Applications\FunctionCallExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MemberSelectExpr" Collapsed="true">
+    <Position X="5.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAADAAAAAAAAEBoGACAECAIAAIAAAAAAGQAAAAkRE=</HashCode>
+      <FileName>AST\Expressions\Applications\MemberSelectExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MultiSelectExpr" Collapsed="true">
+    <Position X="6.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAACAAAAAAAAACAAAAAAAAAAAAQAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\MultiSelectExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SeqSelectExpr" Collapsed="true">
+    <Position X="7.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAIACAAAAAAgEQAAAQAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\SeqSelectExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ThisExpr" Collapsed="true">
+    <Position X="8.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ThisExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DisplayExpression" Collapsed="true">
+    <Position X="9.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAQAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Expressions\Collections\DisplayExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.MapDisplayExpr" Collapsed="true">
+    <Position X="10.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABEAAAAAAAQAACAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\MapDisplayExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MultiSetFormingExpr" Collapsed="true">
+    <Position X="11.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAgAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\MultiSetFormingExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SeqConstructionExpr" Collapsed="true">
+    <Position X="12.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAgAAAAAAAgAAAAACAAAAAAAAAAAAAABAABBA=</HashCode>
+      <FileName>AST\Expressions\Collections\SeqConstructionExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SeqUpdateExpr" Collapsed="true">
+    <Position X="13.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAABAAAAAAAAACAAAAAAAAAAAEgAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\SeqUpdateExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ComprehensionExpr" Collapsed="true">
+    <Position X="14.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>ABAABAAAAABACBAAgAAEAACQAAAAAAQAkAAAAAAAAgA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\ComprehensionExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ITEExpr" Collapsed="true">
+    <Position X="15.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAgABBAAAAAAAAAAACAAAAAAAAAAAAcCAAAABA=</HashCode>
+      <FileName>AST\Expressions\Conditional\ITEExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.NestedMatchExpr" Collapsed="true">
+    <Position X="16.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAgDAAAAAAAAECACUAAAAAAAAAIQAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Conditional\NestedMatchExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TernaryExpr" Collapsed="true">
+    <Position X="17.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACgAAAAAgAQAAAAAAAACBA=</HashCode>
+      <FileName>AST\Expressions\Conditional\TernaryExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DatatypeValue" Collapsed="true">
+    <Position X="18.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAEAACAoAAAAIAAIEAQQAASEBA=</HashCode>
+      <FileName>AST\Expressions\Datatypes\DatatypeValue.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.FieldLocation" Collapsed="true">
+    <Position X="19.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAAAgBA=</HashCode>
+      <FileName>AST\Expressions\Heap\FieldLocation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.IndexFieldLocation" Collapsed="true">
+    <Position X="20.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEAAAAAAAAAAAACAAAAAAAEAQABAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\IndexFieldLocation.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.LocalsObjectExpression" Collapsed="true">
+    <Position X="21.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAACAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\LocalsObjectExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.OldExpr" Collapsed="true">
+    <Position X="22.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAACAAACAAAQACAEQAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\OldExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.UnchangedExpr" Collapsed="true">
+    <Position X="23.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAACAAACAAAAAAAEQAAAAABE=</HashCode>
+      <FileName>AST\Expressions\Heap\UnchangedExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.WildcardExpr" Collapsed="true">
+    <Position X="24.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\WildcardExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.BinaryExpr" Collapsed="true">
+    <Position X="25.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAFAAIAAABAAAAAIAAAAACIAAAAQgAQAAAQAAAASBQ=</HashCode>
+      <FileName>AST\Expressions\Operators\BinaryExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DecreasesToExpr" Collapsed="true">
+    <Position X="26.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAgAAAAAAAAAAEAAAAAACAABAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Operators\DecreasesToExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.UnaryExpr" Collapsed="true">
+    <Position X="27.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAACAAAAAAAAAAAAQAgAAAAA=</HashCode>
+      <FileName>AST\Expressions\Operators\UnaryExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.BoxingCastExpr" Collapsed="true">
+    <Position X="28.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAACEAAAAAAAAAAAQAgAAAAA=</HashCode>
+      <FileName>AST\Expressions\Types\BoxingCastExpr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.UnboxingCastExpr" Collapsed="true">
+    <Position X="29.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAEAAAAACEAAAAAAAAAAAQAgAAAAA=</HashCode>
+      <FileName>AST\Expressions\Types\UnboxingCastExpr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.IdentifierExpr" Collapsed="true">
+    <Position X="30.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAACAAAAAAAAEAAQAAEBAAAAAAAAQAAAAEBA=</HashCode>
+      <FileName>AST\Expressions\Variables\IdentifierExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.LetExpr" Collapsed="true">
+    <Position X="31.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gBAIADAAAABgAAAAgAAFAACQAAABgAAIgAAAAAAAERg=</HashCode>
+      <FileName>AST\Expressions\Variables\LetExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ResolverIdentifierExpr" Collapsed="true">
+    <Position X="32.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAEAAAAAAAAAAAAAAAYAgAAEBA=</HashCode>
+      <FileName>AST\Expressions\Variables\ResolverIdentifierExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ConcreteSyntaxExpression" Collapsed="true">
+    <Position X="33.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>iAAABAAAAAQAAAAAgAAEAACAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Expressions\ConcreteSyntaxExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.LiteralExpr" Collapsed="true">
+    <Position X="34.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AACAAAAEAAAAAAgAAAQAQAAAAAAAAAAAAAAgAAAAABA=</HashCode>
+      <FileName>AST\Expressions\LiteralExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.StmtExpr" Collapsed="true">
+    <Position X="35.5" Y="31.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>gAAAAAAAAABAAAAAQAAEAACAAAAAAAAAAAAQAgCAABA=</HashCode>
+      <FileName>AST\Expressions\StmtExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MatchExpr" Collapsed="true">
+    <Position X="36.5" Y="33.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAkAAAAIAwAREAACEAAAAAAAAAAQQAAEAABA=</HashCode>
+      <FileName>CompileNestedMatch\MatchAst.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.BoogieGenerator" Collapsed="true">
+    <Position X="9.25" Y="27.5" Width="1.5" />
+    <Compartments>
+      <Compartment Name="Nested Types" Collapsed="false" />
+    </Compartments>
+    <NestedTypes>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.FuelConstant" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.SplitExprInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.SplitExpr.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.LetSuchThatExprInfo" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.LetExpr.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.PredefinedDecls" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.VariableNameVisitor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Microsoft.Dafny.BoogieGenerator.AddResultCommands" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.ExpressionWellformed.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.FunctionWellformednessChecker" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.Functions.Wellformedness.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.UsesHeapVisitor" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.CustomFuelSettings" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Microsoft.Dafny.BoogieGenerator.ExpressionConverter" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.BoilerplateTriple" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.BoogieWrapper" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.FuelContext" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.BoogieFunctionCall" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Enum Name="Microsoft.Dafny.BoogieGenerator.BuiltinFunction" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.BoogieFactory.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.SubstLetExpr" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Microsoft.Dafny.BoogieGenerator.AssignToLhs" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\Statements\BoogieGenerator.TrAssignment.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Enum Name="Microsoft.Dafny.BoogieGenerator.StmtType" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Enum Name="Microsoft.Dafny.BoogieGenerator.MethodTranslationKind" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Enum>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.TranslatorFlags" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.Specialization" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.VariablesCollector" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.CanCallOptions" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.ExpressionTranslator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.ForceCheckOrigin" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.FuelSetting" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.ExpressionTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.ExpressionTranslator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Microsoft.Dafny.BoogieGenerator.SubrangeCheckContext" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.TriggersExplorer" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.SplitExpr.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Class Name="Microsoft.Dafny.BoogieGenerator.FuelSettingPair" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Class>
+      <Delegate Name="Microsoft.Dafny.BoogieGenerator.BodyTranslator" Collapsed="true">
+        <TypeIdentifier>
+          <NewMemberFileName>Verifier\BoogieGenerator.cs</NewMemberFileName>
+        </TypeIdentifier>
+      </Delegate>
+    </NestedTypes>
+    <TypeIdentifier>
+      <HashCode>zf/2///7//Z/3u/Pv/9779z+3z//reL/+99/9a/L//8=</HashCode>
+      <FileName>Verifier\Datatypes\BoogieGenerator.DataTypes.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.ImplicitThisExpr" Collapsed="true">
+    <Position X="8.5" Y="34.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ThisExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MultiSetDisplayExpr" Collapsed="true">
+    <Position X="11.25" Y="37.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\MultiSetDisplayExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SeqDisplayExpr" Collapsed="true">
+    <Position X="7.75" Y="37.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\SeqDisplayExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SetDisplayExpr" Collapsed="true">
+    <Position X="9.5" Y="37.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABEAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Collections\SetDisplayExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ImplicitThisExprConstructorCall" Collapsed="true">
+    <Position X="8.5" Y="35.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ThisExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.LambdaExpr" Collapsed="true">
+    <Position X="11.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAABAAAQAAAABAACAAAAAAAQAQAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\LambdaExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.MapComprehension" Collapsed="true">
+    <Position X="13.5" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAEgAAAAEAAAAAAAAAACAAAAAAAQAAAAAAAAABBA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\MapComprehension.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.QuantifierExpr" Collapsed="true">
+    <Position X="15.75" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAABBAAAAAREAoAAAAAAAADAIFAAAAwAAAAACAAAQAA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\QuantifierExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SetComprehension" Collapsed="true">
+    <Position X="18" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAACAAAAAEAAAAAAAAAAAAAAAAAAQAAAAIAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\SetComprehension.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ExistsExpr" Collapsed="true">
+    <Position X="14.75" Y="36.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAgAAAAAAAAAAAAAAIAQAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\ExistsExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ForallExpr" Collapsed="true">
+    <Position X="17" Y="36.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAEAgAAAAAAAAAAAAAAAAQAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Comprehensions\ForallExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.UnaryOpExpr" Collapsed="true">
+    <Position X="25.5" Y="36" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.UnaryExpr" ManuallyRouted="true">
+      <Path>
+        <Point X="28.25" Y="32.191" />
+        <Point X="28.25" Y="35.565" />
+        <Point X="26.25" Y="35.565" />
+        <Point X="26.25" Y="36" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAABAAAAAIAAAAAAAAAAACAAAQCBA=</HashCode>
+      <FileName>AST\Expressions\Operators\UnaryOpExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TypeUnaryExpr" Collapsed="true">
+    <Position X="29.5" Y="36" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.UnaryExpr" ManuallyRouted="true">
+      <Path>
+        <Point X="28.25" Y="32.191" />
+        <Point X="28.25" Y="35.537" />
+        <Point X="30.25" Y="35.537" />
+        <Point X="30.25" Y="36" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAgAAEAAAEAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Expressions\Types\TypeUnaryExpr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.FreshExpr" Collapsed="true">
+    <Position X="25.5" Y="37.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAACAAAAAAAEAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\FreshExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ConversionExpr" Collapsed="true">
+    <Position X="28.5" Y="37.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAQAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Types\ConversionExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.TypeTestExpr" Collapsed="true">
+    <Position X="30.5" Y="37.25" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Types\TypeTestExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AutoGhostIdentifierExpr" Collapsed="true">
+    <Position X="29.5" Y="34.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAEBA=</HashCode>
+      <FileName>AST\Expressions\Variables\AutoGhostIdentifierExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ImplicitIdentifierExpr" Collapsed="true">
+    <Position X="31.5" Y="34.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAgAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA=</HashCode>
+      <FileName>AST\Expressions\Variables\IdentifierExpr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.NameSegment" Collapsed="true">
+    <Position X="33.5" Y="36.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAgBAAAAABAAAAAAAAAAAQAAAAAAAABAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\NameSegment.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.SuffixExpr" Collapsed="true">
+    <Position X="34.5" Y="35.5" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.838" />
+        <Point X="35.25" Y="34.838" />
+        <Point X="35.25" Y="35.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAAQAAAAAAAAEAACAAAAAAAAAAAQAAAAAAAA=</HashCode>
+      <FileName>AST\Expressions\Applications\SuffixExpr.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.DatatypeUpdateExpr" Collapsed="true">
+    <Position X="35.5" Y="36.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.863" />
+        <Point X="36.25" Y="34.863" />
+        <Point X="36.25" Y="36.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAACAAIAAAAACAAgAAAAAABAAEAgAAEBA=</HashCode>
+      <FileName>AST\Expressions\Datatypes\DatatypeUpdateExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ChainingExpression" Collapsed="true">
+    <Position X="36.5" Y="35.5" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.85" />
+        <Point X="37.25" Y="34.85" />
+        <Point X="37.25" Y="35.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAQACAAAAARAAAAAAAAAAACAAAACAAAAAIAAAgAAIBA=</HashCode>
+      <FileName>AST\Expressions\Operators\ChainingExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ParensExpression" Collapsed="true">
+    <Position X="37.5" Y="36.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.898" />
+        <Point X="38.25" Y="34.898" />
+        <Point X="38.25" Y="36.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAARAAAAAAAAAAACAAAAAAAAAAAAAAgAAABA=</HashCode>
+      <FileName>AST\Expressions\Operators\ParensExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.LetOrFailExpr" Collapsed="true">
+    <Position X="38.5" Y="35.5" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.844" />
+        <Point X="39.25" Y="34.844" />
+        <Point X="39.25" Y="35.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAARAAAAAAAAFAAAAAAAAAAAAAAQAAQAAABA=</HashCode>
+      <FileName>AST\Expressions\Variables\LetOrFailExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DefaultValueExpression" Collapsed="true">
+    <Position X="39.5" Y="36.75" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.847" />
+        <Point X="40.25" Y="34.847" />
+        <Point X="40.25" Y="36.75" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAEAAAAAAAAAAAAAAAAACAAAAAAAAAAABAAAAwAAAAA=</HashCode>
+      <FileName>AST\Expressions\DefaultValueExpression.cs</FileName>
+    </TypeIdentifier>
+  </Class>
+  <Class Name="Microsoft.Dafny.NegationExpression" Collapsed="true">
+    <Position X="40.5" Y="35.5" Width="1.5" />
+    <InheritanceLine Type="Microsoft.Dafny.ConcreteSyntaxExpression" ManuallyRouted="true">
+      <Path>
+        <Point X="34.25" Y="32.191" />
+        <Point X="34.25" Y="34.833" />
+        <Point X="41.25" Y="34.833" />
+        <Point X="41.25" Y="35.5" />
+      </Path>
+    </InheritanceLine>
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAQAAAAAAAAAAACAAAAAAAAAAAAAAgAAABA=</HashCode>
+      <FileName>AST\Expressions\LiteralExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ApplySuffix" Collapsed="true">
+    <Position X="33.5" Y="38.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAABAAAAARAAAAAAAAEAAAAAgAAAAEAAGAQAAQEABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ApplySuffix.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.ExprDotName" Collapsed="true">
+    <Position X="33.5" Y="39.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAgAAAAAAAAAAAEAAAAAAAAAAABBAAQAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\ExprDotName.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.FieldLocationExpression" Collapsed="true">
+    <Position X="35.5" Y="38.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAQAAAAAAAAAAAAASAAAAAAAIAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\FieldLocationExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.IndexFieldLocationExpression" Collapsed="true">
+    <Position X="35.5" Y="39.5" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAEQAAAAAAAAAAACAAAAAAAEAAABAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Heap\IndexFieldLocationExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.AutoGeneratedExpression" Collapsed="true">
+    <Position X="37.5" Y="38" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAEAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\AutoGeneratedExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DefaultValueExpressionType" Collapsed="true">
+    <Position X="38.5" Y="39" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAoAAABA=</HashCode>
+      <FileName>AST\Expressions\DefaultValueExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.DefaultValueExpressionPreType" Collapsed="true">
+    <Position X="40.5" Y="39" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAACAAAAgAAABA=</HashCode>
+      <FileName>AST\Expressions\DefaultValueExpression.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.StaticReceiverExpr" Collapsed="true">
+    <Position X="42.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>IAgAAAAAAAAAAAAAAAAEAQCAAAAAAAAAAAEAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\Applications\StaticReceiverExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.CharLiteralExpr" Collapsed="true">
+    <Position X="44.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\LiteralExpr.cs</FileName>
+    </TypeIdentifier>
+    <Lollipop Position="0.2" />
+  </Class>
+  <Class Name="Microsoft.Dafny.StringLiteralExpr" Collapsed="true">
+    <Position X="46.25" Y="34.75" Width="1.5" />
+    <TypeIdentifier>
+      <HashCode>AAAAAAAAAAAAAAAAAAAAAAAIAAAAAAAAAAAAAAAAABA=</HashCode>
+      <FileName>AST\Expressions\LiteralExpr.cs</FileName>
     </TypeIdentifier>
     <Lollipop Position="0.2" />
   </Class>
