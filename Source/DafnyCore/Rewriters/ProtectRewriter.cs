@@ -1,4 +1,4 @@
-﻿#nullable disable
+﻿#nullable enable
 using Microsoft.Boogie;
 using System;
 using System.Collections.Generic;
@@ -136,86 +136,120 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       return NotImplemented(e);
     }
   }
+  
+  static ProtectRewriter() {
+    ProtectorFunctionNames = ["_protect", "_protectToProve",];
+  }
+  public static IReadOnlyList<string> ProtectorFunctionNames { get; }
+  private static Function protectorFunctionWithName(string name) {
+    var typeVarForProtect = new TypeParameter(
+      origin: SourceOrigin.NoToken,
+      nameNode: new Name("T"),
+      varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
+      characteristics: TypeParameterCharacteristics.Default(),
+      typeBounds: [],
+      attributes: null
+    );
+    return new(
+      origin: SourceOrigin.NoToken,
+      nameNode: new Name(name),
+      hasStaticKeyword: false,
+      isGhost: true,
+      isOpaque: true,
+      typeArgs: [typeVarForProtect],
+      ins: [
+        new Formal(
+            origin: SourceOrigin.NoToken,
+            nameNode: new Name("x"),
+            syntacticType: new UserDefinedType(typeVarForProtect),
+            inParam: true,
+            isGhost: false,
+            defaultValue: null,
+            attributes: null,
+            isOld: false,
+            isNameOnly: false,
+            isOlder: false,
+            nameForCompilation: null
+          ),
+          new Formal(
+            origin: SourceOrigin.NoToken,
+            nameNode: new Name("name"),
+            syntacticType: new UserDefinedType(
+              origin: SourceOrigin.NoToken,
+              name: "string",
+              optTypeArgs: null
+            ),
+            inParam: true,
+            isGhost: false,
+            defaultValue: null,
+            attributes: null,
+            isOld: false,
+            isNameOnly: false,
+            isOlder: false,
+            nameForCompilation: null
+          )
+      ],
+      result: null,
+      resultType: new UserDefinedType(typeVarForProtect),
+      req: [],
+      reads: new Specification<FrameExpression>(),
+      ens: [],
+      decreases: new Specification<Expression>(),
+      body: new NameSegment(
+        origin: SourceOrigin.NoToken,
+        name: "x",
+        optTypeArguments: null
+      ),
+      byMethodTok: null, byMethodBody: null,
+      attributes: new Attributes(
+        name: "auto_generated", args: [],
+        prev: null
+      ),
+      signatureEllipsis: null
+    );
+  }
+  public static IReadOnlyList<Function> ProtectorFunctions => [.. ProtectorFunctionNames.Select(protectorFunctionWithName)];
+
   //MASSIVE TODOs:
   //  - figure out where you can call (some SystemModuleManager).CreateArrowTypeDecl(2) directly or deferred
 
-  //internal override void PreResolve(Program program) {
-  //  program.SystemModuleManager.CreateArrowTypeDecl(2);// this doesn't work for some reason, prolly bcs it's done after parsing :(
-  //}
+  internal override void PreResolve(Program program) {
+    //var moduleDefinition = new ModuleDefinition(
+    //  SourceOrigin.NoToken,
+    //  new Name("_ITP"),
+    //  [],
+    //  ModuleKindEnum.Concrete,
+    //  null,
+    //  program.DefaultModuleDef,
+    //  null,
+    //  []
+    //);
+    //var sig = new ModuleSignature() {
+    //  ModuleDef = moduleDefinition,
+    //  IsAbstract = moduleDefinition.ModuleKind == ModuleKindEnum.Abstract,
+    //  VisibilityScope = new()
+    //};
+    //sig.VisibilityScope.Augment(moduleDefinition.VisibilityScope);
+    //Contract.Assert(moduleDefinition.DefaultClass is not null);
+    //moduleDefinition.DefaultClass.Members.AddRange(ProtectorFunctions);
+    //moduleDefinition.DefaultClass.SetMembersBeforeResolution();
+    //program.DefaultModuleDef.SourceDecls.Add(new LiteralModuleDecl(Options, moduleDefinition, program.DefaultModuleDef, Guid.NewGuid()));
+    //  program.SystemModuleManager.CreateArrowTypeDecl(2);// this doesn't work for some reason, prolly bcs it's done after parsing :(
+  }
   internal override void PreResolve(ModuleDefinition moduleDefinition) {
-    if (moduleDefinition.EnclosingModule is null) {
-      Contract.Assert(moduleDefinition.DefaultClass is not null);
-      static Function protectorFunctionWithName(string name) {
-        var typeVarForProtect = new TypeParameter(
-          origin: SourceOrigin.NoToken,
-          nameNode: new Name("T"),
-          varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
-          characteristics: TypeParameterCharacteristics.Default(),
-          typeBounds: [],
-          attributes: null
-        );
-        return new(
-          origin: SourceOrigin.NoToken,
-          nameNode: new Name(name),
-          hasStaticKeyword: false,
-          isGhost: true,
-          isOpaque: true,
-          typeArgs: [typeVarForProtect],
-          ins: [
-            new Formal(
-              origin: SourceOrigin.NoToken,
-              nameNode: new Name("x"),
-              syntacticType: new UserDefinedType(typeVarForProtect),
-              inParam: true,
-              isGhost: false,
-              defaultValue: null,
-              attributes: null,
-              isOld: false,
-              isNameOnly: false,
-              isOlder: false,
-              nameForCompilation: null
-            ),
-            new Formal(
-              origin: SourceOrigin.NoToken,
-              nameNode: new Name("name"),
-              syntacticType: new UserDefinedType(
-                origin: SourceOrigin.NoToken,
-                name: "string",
-                optTypeArgs: null
-              ),
-              inParam: true,
-              isGhost: false,
-              defaultValue: null,
-              attributes: null,
-              isOld: false,
-              isNameOnly: false,
-              isOlder: false,
-              nameForCompilation: null
-            )
-          ],
-          result: null,
-          resultType: new UserDefinedType(typeVarForProtect),
-          req: [],
-          reads: new Specification<FrameExpression>(),
-          ens: [],
-          decreases: new Specification<Expression>(),
-          body: new NameSegment(
-            origin: SourceOrigin.NoToken,
-            name: "x",
-            optTypeArguments: null
-          ),
-          byMethodTok: null, byMethodBody: null,
-          attributes: new Attributes(
-            name: "auto_generated", args: [],
-            prev: null
-          ),
-          signatureEllipsis: null
-        );
-      }
-      moduleDefinition.DefaultClass.Members.AddRange(
-        new string[] { "_protect", "_protectToProve", }.Select(protectorFunctionWithName)
-      );
-    }
+    Contract.Requires(moduleDefinition.DefaultClass is not null);
+    //moduleDefinition.SourceDecls.Add(new AliasModuleDecl(
+    //  Options,
+    //  new SourceOrigin(Token.NoToken, Token.NoToken)/*maybe this'll work?*/,
+    //  new([new("_ITP")]),
+    //  new("_ITP"),
+    //  null,
+    //  moduleDefinition,
+    //  true,
+    //  [],
+    //  Guid.NewGuid()
+    //));
+    moduleDefinition.DefaultClass!.Members = [.. ProtectorFunctions, .. moduleDefinition.DefaultClass!.Members];
     Contract.Assert(!moduleDefinition.TopLevelDecls.OfType<AbstractModuleDecl>().Any());
     Contract.Assert(!moduleDefinition.TopLevelDecls.Any(d => d is TypeParameter or AmbiguousTopLevelDecl));
     Contract.Assert(!moduleDefinition.TopLevelDecls.Any(d => d is InternalTypeSynonymDecl or NonNullTypeDecl));
@@ -488,6 +522,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         a.Expr = ExpressionWrappedIn_ProtectToProve_Call(a.Expr);
       } else {
         a.Expr = Replacer.ReplaceExpr(a.Expr);
+        Console.WriteLine($"assert statement: {a.Expr}");
       }
     }
     
@@ -496,14 +531,16 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         foreach (var member in decl.Members.OfType<MethodOrFunction>()) {
           foreach (var req in member.Req) {
             req.E = Replacer.ReplaceExpr(req.E);
+            Console.WriteLine($"requires clause: {req.E}");
           }
           foreach (var ens in member.Ens) {
             if (Attributes.Contains(ens.Attributes, "itp")) {
-              Console.WriteLine("Protecting to prove ensures clause" + ens.E.ToString());
+              Console.WriteLine("Protecting to prove ensures clause " + ens.E.ToString());
               ens.E = ExpressionWrappedIn_ProtectToProve_Call(ens.E);
             } else {
               ens.E = Replacer.ReplaceExpr(ens.E);
             }
+            Console.WriteLine($"ensures clause: {ens.E}");
           }
           switch (member) {
             case Function f:
