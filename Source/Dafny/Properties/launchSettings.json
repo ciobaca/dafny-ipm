@@ -2,7 +2,7 @@
   "profiles": {
     "Dafny": {
       "commandName": "Project",
-      "commandLineArgs": "verify\r\n\"..\\..\\var_shadowing.dfy\"\r\n--analyze-proofs\r\n--allow-warnings\r\n"
+      "commandLineArgs": "verify\r\n\"..\\..\\var_shadowing.dfy\"\r\n--bprint \"..\\..\\var_shadowing.bpl\"\r\n--analyze-proofs\r\n--allow-warnings\r\n"
     }
   }
 }

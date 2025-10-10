@@ -1,6 +1,7 @@
 #nullable enable
 using System.Collections.Generic;
 using System.Diagnostics.Contracts;
+using System.Linq;
 using Microsoft.Dafny.Auditor;
 
 namespace Microsoft.Dafny;
@@ -57,6 +58,12 @@ public class AssertStmt : PredicateStmt, ICloneable<AssertStmt>, ICanFormat {
   public bool SetIndent(int indentBefore, TokenNewIndentCollector formatter) {
     return formatter.SetIndentAssertLikeStatement(this, indentBefore);
   }
+  #region added for protect thingy
+  public bool IsProtectToProveAssert => ProtectRewriter.IsProtectToProveCall(Expr);
+  public bool IsValidProtectToProveAssertPreResolve => ProtectRewriter.IsValidProtectToProveCallPreResolve(Expr);
+  public bool IsValidProtectToProveAssertPostResolve => ProtectRewriter.IsValidProtectToProveCallPostResolve(Expr);
+  private SeqDisplayExpr thirdArgSeq => ProtectRewriter.ThirdArgSeq(Expr);
+  #endregion
 
   public override void GenResolve(INewOrOldResolver resolver, ResolutionContext context) {
     if (Label != null) {
@@ -79,7 +86,28 @@ public class AssertStmt : PredicateStmt, ICloneable<AssertStmt>, ICanFormat {
       }
     }
 
+    if (IsProtectToProveAssert) {
+      //static List<T?> getThingsFromScope<T>(Scope<T> s) where T : class =>
+      //    (s.GetType()
+      //      .GetField("things", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+      //      .GetValue(s) as List<T?>)!;
+
+      //var vars = getThingsFromScope(resolver.Scope).IgnoreNulls().ToList();
+      var vars = resolver.Scope.Names.IgnoreNulls().Distinct();
+      //var l = vars.ConvertAll(v => {
+      //  var e = ProtectRewriter.VariableNameWrappedIn_IsInScope_Call(v.Name);
+      //  var ns = (e.Bindings.ArgumentBindings.First(b => b.Actual is NameSegment _ns && _ns.Name == v.Name).Actual as NameSegment)!;
+
+      //  var id = new IdentifierExpr(SourceOrigin.NoToken, v);
+      //  ns.ResolvedExpression = id;
+      //  ns.Type = id.Type.UseInternalSynonym();
+      //  return e;
+      //});
+      thirdArgSeq.Elements.AddRange(vars.Select(ProtectRewriter.VariableNameWrappedIn_IsInScope_Call));
+      //System.Console.WriteLine('[' + string.Join(", ", thirdArgSeq.Elements) + ']');
+    }
     base.GenResolve(resolver, context);
+    //System.Console.WriteLine('[' + string.Join(", ", resolver.Scope.Names.Where(n => n is not null)) + ']');
   }
 
   public bool HasAssertOnlyAttribute(out AssertOnlyKind assertOnlyKind) {
