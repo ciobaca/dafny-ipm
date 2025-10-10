@@ -7,7 +7,6 @@ using System.Linq;
 using System.Text;
 using System.Diagnostics.Contracts;
 using System.IO;
-using System.Reactive.Disposables;
 using System.Reactive.Linq;
 using System.Text.RegularExpressions;
 using System.Threading.Tasks;
@@ -32,6 +31,10 @@ namespace Microsoft.Dafny
     //   new ActualBinding(null, e, false),
     //   new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
     // ], null);
+
+    public static bool None<T>(this IEnumerable<T> e) => !e.Any();
+    public static bool None<T>(this IEnumerable<T> e, Func<T, bool> f) => !e.Any(f);
+    public static IEnumerable<T> IgnoreNulls<T>(this IEnumerable<T?> e) => e.Where(x => x is not null);
 
     public static IEnumerable<T> IgnoreNulls<T>(params T[] values)
     {
