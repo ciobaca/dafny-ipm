@@ -238,6 +238,7 @@ Dafny
                             .)
   }
   (. SystemModuleModifiers.Add(b => b.CreateArrowTypeDecl(2)); .)
+  (. SystemModuleModifiers.Add(b => b.CreateArrowTypeDecl(3)); .)
   { AtAttributes<ref attrs>
     TopDecl<theModule, /* isTopLevel */ true, ref attrs> }
   (. CheckNoAttributes(ref attrs); .)
