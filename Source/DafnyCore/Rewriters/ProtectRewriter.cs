@@ -8,7 +8,7 @@ using System.Linq;
 
 namespace Microsoft.Dafny;
 public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure out if the class can Extend Rewriter instead of IRewriter
-  private class Replacer {
+  private class ExprReplacer {
     public static Expression ReplaceExpr(Expression e) => e switch {
       ApplyExpr p                           => ReplaceExprParticular(p),
       FunctionCallExpr p                    => ReplaceExprParticular(p),
@@ -140,28 +140,75 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
   static ProtectRewriter() {
     ProtectorFunctionNames = ["_protect", "_protectToProve",];
   }
+
   public static IReadOnlyList<string> ProtectorFunctionNames { get; }
-  private static Function protectorFunctionWithName(string name) {
-    var typeVarForProtect = new TypeParameter(
+  private static TypeParameter simpleTypeVar(string name) => new(
       origin: SourceOrigin.NoToken,
-      nameNode: new Name("T"),
+    nameNode: new(name),
       varianceSyntax: TPVarianceSyntax.NonVariant_Strict,
       characteristics: TypeParameterCharacteristics.Default(),
       typeBounds: [],
       attributes: null
     );
+  private static Function inScopeFunction { get {
+      var typeVar = simpleTypeVar("T");
     return new(
+        origin: new Token(),
+        // can't use SourceOrigin.NoToken because ref. eq. to it
+        // is used to ensure that DefaultModuleDefinitions are verified;
+        // I do NOT like that piece of code (:
+        nameNode: new("_isInScope"),
+        hasStaticKeyword: false,
+        isGhost: true,
+        isOpaque: true,
+        typeArgs: [typeVar],
+        ins: [
+          new(
       origin: SourceOrigin.NoToken,
-      nameNode: new Name(name),
+          nameNode: new("x"),
+          syntacticType: new UserDefinedType(typeVar),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
+        ),
+        ],
+        result: null,
+        resultType: new BoolType(),
+        req: [],
+        reads: new(),
+        ens: [],
+        decreases: new(),
+        body: new LiteralExpr(
+          origin: SourceOrigin.NoToken,
+          value: true
+        ),
+        byMethodTok: null, byMethodBody: null,
+        attributes: new(
+          name: "auto_generated", args: [],
+          prev: null
+        ),
+        signatureEllipsis: null
+      );
+    } }
+  private static Function protectorFunctionWithName(string name) {
+    var typeVar = simpleTypeVar("T");
+    return new(
+      origin: new Token(),
+      nameNode: new(name),
       hasStaticKeyword: false,
       isGhost: true,
       isOpaque: true,
-      typeArgs: [typeVarForProtect],
+      typeArgs: [typeVar],
       ins: [
-        new Formal(
+        new(
             origin: SourceOrigin.NoToken,
-            nameNode: new Name("x"),
-            syntacticType: new UserDefinedType(typeVarForProtect),
+          nameNode: new("x"),
+          syntacticType: new UserDefinedType(typeVar),
             inParam: true,
             isGhost: false,
             defaultValue: null,
@@ -171,9 +218,9 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
             isOlder: false,
             nameForCompilation: null
           ),
-          new Formal(
+        new(
             origin: SourceOrigin.NoToken,
-            nameNode: new Name("name"),
+          nameNode: new("name"),
             syntacticType: new UserDefinedType(
               origin: SourceOrigin.NoToken,
               name: "string",
@@ -187,21 +234,21 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
             isNameOnly: false,
             isOlder: false,
             nameForCompilation: null
-          )
+        ),
       ],
       result: null,
-      resultType: new UserDefinedType(typeVarForProtect),
+      resultType: new UserDefinedType(typeVar),
       req: [],
-      reads: new Specification<FrameExpression>(),
+      reads: new(),
       ens: [],
-      decreases: new Specification<Expression>(),
+      decreases: new(),
       body: new NameSegment(
         origin: SourceOrigin.NoToken,
         name: "x",
         optTypeArguments: null
       ),
       byMethodTok: null, byMethodBody: null,
-      attributes: new Attributes(
+      attributes: new(
         name: "auto_generated", args: [],
         prev: null
       ),
@@ -210,7 +257,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
   }
   public static IReadOnlyList<Function> ProtectorFunctions => [.. ProtectorFunctionNames.Select(protectorFunctionWithName)];
 
-  //MASSIVE TODOs:
+  // TODOs:
   //  - figure out where you can call (some SystemModuleManager).CreateArrowTypeDecl(2) directly or deferred
 
   internal override void PreResolve(Program program) {
@@ -258,8 +305,8 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
 
   private static ApplySuffix ExpressionWrappedIn_Protect_Call(Expression expression) =>
     new(expression.Origin, null, new NameSegment(Token.NoToken, "_protect", null), [
-      new ActualBinding(null, expression, false),
-      new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false))
+      new(null, expression),
+      new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
     ], null);
 
   //private static Expression WithProtect(Expression expr) {
@@ -518,11 +565,11 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
 
     static void ReplaceExpressionInAssertStatement(AssertStmt a) {
       if (Attributes.Contains(a.Attributes, "itp")) {
-        Console.WriteLine("Protecting to prove assertion " + a.Expr.ToString());
+        //Console.WriteLine("Protecting to prove assertion " + a.Expr.ToString());
         a.Expr = ExpressionWrappedIn_ProtectToProve_Call(a.Expr);
       } else {
-        a.Expr = Replacer.ReplaceExpr(a.Expr);
-        Console.WriteLine($"assert statement: {a.Expr}");
+        a.Expr = ExprReplacer.ReplaceExpr(a.Expr);
+        //Console.WriteLine($"assert statement: {a.Expr}");
       }
     }
     
@@ -530,17 +577,17 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       case TopLevelDeclWithMembers decl:
         foreach (var member in decl.Members.OfType<MethodOrFunction>()) {
           foreach (var req in member.Req) {
-            req.E = Replacer.ReplaceExpr(req.E);
-            Console.WriteLine($"requires clause: {req.E}");
+            req.E = ExprReplacer.ReplaceExpr(req.E);
+            //Console.WriteLine($"requires clause: {req.E}");
           }
           foreach (var ens in member.Ens) {
             if (Attributes.Contains(ens.Attributes, "itp")) {
-              Console.WriteLine("Protecting to prove ensures clause " + ens.E.ToString());
+              //Console.WriteLine("Protecting to prove ensures clause " + ens.E.ToString());
               ens.E = ExpressionWrappedIn_ProtectToProve_Call(ens.E);
             } else {
-              ens.E = Replacer.ReplaceExpr(ens.E);
+              ens.E = ExprReplacer.ReplaceExpr(ens.E);
             }
-            Console.WriteLine($"ensures clause: {ens.E}");
+            //Console.WriteLine($"ensures clause: {ens.E}");
           }
           switch (member) {
             case Function f:
@@ -551,14 +598,6 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
               if (mc.Body is null) { break; }
               mc.Body.Body.SelectMany(assertStatementsOfStatement).ForEach(ReplaceExpressionInAssertStatement);
               break;
-            //case Constructor c:
-            //  if (c.Body is null) { break; }
-            //  c.Body.Body.SelectMany(assertStatementsOfStatement).ForEach(ReplaceExpressionInAssertStatement);
-            //  break;
-            //case Method m:
-            //  if (m.Body is null) { break; }
-            //  m.Body.Body.SelectMany(assertStatementsOfStatement).ForEach(ReplaceExpressionInAssertStatement);
-            //  break;
             default: throw new UnreachableException();
           }
         }
