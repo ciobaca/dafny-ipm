@@ -353,7 +353,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     }
 
     static void ReplaceExpressionInAssertStatement(AssertStmt a) {
-      if (Attributes.Contains(a.Attributes, "itp")) {
+      if (Attributes.Contains(a.Attributes, "ipm")) {
         //Console.WriteLine("Protecting to prove assertion " + a.Expr.ToString());
         a.Expr = ExpressionWrappedIn_ProtectToProve_Call(a.Expr);
       } else {
@@ -370,7 +370,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
             //Console.WriteLine($"requires clause: {req.E}");
           }
           foreach (var ens in member.Ens) {
-            if (Attributes.Contains(ens.Attributes, "itp")) {
+            if (Attributes.Contains(ens.Attributes, "ipm")) {
               //Console.WriteLine("Protecting to prove ensures clause " + ens.E.ToString());
               ens.E = ExpressionWrappedIn_ProtectToProve_Call(ens.E);
             } else {
