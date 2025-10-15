@@ -154,59 +154,59 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     attributes: null
   );
   private static Function ProtectorFunctionWith(List<TypeParameter> typeArgs, string name, Type resultType, List<Formal> argTypes, Expression body) => new(
-        origin: new Token(),
-        // can't use SourceOrigin.NoToken because ref. eq. to it
-        // is used to ensure that DefaultModuleDefinitions are verified;
-        // I do NOT like that piece of code (:
+      origin: new Token(),
+      // can't use SourceOrigin.NoToken because ref. eq. to it
+      // is used to ensure that DefaultModuleDefinitions are verified;
+      // I do NOT like that piece of code (:
       nameNode: new(name),
-        hasStaticKeyword: false,
-        isGhost: true,
-        isOpaque: true,
+      hasStaticKeyword: false,
+      isGhost: true,
+      isOpaque: true,
       typeArgs: typeArgs,
       ins: argTypes,
-        result: null,
+      result: null,
       resultType: resultType,
-        req: [],
-        reads: new(),
-        ens: [],
-        decreases: new(),
+      req: [],
+      reads: new(),
+      ens: [],
+      decreases: new(),
       body: body,
-        byMethodTok: null, byMethodBody: null,
-        attributes: new(
-          name: "auto_generated", args: [],
-          prev: null
-        ),
-        signatureEllipsis: null
-      );
+      byMethodTok: null, byMethodBody: null,
+      attributes: new(
+        name: "auto_generated", args: [],
+        prev: null
+      ),
+      signatureEllipsis: null
+    );
   private static Formal ProtectorFormal_x(TypeParameter typeVar) => new(
-          origin: SourceOrigin.NoToken,
-          nameNode: new("x"),
-          syntacticType: new UserDefinedType(typeVar),
-          inParam: true,
-          isGhost: false,
-          defaultValue: null,
-          attributes: null,
-          isOld: false,
-          isNameOnly: false,
-          isOlder: false,
-          nameForCompilation: null
+    origin: SourceOrigin.NoToken,
+    nameNode: new("x"),
+    syntacticType: new UserDefinedType(typeVar),
+    inParam: true,
+    isGhost: false,
+    defaultValue: null,
+    attributes: null,
+    isOld: false,
+    isNameOnly: false,
+    isOlder: false,
+    nameForCompilation: null
   );
   private static Formal ProtectorFormal_name() => new(
-          origin: SourceOrigin.NoToken,
-          nameNode: new("name"),
-          syntacticType: new UserDefinedType(
-            origin: SourceOrigin.NoToken,
-            name: "string",
-            optTypeArgs: null
-          ),
-          inParam: true,
-          isGhost: false,
-          defaultValue: null,
-          attributes: null,
-          isOld: false,
-          isNameOnly: false,
-          isOlder: false,
-          nameForCompilation: null
+    origin: SourceOrigin.NoToken,
+    nameNode: new("name"),
+    syntacticType: new UserDefinedType(
+      origin: SourceOrigin.NoToken,
+      name: "string",
+      optTypeArgs: null
+    ),
+    inParam: true,
+    isGhost: false,
+    defaultValue: null,
+    attributes: null,
+    isOld: false,
+    isNameOnly: false,
+    isOlder: false,
+    nameForCompilation: null
   );
   private static Function ProtectScopeFunction() {
     var typeVar = simpleTypeVar("T");
@@ -251,17 +251,17 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         ProtectorFormal_x(typeVar),
         ProtectorFormal_name(),
         new(
-        origin: SourceOrigin.NoToken,
-        nameNode: new("scope"),
-        syntacticType: new SeqType(new BoolType()),
-        inParam: true,
-        isGhost: false,
-        defaultValue: null,
-        attributes: null,
-        isOld: false,
-        isNameOnly: false,
-        isOlder: false,
-        nameForCompilation: null
+          origin: SourceOrigin.NoToken,
+          nameNode: new("scope"),
+          syntacticType: new SeqType(new BoolType()),
+          inParam: true,
+          isGhost: false,
+          defaultValue: null,
+          attributes: null,
+          isOld: false,
+          isNameOnly: false,
+          isOlder: false,
+          nameForCompilation: null
         ),
       ],
       body: new NameSegment(
@@ -323,20 +323,6 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     moduleDefinition.TopLevelDecls.Where(d => d is not ModuleDecl).ForEach(ApplyChangesTo);
     moduleDefinition.DefaultClass!.Members = [.. ProtectorFunctions(), .. moduleDefinition.DefaultClass!.Members];
   }
-
-  private static ApplySuffix ExpressionWrappedIn_Protect_Call(Expression expression) =>
-    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectFunctionName, null), [
-      new(null, expression),
-      new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
-    ], Token.NoToken);
-
-  private static ApplySuffix ExpressionWrappedIn_ProtectToProve_Call(Expression expression) =>
-    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectToProveFunctionName, null), [
-      new(null, ExprReplacer.ReplaceExpr(expression)),
-      new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
-      new(null, new SeqDisplayExpr(SourceOrigin.NoToken, [])),
-    ], Token.NoToken);
-
   private static void ApplyChangesTo(TopLevelDecl d) {
     static IEnumerable<AssertStmt> assertStatementsOfExpression(Expression e) {
       if (e is StmtExpr statementExpression) {
@@ -392,7 +378,8 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
               if (mc.Body is null) { break; }
               mc.Body.Body.SelectMany(assertStatementsOfStatement).ForEach(ReplaceExpressionInAssertStatement);
               break;
-            default: throw new UnreachableException();
+            default:
+              throw new UnreachableException();
           }
         }
         break;
@@ -402,34 +389,58 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
           assertStatementsOfExpression(decl.Witness).ForEach(ReplaceExpressionInAssertStatement);
         }
         break;
-      case ConcreteTypeSynonymDecl: break;
-      default: throw new UnreachableException();
+      case ConcreteTypeSynonymDecl:
+        break;
+      default:
+        throw new UnreachableException();
     }
   }
 
-  public static ApplySuffix VariableNameWrappedIn_ProtectScope_Call(string varname) {
+  private static ApplySuffix ExpressionWrappedIn_Protect_Call(Expression expression) =>
+    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectFunctionName, null), [
+      new(null, expression),
+      new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
+    ], Token.NoToken);
+
+  private static ProtectToProveApplySuffix ExpressionWrappedIn_ProtectToProve_Call(Expression expression) => new(expression);
+
+  internal class ProtectToProveApplySuffix : ApplySuffix, ICloneable<ProtectToProveApplySuffix> {
+    ProtectToProveApplySuffix ICloneable<ProtectToProveApplySuffix>.Clone(Cloner cloner) => new(cloner, this);
+    public ProtectToProveApplySuffix(Cloner cloner, ProtectToProveApplySuffix original) : base(cloner, original) { }
+    [SyntaxConstructor]
+    public ProtectToProveApplySuffix(Expression e) : base(e.Origin, null, new NameSegment(Token.NoToken, ProtectToProveFunctionName, null), [
+      new(null, ExprReplacer.ReplaceExpr(e)),
+      new(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false)),
+      new(null, new SeqDisplayExpr(SourceOrigin.NoToken, [])),
+    ], Token.NoToken) { }
+
+    public SeqDisplayExpr Seq => (Bindings.ArgumentBindings[2].Actual as SeqDisplayExpr)!;
+    public bool isValidPreResolve => Seq is { Elements: [] };
+    internal void AddScopeArgs(INewOrOldResolver resolver, ResolutionContext context) {
+      Contract.Requires(isValidPreResolve);
+      //static List<T?> getThingsFromScope<T>(Scope<T> s) where T : class =>
+      //    (s.GetType()
+      //      .GetField("things", System.Reflection.BindingFlags.Instance | System.Reflection.BindingFlags.NonPublic)!
+      //      .GetValue(s) as List<T?>)!;
+      //Seq.Elements.AddRange(getThingsFromScope(resolver.Scope).IgnoreNulls().Distinct().Select(v => {
+      //  var e = VariableNameWrappedIn_ProtectScope_Call(v.Name);
+      //  var ns = (e.Bindings.ArgumentBindings.First(b => b.Actual is NameSegment _ns && _ns.Name == v.Name).Actual as NameSegment)!;
+
+      //  var id = new IdentifierExpr(SourceOrigin.NoToken, v);
+      //  ns.ResolvedExpression = id;
+      //  ns.Type = id.Type.UseInternalSynonym();
+      //  return e;
+      //}));
+      Seq.Elements.AddRange(resolver.Scope.Names.IgnoreNulls().Distinct().Select(VariableNameWrappedIn_ProtectScope_Call));
+      //System.Console.WriteLine('[' + string.Join(", ", Seq.Elements) + ']');
+    }
+  }
+
+  private static ApplySuffix VariableNameWrappedIn_ProtectScope_Call(string varname) {
     Contract.Ensures(Contract.Result<ApplySuffix>().Bindings.ArgumentBindings.Any(b => b.Actual is NameSegment _ns && _ns.Name == varname));
     return new(SourceOrigin.NoToken, null, new NameSegment(Token.NoToken, ProtectScopeFunctionName, null), [
       new(null, new NameSegment(SourceOrigin.NoToken, varname, null)),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, varname, false)),
     ], Token.NoToken);
   }
-
-  #region common utils for AssertStmt and Ensures clauses
-  public static bool IsProtectToProveCall(Expression e) => e is ApplySuffix {
-    Lhs: NameSegment { Name: "_protectToProve" },
-    Bindings.ArgumentBindings: [
-      ActualBinding,
-      ActualBinding { Actual: StringLiteralExpr, },
-      ActualBinding { Actual: SeqDisplayExpr, },
-    ],
-  };
-  public static bool IsValidProtectToProveCallPreResolve(Expression e) => IsProtectToProveCall(e) && ThirdArgSeq(e) is { Elements: [] };
-  public static bool IsValidProtectToProveCallPostResolve(Expression e) => IsProtectToProveCall(e); // TODO: make this more restrictive
-  public static SeqDisplayExpr ThirdArgSeq(Expression e) {
-    Contract.Requires(IsProtectToProveCall(e));
-    Contract.Ensures(IsProtectToProveCall(e));
-    return ((e as ApplySuffix)!.Bindings.ArgumentBindings[2].Actual as SeqDisplayExpr)!;
-  }
-  #endregion
 }

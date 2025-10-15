@@ -5873,6 +5873,7 @@ namespace Microsoft.Dafny {
       Contract.Ensures(Contract.Result<MethodCallInformation>() == null || allowMethodCall);
       Expression r = null;  // upon success, the expression to which the ApplySuffix resolves
       var errorCount = reporter.Count(ErrorLevel.Error);
+      (e as ProtectRewriter.ProtectToProveApplySuffix)?.AddScopeArgs(this, resolutionContext);
       if (e.Lhs is NameSegment) {
         r = ResolveNameSegment((NameSegment)e.Lhs, true, e.Bindings.ArgumentBindings, resolutionContext, allowMethodCall);
         // note, if r is non-null, then e.Args have been resolved and r is a resolved expression that incorporates e.Args
