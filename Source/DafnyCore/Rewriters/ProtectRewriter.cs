@@ -135,7 +135,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       Contract.Assert(e.Resolved is not null);
       return NotImplemented(e);
     }
-    private static Expression ReplaceExprParticular(LetExpr e) => new LetExpr(e.Origin, e.LHSs, e.RHSs, ExpressionWrappedIn_Protect_Call(e.Body), e.Exact, e.Attributes);
+    private static Expression ReplaceExprParticular(LetExpr e) => new LetExpr(e.Origin, e.LHSs, e.RHSs, ReplaceExpr(e.Body), e.Exact, e.Attributes);
   }
 
   //static ProtectRewriter() {
