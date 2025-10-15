@@ -103,7 +103,7 @@ public class AssertStmt : PredicateStmt, ICloneable<AssertStmt>, ICanFormat {
       //  ns.Type = id.Type.UseInternalSynonym();
       //  return e;
       //});
-      thirdArgSeq.Elements.AddRange(vars.Select(ProtectRewriter.VariableNameWrappedIn_IsInScope_Call));
+      thirdArgSeq.Elements.AddRange(vars.Select(ProtectRewriter.VariableNameWrappedIn_ProtectScope_Call));
       //System.Console.WriteLine('[' + string.Join(", ", thirdArgSeq.Elements) + ']');
     }
     base.GenResolve(resolver, context);

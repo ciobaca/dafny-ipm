@@ -137,11 +137,14 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     }
   }
 
-  static ProtectRewriter() {
-    ProtectorFunctionNames = ["_protect", "_protectToProve",];
-  }
+  //static ProtectRewriter() {
+  //}
 
-  public static IReadOnlyList<string> ProtectorFunctionNames { get; }
+  public static readonly string ProtectFunctionName = "_protect";
+  public static readonly string ProtectToProveFunctionName = "_protectToProve";
+  public static readonly string ProtectScopeFunctionName = "_protectScope";
+
+  #region Protector Functions
   private static TypeParameter simpleTypeVar(string name) => new(
     origin: SourceOrigin.NoToken,
     nameNode: new(name),
@@ -150,43 +153,24 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     typeBounds: [],
     attributes: null
   );
-  private static Function inScopeFunction { get {
-      var typeVar = simpleTypeVar("T");
-      return new(
+  private static Function ProtectorFunctionWith(List<TypeParameter> typeArgs, string name, Type resultType, List<Formal> argTypes, Expression body) => new(
         origin: new Token(),
         // can't use SourceOrigin.NoToken because ref. eq. to it
         // is used to ensure that DefaultModuleDefinitions are verified;
         // I do NOT like that piece of code (:
-        nameNode: new("_isInScope"),
+      nameNode: new(name),
         hasStaticKeyword: false,
         isGhost: true,
         isOpaque: true,
-        typeArgs: [typeVar],
-        ins: [
-          new(
-          origin: SourceOrigin.NoToken,
-          nameNode: new("x"),
-          syntacticType: new UserDefinedType(typeVar),
-          inParam: true,
-          isGhost: false,
-          defaultValue: null,
-          attributes: null,
-          isOld: false,
-          isNameOnly: false,
-          isOlder: false,
-          nameForCompilation: null
-        ),
-        ],
+      typeArgs: typeArgs,
+      ins: argTypes,
         result: null,
-        resultType: new BoolType(),
+      resultType: resultType,
         req: [],
         reads: new(),
         ens: [],
         decreases: new(),
-        body: new LiteralExpr(
-          origin: SourceOrigin.NoToken,
-          value: true
-        ),
+      body: body,
         byMethodTok: null, byMethodBody: null,
         attributes: new(
           name: "auto_generated", args: [],
@@ -194,18 +178,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         ),
         signatureEllipsis: null
       );
-    } }
-  private static Function protectorFunctionWithName(string name) {
-    var typeVar = simpleTypeVar("T");
-    return new(
-      origin: new Token(),
-      nameNode: new(name),
-      hasStaticKeyword: false,
-      isGhost: true,
-      isOpaque: true,
-      typeArgs: [typeVar],
-      ins: [
-        new(
+  private static Formal ProtectorFormal_x(TypeParameter typeVar) => new(
           origin: SourceOrigin.NoToken,
           nameNode: new("x"),
           syntacticType: new UserDefinedType(typeVar),
@@ -217,8 +190,8 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
           isNameOnly: false,
           isOlder: false,
           nameForCompilation: null
-        ),
-        new(
+  );
+  private static Formal ProtectorFormal_name() => new(
           origin: SourceOrigin.NoToken,
           nameNode: new("name"),
           syntacticType: new UserDefinedType(
@@ -234,30 +207,50 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
           isNameOnly: false,
           isOlder: false,
           nameForCompilation: null
-        ),
+  );
+  private static Function ProtectScopeFunction() {
+    var typeVar = simpleTypeVar("T");
+    return ProtectorFunctionWith(
+      typeArgs: [typeVar,],
+      name: ProtectScopeFunctionName,
+      resultType: new BoolType(),
+      argTypes: [
+        ProtectorFormal_x(typeVar),
+        ProtectorFormal_name(),
       ],
-      result: null,
+      body: new LiteralExpr(
+        origin: SourceOrigin.NoToken,
+        value: true
+      )
+    );
+  }
+  private static Function ProtectFunction() {
+    var typeVar = simpleTypeVar("T");
+    return ProtectorFunctionWith(
+      typeArgs: [typeVar,],
+      name: ProtectFunctionName,
       resultType: new UserDefinedType(typeVar),
-      req: [],
-      reads: new(),
-      ens: [],
-      decreases: new(),
+      argTypes: [
+        ProtectorFormal_x(typeVar),
+        ProtectorFormal_name(),
+      ],
       body: new NameSegment(
         origin: SourceOrigin.NoToken,
         name: "x",
         optTypeArguments: null
-      ),
-      byMethodTok: null, byMethodBody: null,
-      attributes: new(
-        name: "auto_generated", args: [],
-        prev: null
-      ),
-      signatureEllipsis: null
+      )
     );
   }
-  public static IReadOnlyList<Function> ProtectorFunctions { get {
-      var r = ProtectorFunctionNames.Select(protectorFunctionWithName).ToList();
-      r.Where(f => f.Name == ProtectorFunctionNames[1]).First().Ins.Add(new(
+  private static Function ProtectToProveFunction() {
+    var typeVar = simpleTypeVar("T");
+    return ProtectorFunctionWith(
+      typeArgs: [typeVar,],
+      name: ProtectToProveFunctionName,
+      resultType: new UserDefinedType(typeVar),
+      argTypes: [
+        ProtectorFormal_x(typeVar),
+        ProtectorFormal_name(),
+        new(
         origin: SourceOrigin.NoToken,
         nameNode: new("scope"),
         syntacticType: new SeqType(new BoolType()),
@@ -269,9 +262,21 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         isNameOnly: false,
         isOlder: false,
         nameForCompilation: null
-      ));
-      return r;
-    } }
+        ),
+      ],
+      body: new NameSegment(
+        origin: SourceOrigin.NoToken,
+        name: "x",
+        optTypeArguments: null
+      )
+    );
+  }
+  public static IReadOnlyList<Function> ProtectorFunctions() => [
+    ProtectScopeFunction(),
+    ProtectFunction(),
+    ProtectToProveFunction(),
+  ];
+  #endregion
 
   // TODOs:
   //  - figure out where you can call (some SystemModuleManager).CreateArrowTypeDecl(2) directly or deferred
@@ -316,21 +321,21 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     //  Guid.NewGuid()
     //));
     moduleDefinition.TopLevelDecls.Where(d => d is not ModuleDecl).ForEach(ApplyChangesTo);
-    moduleDefinition.DefaultClass!.Members = [inScopeFunction, .. ProtectorFunctions, .. moduleDefinition.DefaultClass!.Members];
+    moduleDefinition.DefaultClass!.Members = [.. ProtectorFunctions(), .. moduleDefinition.DefaultClass!.Members];
   }
 
   private static ApplySuffix ExpressionWrappedIn_Protect_Call(Expression expression) =>
-    new(expression.Origin, null, new NameSegment(Token.NoToken, "_protect", null), [
+    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectFunctionName, null), [
       new(null, expression),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
-    ], null);
+    ], Token.NoToken);
 
   private static ApplySuffix ExpressionWrappedIn_ProtectToProve_Call(Expression expression) =>
-    new(expression.Origin, null, new NameSegment(Token.NoToken, "_protectToProve", null), [
+    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectToProveFunctionName, null), [
       new(null, ExprReplacer.ReplaceExpr(expression)),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
       new(null, new SeqDisplayExpr(SourceOrigin.NoToken, [])),
-    ], null);
+    ], Token.NoToken);
 
   private static void ApplyChangesTo(TopLevelDecl d) {
     static IEnumerable<AssertStmt> assertStatementsOfExpression(Expression e) {
@@ -402,11 +407,12 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     }
   }
 
-  public static ApplySuffix VariableNameWrappedIn_IsInScope_Call(string varname) {
+  public static ApplySuffix VariableNameWrappedIn_ProtectScope_Call(string varname) {
     Contract.Ensures(Contract.Result<ApplySuffix>().Bindings.ArgumentBindings.Any(b => b.Actual is NameSegment _ns && _ns.Name == varname));
-    return new(SourceOrigin.NoToken, null, new NameSegment(Token.NoToken, "_isInScope", null), [
+    return new(SourceOrigin.NoToken, null, new NameSegment(Token.NoToken, ProtectScopeFunctionName, null), [
       new(null, new NameSegment(SourceOrigin.NoToken, varname, null)),
-    ], null);
+      new(null, new StringLiteralExpr(SourceOrigin.NoToken, varname, false)),
+    ], Token.NoToken);
   }
 
   #region common utils for AssertStmt and Ensures clauses
