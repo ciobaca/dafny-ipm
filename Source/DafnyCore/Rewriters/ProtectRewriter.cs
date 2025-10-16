@@ -403,7 +403,10 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
     ], Token.NoToken);
 
-  private static ProtectToProveApplySuffix ExpressionWrappedIn_ProtectToProve_Call(Expression expression) => new(expression);
+  private static Expression ExpressionWrappedIn_ProtectToProve_Call(Expression expression) => expression switch {
+    LetExpr le => new LetExpr(le.Origin, le.LHSs, le.RHSs, new ProtectToProveApplySuffix(le.Body), le.Exact, le.Attributes),
+    _ => new ProtectToProveApplySuffix(expression)
+  };
 
   internal class ProtectToProveApplySuffix : ApplySuffix, ICloneable<ProtectToProveApplySuffix> {
     ProtectToProveApplySuffix ICloneable<ProtectToProveApplySuffix>.Clone(Cloner cloner) => new(cloner, this);
