@@ -136,6 +136,9 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
       return NotImplemented(e);
     }
     private static Expression ReplaceExprParticular(LetExpr e) => new LetExpr(e.Origin, e.LHSs, e.RHSs.ConvertAll(ReplaceExpr), ReplaceExpr(e.Body), e.Exact, e.Attributes);
+    private static Expression ReplaceExprParticular(ApplySuffix e) => new ApplySuffix(
+      e.Origin, e.AtTok, e.Lhs, e.Bindings.ArgumentBindings.ConvertAll(ab => new ActualBinding(ab.FormalParameterName, ReplaceExpr(ab.Actual), ab.IsGhost)), e.CloseParen
+    );
   }
 
   //static ProtectRewriter() {
