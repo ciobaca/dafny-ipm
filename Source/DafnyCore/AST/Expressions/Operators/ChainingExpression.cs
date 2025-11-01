@@ -41,6 +41,11 @@ public class ChainingExpression : ConcreteSyntaxExpression, ICloneable<ChainingE
     PrefixLimits = prefixLimits;
     E = ComputeDesugaring(operands, operators, operatorLocs, prefixLimits);
   }
+  public ChainingExpression(IOrigin origin, List<Expression> operands, List<(BinaryExpr.Opcode op, IOrigin loc, Expression? prefixLimit)> operatorsData)
+    : this(origin, operands, operatorsData.ConvertAll(od => od.op), operatorsData.ConvertAll(od => od.loc), operatorsData.ConvertAll(od => od.prefixLimit)) {
+    Contract.Requires(1 <= operatorsData.Count);
+    Contract.Requires(operands.Count == operatorsData.Count + 1);
+  }
 
   private static Expression ComputeDesugaring(List<Expression> operands, List<BinaryExpr.Opcode> operators, List<IOrigin> operatorLocs, List<Expression?> prefixLimits) {
     Expression? desugaring;

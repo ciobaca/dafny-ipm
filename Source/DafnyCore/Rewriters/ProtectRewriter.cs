@@ -141,9 +141,6 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     );
   }
 
-  //static ProtectRewriter() {
-  //}
-
   public static readonly string ProtectFunctionName = "_protect";
   public static readonly string ProtectToProveFunctionName = "_protectToProve";
   public static readonly string ProtectScopeFunctionName = "_protectScope";
@@ -401,7 +398,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
   }
 
   private static ApplySuffix ExpressionWrappedIn_Protect_Call(Expression expression) =>
-    new(expression.Origin, null, new NameSegment(Token.NoToken, ProtectFunctionName, null), [
+    new(expression.Origin, null, new NameSegment(SourceOrigin.NoToken, ProtectFunctionName, null), [
       new(null, expression),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, expression.ToString(), false)),
     ], Token.NoToken);
@@ -412,7 +409,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     ProtectToProveApplySuffix ICloneable<ProtectToProveApplySuffix>.Clone(Cloner cloner) => new(cloner, this);
     public ProtectToProveApplySuffix(Cloner cloner, ProtectToProveApplySuffix original) : base(cloner, original) { }
     [SyntaxConstructor]
-    public ProtectToProveApplySuffix(Expression e) : base(e.Origin, null, new NameSegment(Token.NoToken, ProtectToProveFunctionName, null), [
+    public ProtectToProveApplySuffix(Expression e) : base(e.Origin, null, new NameSegment(SourceOrigin.NoToken, ProtectToProveFunctionName, null), [
       new(null, ExprReplacer.ReplaceExpr(e)),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false)),
       new(null, new SeqDisplayExpr(SourceOrigin.NoToken, [])),
@@ -442,7 +439,7 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
 
   private static ApplySuffix VariableNameWrappedIn_ProtectScope_Call(string varname) {
     Contract.Ensures(Contract.Result<ApplySuffix>().Bindings.ArgumentBindings.Any(b => b.Actual is NameSegment _ns && _ns.Name == varname));
-    return new(SourceOrigin.NoToken, null, new NameSegment(Token.NoToken, ProtectScopeFunctionName, null), [
+    return new(SourceOrigin.NoToken, null, new NameSegment(SourceOrigin.NoToken, ProtectScopeFunctionName, null), [
       new(null, new NameSegment(SourceOrigin.NoToken, varname, null)),
       new(null, new StringLiteralExpr(SourceOrigin.NoToken, varname, false)),
     ], Token.NoToken);

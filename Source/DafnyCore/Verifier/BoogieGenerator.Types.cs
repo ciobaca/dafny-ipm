@@ -1395,7 +1395,7 @@ public partial class BoogieGenerator {
           dafnyBoundsCheck = new BinaryExpr(expr.Origin, BinaryExpr.Opcode.And,
             new BinaryExpr(expr.Origin, BinaryExpr.Opcode.Le, new LiteralExpr(expr.Origin, 0), expr),
             new BinaryExpr(expr.Origin, BinaryExpr.Opcode.Lt, expr, dafnyBound)
-        );
+          );
         }
       } else if (fromType.IsNumericBased(Type.NumericPersuasion.Int) || fromTypeFamily.IsCharType) {
         // Check "expr < (1 << toWidth)" in type "int"
@@ -1404,7 +1404,7 @@ public partial class BoogieGenerator {
         boundsCheck = BplAnd(Bpl.Expr.Le(Bpl.Expr.Literal(0), o), Bpl.Expr.Lt(o, bound));
         dafnyBoundsCheck = Expression.CreateAnd(
           Expression.CreateLess(Expression.CreateIntLiteral(expr.Origin, 0), expr),
-          Expression.CreateAtMost(expr, dafnyBound));
+          Expression.CreateAtMost(expr, dafnyBound)); // not particularily an issue, but the expression here should be `0 <= x < 1 << toWitth` instead of `0 < x <= 1 << toWidth`
       } else if (fromType.IsNumericBased(Type.NumericPersuasion.Real)) {
         // Check "Int(expr) < (1 << toWidth)" in type "int"
         PutSourceIntoLocal();
@@ -1447,7 +1447,7 @@ public partial class BoogieGenerator {
       } else if (fromType.IsBitVectorType) {
         PutSourceIntoLocal();
         var fromWidth = fromType.AsBitVectorType.Width;
-        var toWidth = 16;
+        var toWidth = 16; // geniune question: doesn't this not take into account unicode?
         if (toWidth < fromWidth) {
           // Check "expr < (1 << toWidth)" in type "fromType" (note that "1 << toWidth" is indeed a value in "fromType")
           PutSourceIntoLocal();
