@@ -1,6 +1,9 @@
 using System.Collections.Generic;
 using System.CommandLine.Parsing;
 using Microsoft.Dafny.Compilers;
+#if IPM
+using DafnyCore.IPM;
+#endif
 
 namespace Microsoft.Dafny;
 
@@ -52,10 +55,11 @@ public static class RewriterCollection {
       result.Add(new AutoRevealFunctionDependencies(reporter));
     }
 
+#if IPM
     if (true) { // TODO: an option needs to be created for this; potentially, this might have to be moved into a plugin instead
       result.Add(new ProtectRewriter(reporter));
     }
-
+#endif
     foreach (var plugin in reporter.Options.Plugins) {
       result.AddRange(plugin.GetRewriters(reporter));
     }

@@ -25,6 +25,14 @@
     <!-- CS8981 required because Dafny code can use lowercase type names -->
     <IsPackable>true</IsPackable>
   </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|AnyCPU'">
+    <DefineConstants>$(DefineConstants);IPM</DefineConstants>
+  </PropertyGroup>
+
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|AnyCPU'">
+    <DefineConstants>$(DefineConstants);IPM</DefineConstants>
+  </PropertyGroup>
   
   <ItemGroup>
       <PackageReference Include="JetBrains.Annotations" Version="2021.1.0" />
