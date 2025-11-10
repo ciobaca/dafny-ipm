@@ -13,6 +13,7 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Boogie;
 using static Microsoft.Dafny.GenericErrors;
+using System.Runtime.CompilerServices;
 
 
 namespace Microsoft.Dafny
@@ -34,8 +35,9 @@ namespace Microsoft.Dafny
 
     public static bool None<T>(this IEnumerable<T> e) => !e.Any();
     public static bool None<T>(this IEnumerable<T> e, Func<T, bool> f) => !e.Any(f);
-    public static IEnumerable<T> IgnoreNulls<T>(this IEnumerable<T?> e) => e.Where(x => x is not null);
-
+#nullable enable
+    public static IEnumerable<T> IgnoreNulls<T>(this IEnumerable<T?> e) => e.OfType<T>();
+#nullable disable
     public static IEnumerable<T> IgnoreNulls<T>(params T[] values)
     {
       var result = new List<T>();
@@ -49,6 +51,201 @@ namespace Microsoft.Dafny
 
       return result;
     }
+    #region Tuple To IEnumerable
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T> t) { yield return t.Item1; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T> t) { yield return t.Item1; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T> t) { yield return t.Item1; yield return t.Item2; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T> t) { yield return t.Item1; yield return t.Item2; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    public static IEnumerable<T> ToEnumerable<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> t) { yield return t.Item1; yield return t.Item2; yield return t.Item3; yield return t.Item4; yield return t.Item5; yield return t.Item6; yield return t.Item7; foreach (var i in t.Rest.ToEnumerable()) { yield return i; } }
+    #endregion
+    #region Tuple GetEnumerator
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    public static IEnumerator<T> GetEnumerator<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => e.ToEnumerable().GetEnumerator();
+    #endregion
+    #region Tuple To List Conversion
+    public static List<T> ToList<T>(this      Tuple<T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T> e) => [e.Item1];
+    public static List<T> ToList<T>(this      Tuple<T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T,      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this      Tuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => [..e];
+    public static List<T> ToList<T>(this ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T, ValueTuple<T, T, T, T, T, T, T>>> e) => [..e];
+    #endregion
     public static Task WaitForComplete<T>(this IObservable<T> observable)
     {
       var result = new TaskCompletionSource();
