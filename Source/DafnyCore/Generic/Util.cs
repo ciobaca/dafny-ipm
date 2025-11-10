@@ -13,7 +13,6 @@ using System.Threading.Tasks;
 using JetBrains.Annotations;
 using Microsoft.Boogie;
 using static Microsoft.Dafny.GenericErrors;
-using System.Runtime.CompilerServices;
 
 
 namespace Microsoft.Dafny
