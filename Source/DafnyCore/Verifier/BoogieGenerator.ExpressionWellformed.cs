@@ -5,17 +5,15 @@
 // SPDX-License-Identifier: MIT
 //
 //-----------------------------------------------------------------------------
+using DafnyCore.Verifier.Statements;
+using Microsoft.Boogie;
 using System;
 using System.Collections.Generic;
+using System.Diagnostics.Contracts;
 using System.Linq;
 using System.Numerics;
-using System.Diagnostics.Contracts;
-using DafnyCore.Verifier;
-using DafnyCore.Verifier.Statements;
-using Bpl = Microsoft.Boogie;
-using Microsoft.Boogie;
-using Std.Wrappers;
 using static Microsoft.Dafny.Util;
+using Bpl = Microsoft.Boogie;
 using PODesc = Microsoft.Dafny.ProofObligationDescription;
 
 namespace Microsoft.Dafny {
@@ -43,7 +41,18 @@ namespace Microsoft.Dafny {
     public readonly List<Func<Bpl.Cmd>> CreateAsserts;
     public readonly bool LValueContext;
     public readonly Bpl.QKeyValue AssertKv;
-
+    public bool IPM_AttributeActive { get; private set; } = false;
+    private class IPM_AttributeActivatorContextManager : IDisposable {
+      private readonly System.Action disable;
+      public IPM_AttributeActivatorContextManager(WFOptions wfo, DafnyOptions options, Attributes attrs) {
+        if (true) {
+          wfo.IPM_AttributeActive = Attributes.Contains(attrs, "ipm"); // TODO: use options here
+        }
+        disable = () => wfo.IPM_AttributeActive = false;
+      }
+      void IDisposable.Dispose() => disable();
+    }
+    public IDisposable Activate_IPM_AttributeIfNecessary(DafnyOptions options, Attributes attrs) => new IPM_AttributeActivatorContextManager(this, options, attrs);
     public WFOptions() {
     }
 
@@ -1051,7 +1060,27 @@ namespace Microsoft.Dafny {
                     zero = Bpl.Expr.Literal(0);
                   }
                   CheckWellformed(e.E1, wfOptions, locals, builder, etran);
-                  builder.Add(Assert(GetToken(expr), Bpl.Expr.Neq(etran.TrExpr(e.E1), zero),
+                  Expr wfCheck = Expr.Neq(etran.TrExpr(e.E1), zero);
+                  if (wfOptions.IPM_AttributeActive) { // TODO: abstract into a function once u get the OK from ciobi
+                    // is there a need to add wf checks related to being able to call `_protectToProve(wfCheck)`,
+                    // since we're sending the unwrapped expression to boogie anyway?
+
+                    var f = currentModule.ProtectToProve;
+                    var tok = GetToken(expr); // TODO: GetToken(expr) might not be good, see if you can get something equivalent from wfCheck
+                    
+                    var id = new Bpl.IdentifierExpr(tok, f.FullSanitizedName, Bpl.Type.Bool);
+                    List<Expr> args = [
+                      TypeToTy(Type.Bool),
+                      GetRevealConstant(f),
+                      AdaptBoxing(tok, wfCheck, e.E1.Type, f.Ins[0].Type),
+                      etran.TranslateString($"{e.E1} != 0", false),
+                      etran.TranslateSeqOfElements([]),
+                    ];
+                    Expr result = new NAryExpr(tok, new FunctionCall(id), args);
+                    result = CondApplyUnbox(tok, result, f.ResultType, Type.Bool);
+                    wfCheck = result;
+                  }
+                  builder.Add(Assert(GetToken(expr), wfCheck,
                     new DivisorNonZero(e.E1), builder.Context, wfOptions.AssertKv));
                 }
                 break;

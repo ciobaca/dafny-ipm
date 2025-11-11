@@ -122,6 +122,9 @@ public partial class BoogieGenerator {
       delayer.DoWithDelayedReadsChecks(false, wfo => {
         builder.Add(new CommentCmd("Check well-formedness of preconditions, and then assume them"));
         foreach (AttributedExpression require in ConjunctsOf(f.Req)) {
+#if IPM
+          using var ctx = wfo.Activate_IPM_AttributeIfNecessary(generator.Options, require.Attributes);
+#endif
           if (require.Label != null) {
             require.Label.E = (f is TwoStateFunction ? ordinaryEtran : etran.Old).TrExpr(require.E);
             generator.CheckWellformed(require.E, wfo, locals, builder, etran);
@@ -136,15 +139,23 @@ public partial class BoogieGenerator {
       // allowed to assume the precondition (yet, the requires clause is checked to
       // read only those things indicated in the reads clause).
       builder.Add(new CommentCmd("Check well-formedness of the reads clause"));
-      delayer.DoWithDelayedReadsChecks(false,
-        wfo => { generator.CheckFrameWellFormed(wfo, f.Reads.Expressions, locals, builder, etran); });
+      delayer.DoWithDelayedReadsChecks(false, wfo => {
+#if IPM
+        using var ctx = wfo.Activate_IPM_AttributeIfNecessary(generator.Options, f.Reads.Attributes);
+#endif
+        generator.CheckFrameWellFormed(wfo, f.Reads.Expressions, locals, builder, etran);
+      });
 
       ConcurrentAttributeCheck(f, etran, builder);
 
       // check well-formedness of the decreases clauses (including termination, but no reads checks)
       builder.Add(new CommentCmd("Check well-formedness of the decreases clause"));
       foreach (Expression p in f.Decreases.Expressions) {
-        generator.CheckWellformed(p, new WFOptions(null, false), locals, builder, etran);
+        var wfo = new WFOptions(null, false);
+#if IPM
+        using var ctx = wfo.Activate_IPM_AttributeIfNecessary(generator.Options, f.Decreases.Attributes);
+#endif
+        generator.CheckWellformed(p, wfo, locals, builder, etran);
       }
 
       var implementationParameters = Bpl.Formal.StripWhereClauses(procedureParameters);
@@ -232,6 +243,9 @@ public partial class BoogieGenerator {
           innerBuilder.Add(new ReturnCmd(innerBody.Origin));
         }
 
+        // TODO: from what i've seen in the grammar of the language, function bodies can't have attributes.
+        // We could make function bodies into AttributedExpression's to fix this, but that would require replacing stuff in the entire code base.
+        // Anyway, if we're doing that, we'd place the ctx manager here, with the scope surrounding only the line below
         generator.CheckWellformedWithResult(f.Body, wfo, locals, bodyCheckBuilder, etran, CheckPostcondition);
 
         // var b$reads_guards#0 : bool  ...
@@ -326,8 +340,12 @@ public partial class BoogieGenerator {
       }
       // Now for the ensures clauses
       foreach (AttributedExpression p in f.Ens) {
+        var wfo = new WFOptions(f, doReadsChecks);
+#if IPM
+        using var ctx = wfo.Activate_IPM_AttributeIfNecessary(generator.Options, p.Attributes);
+#endif
         // assume the postcondition for the benefit of checking the remaining postconditions
-        generator.CheckWellformedAndAssume(p.E, new WFOptions(f, doReadsChecks), locals, postCheckBuilder, etran, "ensures clause");
+        generator.CheckWellformedAndAssume(p.E, wfo, locals, postCheckBuilder, etran, "ensures clause");
       }
 
       postCheckBuilder.Add(TrAssumeCmd(f.Origin, Expr.False));

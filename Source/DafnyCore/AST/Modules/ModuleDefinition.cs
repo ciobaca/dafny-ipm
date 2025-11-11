@@ -6,6 +6,9 @@ using System.CommandLine;
 using System.Diagnostics.Contracts;
 using System.Linq;
 using Microsoft.Dafny.Auditor;
+#if IPM
+using DafnyCore.IPM;
+#endif
 
 namespace Microsoft.Dafny;
 
@@ -25,6 +28,47 @@ public enum ImplementationKind {
 public record Implements(ImplementationKind Kind, ModuleQualifiedId Target);
 
 public class ModuleDefinition : NodeWithOrigin, IAttributeBearingDeclaration, ICloneable<ModuleDefinition> {
+#if IPM
+  private ProtectFunction? protect = null;
+  public ProtectFunction Protect {
+    get {
+      Contract.Requires(protect is not null);
+      return protect!;
+    }
+    private set {
+      Contract.Requires(protect is null);
+      protect = value;
+    }
+  }
+  private ProtectToProveFunction? protectToProve = null;
+  public ProtectToProveFunction ProtectToProve {
+    get {
+      Contract.Requires(protectToProve is not null);
+      return protectToProve!;
+    }
+    private set {
+      Contract.Requires(protectToProve is null);
+      protectToProve = value;
+    }
+  }
+  private ProtectScopeFunction? protectScope = null;
+  public ProtectScopeFunction ProtectScope {
+    get {
+      Contract.Requires(protectScope is not null);
+      return protectScope!;
+    }
+    private set {
+      Contract.Requires(protectScope is null);
+      protectScope = value;
+    }
+  }
+  public void InitProtectorFunctions((ProtectFunction Protect, ProtectToProveFunction ProtectToProve, ProtectScopeFunction ProtectScope) protectorFunctions) {
+    Contract.Requires(new List<ProtectorFunction?>{protect, protectToProve, protectScope}.All(pf => pf is null));
+    Protect = protectorFunctions.Protect;
+    ProtectToProve = protectorFunctions.ProtectToProve;
+    ProtectScope = protectorFunctions.ProtectScope;
+  }
+#endif
 
   public static Option<bool> LegacyModuleNames = new("--legacy-module-names",
     @"

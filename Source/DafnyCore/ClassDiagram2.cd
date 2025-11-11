@@ -491,12 +491,6 @@
       <Path>
         <Point X="3.25" Y="36.191" />
         <Point X="3.25" Y="36.657" />
-        <Point X="4.167" Y="36.657" Type="JumpStart" />
-        <Point X="4.333" Y="36.657" Type="JumpEnd" />
-        <Point X="6.167" Y="36.657" Type="JumpStart" />
-        <Point X="6.333" Y="36.657" Type="JumpEnd" />
-        <Point X="8.167" Y="36.657" Type="JumpStart" />
-        <Point X="8.333" Y="36.657" Type="JumpEnd" />
         <Point X="9.25" Y="36.657" />
         <Point X="9.25" Y="37.75" />
       </Path>
@@ -600,20 +594,6 @@
       <Path>
         <Point X="3.25" Y="36.191" />
         <Point X="3.25" Y="36.664" />
-        <Point X="4.167" Y="36.664" Type="JumpStart" />
-        <Point X="4.333" Y="36.664" Type="JumpEnd" />
-        <Point X="6.167" Y="36.664" Type="JumpStart" />
-        <Point X="6.333" Y="36.664" Type="JumpEnd" />
-        <Point X="8.167" Y="36.664" Type="JumpStart" />
-        <Point X="8.333" Y="36.664" Type="JumpEnd" />
-        <Point X="10.167" Y="36.664" Type="JumpStart" />
-        <Point X="10.333" Y="36.664" Type="JumpEnd" />
-        <Point X="12.167" Y="36.664" Type="JumpStart" />
-        <Point X="12.333" Y="36.664" Type="JumpEnd" />
-        <Point X="14.167" Y="36.664" Type="JumpStart" />
-        <Point X="14.333" Y="36.664" Type="JumpEnd" />
-        <Point X="16.167" Y="36.664" Type="JumpStart" />
-        <Point X="16.333" Y="36.664" Type="JumpEnd" />
         <Point X="17.25" Y="36.664" />
         <Point X="17.25" Y="37.75" />
       </Path>
@@ -710,28 +690,6 @@
       <Path>
         <Point X="3.25" Y="36.191" />
         <Point X="3.25" Y="36.664" />
-        <Point X="4.167" Y="36.664" Type="JumpStart" />
-        <Point X="4.333" Y="36.664" Type="JumpEnd" />
-        <Point X="6.167" Y="36.664" Type="JumpStart" />
-        <Point X="6.333" Y="36.664" Type="JumpEnd" />
-        <Point X="8.167" Y="36.664" Type="JumpStart" />
-        <Point X="8.333" Y="36.664" Type="JumpEnd" />
-        <Point X="10.167" Y="36.664" Type="JumpStart" />
-        <Point X="10.333" Y="36.664" Type="JumpEnd" />
-        <Point X="12.167" Y="36.664" Type="JumpStart" />
-        <Point X="12.333" Y="36.664" Type="JumpEnd" />
-        <Point X="14.167" Y="36.664" Type="JumpStart" />
-        <Point X="14.333" Y="36.664" Type="JumpEnd" />
-        <Point X="16.167" Y="36.664" Type="JumpStart" />
-        <Point X="16.333" Y="36.664" Type="JumpEnd" />
-        <Point X="18.167" Y="36.664" Type="JumpStart" />
-        <Point X="18.333" Y="36.664" Type="JumpEnd" />
-        <Point X="20.167" Y="36.664" Type="JumpStart" />
-        <Point X="20.333" Y="36.664" Type="JumpEnd" />
-        <Point X="22.167" Y="36.664" Type="JumpStart" />
-        <Point X="22.333" Y="36.664" Type="JumpEnd" />
-        <Point X="24.167" Y="36.664" Type="JumpStart" />
-        <Point X="24.333" Y="36.664" Type="JumpEnd" />
         <Point X="25.25" Y="36.664" />
         <Point X="25.25" Y="37.75" />
       </Path>
@@ -779,32 +737,6 @@
       <Path>
         <Point X="3.25" Y="36.191" />
         <Point X="3.25" Y="36.664" />
-        <Point X="4.167" Y="36.664" Type="JumpStart" />
-        <Point X="4.333" Y="36.664" Type="JumpEnd" />
-        <Point X="6.167" Y="36.664" Type="JumpStart" />
-        <Point X="6.333" Y="36.664" Type="JumpEnd" />
-        <Point X="8.167" Y="36.664" Type="JumpStart" />
-        <Point X="8.333" Y="36.664" Type="JumpEnd" />
-        <Point X="10.167" Y="36.664" Type="JumpStart" />
-        <Point X="10.333" Y="36.664" Type="JumpEnd" />
-        <Point X="12.167" Y="36.664" Type="JumpStart" />
-        <Point X="12.333" Y="36.664" Type="JumpEnd" />
-        <Point X="14.167" Y="36.664" Type="JumpStart" />
-        <Point X="14.333" Y="36.664" Type="JumpEnd" />
-        <Point X="16.167" Y="36.664" Type="JumpStart" />
-        <Point X="16.333" Y="36.664" Type="JumpEnd" />
-        <Point X="18.167" Y="36.664" Type="JumpStart" />
-        <Point X="18.333" Y="36.664" Type="JumpEnd" />
-        <Point X="20.167" Y="36.664" Type="JumpStart" />
-        <Point X="20.333" Y="36.664" Type="JumpEnd" />
-        <Point X="22.167" Y="36.664" Type="JumpStart" />
-        <Point X="22.333" Y="36.664" Type="JumpEnd" />
-        <Point X="24.167" Y="36.664" Type="JumpStart" />
-        <Point X="24.333" Y="36.664" Type="JumpEnd" />
-        <Point X="26.167" Y="36.664" Type="JumpStart" />
-        <Point X="26.333" Y="36.664" Type="JumpEnd" />
-        <Point X="28.167" Y="36.664" Type="JumpStart" />
-        <Point X="28.333" Y="36.664" Type="JumpEnd" />
         <Point X="29.25" Y="36.664" />
         <Point X="29.25" Y="37.75" />
       </Path>

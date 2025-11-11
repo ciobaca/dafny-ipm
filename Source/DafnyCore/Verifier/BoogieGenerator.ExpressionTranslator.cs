@@ -850,6 +850,17 @@ namespace Microsoft.Dafny {
         }
       }
 
+      public Expr TranslateString(string s, bool isVerbatim) => TranslateString(s, isVerbatim, Token.NoToken);
+      public Expr TranslateString(string s, bool isVerbatim, IOrigin tok) {
+        Boogie.Expr seq = BoogieGenerator.FunctionCall(tok, BuiltinFunction.SeqEmpty, Predef.BoxType);
+        foreach (var ch in Util.UnescapedCharacters(options, s, isVerbatim)) {
+          var rawElement = BoogieGenerator.FunctionCall(tok, BuiltinFunction.CharFromInt, null, Boogie.Expr.Literal(ch));
+          Boogie.Expr elt = BoxIfNecessary(tok, rawElement, Type.Char);
+          seq = BoogieGenerator.FunctionCall(tok, BuiltinFunction.SeqBuild, Predef.BoxType, seq, elt);
+        }
+        return MaybeLit(seq, BoogieGenerator.TrType(new SeqType(Type.Char)));
+      }
+
       private Expr TranslateLiteralExpr(LiteralExpr literalExpr) {
         LiteralExpr e = literalExpr;
         if (e.Value == null) {
@@ -866,14 +877,7 @@ namespace Microsoft.Dafny {
           Contract.Assert(rawElement != null);  // there should have been an iteration of the loop above
           return MaybeLit(rawElement, Predef.CharType);
         } else if (e is StringLiteralExpr) {
-          var str = (StringLiteralExpr)e;
-          Boogie.Expr seq = BoogieGenerator.FunctionCall(GetToken(literalExpr), BuiltinFunction.SeqEmpty, Predef.BoxType);
-          foreach (var ch in Util.UnescapedCharacters(options, (string)e.Value, str.IsVerbatim)) {
-            var rawElement = BoogieGenerator.FunctionCall(GetToken(literalExpr), BuiltinFunction.CharFromInt, null, Boogie.Expr.Literal(ch));
-            Boogie.Expr elt = BoxIfNecessary(GetToken(literalExpr), rawElement, Type.Char);
-            seq = BoogieGenerator.FunctionCall(GetToken(literalExpr), BuiltinFunction.SeqBuild, Predef.BoxType, seq, elt);
-          }
-          return MaybeLit(seq, BoogieGenerator.TrType(new SeqType(Type.Char)));
+          return TranslateString(e.Value as string, (e as StringLiteralExpr).IsVerbatim, GetToken(literalExpr));
         } else if (e.Value is BigInteger) {
           var n = Microsoft.BaseTypes.BigNum.FromBigInt((BigInteger)e.Value);
           if (e.Type.NormalizeToAncestorType() is BitvectorType bitvectorType) {
@@ -891,16 +895,18 @@ namespace Microsoft.Dafny {
         }
       }
 
-      private Expr TranslateSeqDisplayExpr(SeqDisplayExpr displayExpr) {
-        SeqDisplayExpr e = displayExpr;
-        // Note: a LiteralExpr(string) is really another kind of SeqDisplayExpr
-        Boogie.Expr s = BoogieGenerator.FunctionCall(GetToken(displayExpr), BuiltinFunction.SeqEmpty, Predef.BoxType);
+      
+      public Expr TranslateSeqOfElements(params Expression[] e) => TranslateSeqOfElements(Token.NoToken, e);
+      public Expr TranslateSeqOfElements(IOrigin tok, params Expression[] e) => TranslateSeqOfElements(tok, e.AsEnumerable());
+      public Expr TranslateSeqOfElements(IEnumerable<Expression> e) => TranslateSeqOfElements(Token.NoToken, e);
+      public Expr TranslateSeqOfElements(IOrigin tok, IEnumerable<Expression> e) {
+        Expr s = BoogieGenerator.FunctionCall(tok, BuiltinFunction.SeqEmpty, Predef.BoxType);
         var isLit = true;
-        foreach (Expression ee in e.Elements) {
+        foreach (var ee in e) {
           var rawElement = TrExpr(ee);
           isLit = isLit && BoogieGenerator.IsLit(rawElement);
-          Boogie.Expr elt = BoxIfNecessary(GetToken(displayExpr), rawElement, ee.Type);
-          s = BoogieGenerator.FunctionCall(GetToken(displayExpr), BuiltinFunction.SeqBuild, Predef.BoxType, s, elt);
+          Expr elt = BoxIfNecessary(tok, rawElement, ee.Type);
+          s = BoogieGenerator.FunctionCall(tok, BuiltinFunction.SeqBuild, Predef.BoxType, s, elt);
         }
         if (isLit) {
           // Lit-lifting: All elements are lit, so the sequence is Lit too
@@ -908,6 +914,8 @@ namespace Microsoft.Dafny {
         }
         return s;
       }
+
+      private Expr TranslateSeqDisplayExpr(SeqDisplayExpr displayExpr) => TranslateSeqOfElements(GetToken(displayExpr), displayExpr.Elements);
 
       private Expr TranslateSeqSelectExpr(SeqSelectExpr selectExpr) {
         SeqSelectExpr e = selectExpr;

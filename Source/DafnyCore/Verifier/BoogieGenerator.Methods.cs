@@ -7,6 +7,9 @@ using Microsoft.Boogie;
 using Bpl = Microsoft.Boogie;
 using static Microsoft.Dafny.Util;
 using PODesc = Microsoft.Dafny.ProofObligationDescription;
+#if IPM
+using DafnyCore.IPM;
+#endif
 
 namespace Microsoft.Dafny {
   public partial class BoogieGenerator {
@@ -495,6 +498,13 @@ namespace Microsoft.Dafny {
 
       // declare function
       var boogieFunction = GetOrCreateFunction(f);
+//#if IPM
+//      if (true) {
+//        if (f is ProtectorFunction pf) {
+//          pf.Translation = boogieFunction;
+//        }
+//      }
+//#endif
       // add synonym axiom
       if (f.IsFuelAware()) {
         AddFuelSuccSynonymAxiom(f);
