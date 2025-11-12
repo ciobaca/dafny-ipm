@@ -606,6 +606,9 @@ namespace Microsoft.Dafny {
       // check well-formedness of any default-value expressions (before assuming preconditions)
       readsCheckDelayer.DoWithDelayedReadsChecks(true, wfo => {
         foreach (var formal in m.Ins.Where(formal => formal.DefaultValue != null)) {
+#if IPM
+          using var ctx = wfo.Activate_IPM_AttributeIfNecessary(options, formal.Attributes);
+#endif
           var e = formal.DefaultValue;
           CheckWellformed(e, wfo, localVariables, builder, etran.WithReadsFrame(etran.readsFrame, null)); // No scope for default parameters
           builder.Add(new Boogie.AssumeCmd(e.Origin, etran.CanCallAssumption(e)));
@@ -624,6 +627,9 @@ namespace Microsoft.Dafny {
       // check well-formedness of the preconditions, and then assume each one of them
       readsCheckDelayer.DoWithDelayedReadsChecks(false, wfo => {
         foreach (AttributedExpression p in ConjunctsOf(m.Req)) {
+#if IPM
+          using var ctx = wfo.Activate_IPM_AttributeIfNecessary(options, p.Attributes);
+#endif
           CheckWellformedAndAssume(p.E, wfo, localVariables, builder, etran, "method requires clause");
         }
       });
@@ -696,6 +702,9 @@ namespace Microsoft.Dafny {
 
       // check wellformedness of postconditions
       foreach (AttributedExpression p in ConjunctsOf(m.Ens)) {
+#if IPM
+        using var ctx = wfOptions.Activate_IPM_AttributeIfNecessary(options, p.Attributes);
+#endif
         CheckWellformedAndAssume(p.E, wfOptions, localVariables, builder, etran, "method ensures clause");
       }
 
