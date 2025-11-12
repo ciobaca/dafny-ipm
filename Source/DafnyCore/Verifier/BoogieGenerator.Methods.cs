@@ -636,6 +636,9 @@ namespace Microsoft.Dafny {
 
       // check well-formedness of the reads clauses
       readsCheckDelayer.DoWithDelayedReadsChecks(false, wfo => {
+#if IPM
+        using var ctx = wfo.Activate_IPM_AttributeIfNecessary(options, m.Reads.Attributes);
+#endif
         CheckFrameWellFormed(wfo, m.Reads.Expressions, localVariables, builder, etran);
       });
       // Also check that the reads clause == {} if the {:concurrent} attribute is present
@@ -654,6 +657,9 @@ namespace Microsoft.Dafny {
 
       // check well-formedness of the modifies clauses
       readsCheckDelayer.DoWithDelayedReadsChecks(false, wfo => {
+#if IPM
+        using var ctx = wfo.Activate_IPM_AttributeIfNecessary(options, m.Mod.Attributes);
+#endif
         CheckFrameWellFormed(wfo, m.Mod.Expressions, localVariables, builder, etran);
       });
       // Also check that the modifies clause == {} if the {:concurrent} attribute is present,
@@ -667,6 +673,9 @@ namespace Microsoft.Dafny {
       // check well-formedness of the decreases clauses
       var wfOptions = new WFOptions();
       foreach (Expression p in m.Decreases.Expressions) {
+#if IPM
+        using var ctx = wfOptions.Activate_IPM_AttributeIfNecessary(options, m.Decreases.Attributes);
+#endif
         CheckWellformed(p, wfOptions, localVariables, builder, etran);
       }
 

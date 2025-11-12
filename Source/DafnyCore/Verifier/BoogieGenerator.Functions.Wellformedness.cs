@@ -101,6 +101,9 @@ public partial class BoogieGenerator {
       delayer.DoWithDelayedReadsChecks(true, wfo => {
         foreach (var formal in f.Ins.Where(formal => formal.DefaultValue != null)) {
           var e = formal.DefaultValue;
+#if IPM
+          using var ctx = wfo.Activate_IPM_AttributeIfNecessary(generator.Options, formal.Attributes);
+#endif
           generator.CheckWellformed(e, wfo, locals, builder,
             etran.WithReadsFrame(etran.readsFrame, null)); // No frame scope for default values
           builder.Add(new AssumeCmd(e.Origin, etran.CanCallAssumption(e)));
