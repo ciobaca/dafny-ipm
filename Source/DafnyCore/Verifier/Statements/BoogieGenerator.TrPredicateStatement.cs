@@ -33,7 +33,7 @@ namespace Microsoft.Dafny {
     private void TrAssumeStmt(AssumeStmt assumeStmt, BoogieStmtListBuilder builder, Variables locals, ExpressionTranslator etran) {
       AddComment(builder, assumeStmt, "assume statement");
       stmtContext = StmtType.ASSUME;
-      TrStmt_CheckWellformed(assumeStmt.Expr, builder, locals, etran, false);
+      TrStmt_CheckWellformed(assumeStmt.Expr, builder, locals, etran, false, attrs: assumeStmt.Attributes);
       builder.Add(TrAssumeCmdWithDependencies(etran, assumeStmt.Origin, assumeStmt.Expr, "assume statement", true,
         etran.TrAttributes(assumeStmt.Attributes, null)));
       stmtContext = StmtType.NONE; // done with translating assume stmt.
@@ -45,7 +45,7 @@ namespace Microsoft.Dafny {
     private void TrExpectStmt(BoogieStmtListBuilder builder, Variables locals, ExpressionTranslator etran, ExpectStmt expectStmt) {
       AddComment(builder, expectStmt, "expect statement");
       stmtContext = StmtType.ASSUME;
-      TrStmt_CheckWellformed(expectStmt.Expr, builder, locals, etran, false);
+      TrStmt_CheckWellformed(expectStmt.Expr, builder, locals, etran, false, attrs: expectStmt.Attributes);
 
       // Need to check the message is well-formed, assuming the expected expression
       // does NOT hold:
@@ -71,7 +71,7 @@ namespace Microsoft.Dafny {
       var b = defineFuel ? stmtBuilder : builder;
       stmtContext = StmtType.ASSERT;
       AddComment(b, stmt, "assert statement");
-      TrStmt_CheckWellformed(stmt.Expr, b, locals, etran, false);
+      TrStmt_CheckWellformed(stmt.Expr, b, locals, etran, false, attrs: stmt.Attributes);
 
       var hiddenProof = false;
       BoogieStmtListBuilder proofBuilder = null;

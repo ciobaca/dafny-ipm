@@ -42,17 +42,20 @@ namespace Microsoft.Dafny {
     public readonly bool LValueContext;
     public readonly Bpl.QKeyValue AssertKv;
     public bool IPM_AttributeActive { get; private set; } = false;
+#nullable enable
     private class IPM_AttributeActivatorContextManager : IDisposable {
       private readonly System.Action disable;
-      public IPM_AttributeActivatorContextManager(WFOptions wfo, DafnyOptions options, Attributes attrs) {
+      public IPM_AttributeActivatorContextManager(WFOptions wfo, DafnyOptions options, Attributes? attrs) {
+        var prev = wfo.IPM_AttributeActive;
         if (true) {
           wfo.IPM_AttributeActive = Attributes.Contains(attrs, "ipm"); // TODO: use options here
         }
-        disable = () => wfo.IPM_AttributeActive = false;
+        disable = () => wfo.IPM_AttributeActive = prev;
       }
       void IDisposable.Dispose() => disable();
     }
-    public IDisposable Activate_IPM_AttributeIfNecessary(DafnyOptions options, Attributes attrs) => new IPM_AttributeActivatorContextManager(this, options, attrs);
+    public IDisposable Activate_IPM_AttributeIfNecessary(DafnyOptions options, Attributes? attrs) => new IPM_AttributeActivatorContextManager(this, options, attrs);
+#nullable disable
     public WFOptions() {
     }
 

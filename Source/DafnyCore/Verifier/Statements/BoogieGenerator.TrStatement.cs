@@ -505,7 +505,6 @@ public partial class BoogieGenerator {
   }
 
   void TrVarDeclStmt(VarDeclStmt varDeclStmt, BoogieStmtListBuilder builder, Variables locals, ExpressionTranslator etran) {
-
     var newLocalIds = new List<Bpl.IdentifierExpr>();
     int i = 0;
     foreach (var local in varDeclStmt.Locals) {
@@ -910,7 +909,7 @@ public partial class BoogieGenerator {
   }
 
   public void TrStmt_CheckWellformed(Expression expr, BoogieStmtListBuilder builder, Variables locals,
-    ExpressionTranslator etran, bool subsumption, bool lValueContext = false, AddResultCommands addResultCommands = null) {
+    ExpressionTranslator etran, bool subsumption, bool lValueContext = false, AddResultCommands addResultCommands = null, Attributes attrs = null) {
     Contract.Requires(expr != null);
     Contract.Requires(builder != null);
     Contract.Requires(locals != null);
@@ -936,6 +935,9 @@ public partial class BoogieGenerator {
     if (lValueContext) {
       options = options.WithLValueContext(true);
     }
+#if IPM
+    using var ctx = options.Activate_IPM_AttributeIfNecessary(this.options, attrs);
+#endif
     CheckWellformedWithResult(expr, options, locals, builder, etran, addResultCommands);
     builder.Add(TrAssumeCmd(expr.Origin, etran.CanCallAssumption(expr)));
   }
