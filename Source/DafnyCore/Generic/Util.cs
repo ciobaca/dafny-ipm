@@ -32,6 +32,14 @@ namespace Microsoft.Dafny
     //   new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
     // ], null);
 
+    public static IEnumerable<T> Concat<T>(params IEnumerable<T>[] es) {
+      if (es.Length == 0) { return []; }
+      IEnumerable<T> r = es.First();
+      foreach (var e in es.Skip(1)) {
+        r = r.Concat(e);
+      }
+      return r;
+    }
     public static bool None<T>(this IEnumerable<T> e) => !e.Any();
     public static bool None<T>(this IEnumerable<T> e, Func<T, bool> f) => !e.Any(f);
 #nullable enable
