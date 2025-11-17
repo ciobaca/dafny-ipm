@@ -5,6 +5,7 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Diagnostics.Contracts;
 using System.Linq;
+using static Microsoft.Dafny.Util;
 
 namespace DafnyCore.IPM;
 public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure out if the class can Extend Rewriter instead of IRewriter
@@ -34,40 +35,33 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
     //program.DefaultModuleDef.SourceDecls.Add(new LiteralModuleDecl(Options, moduleDefinition, program.DefaultModuleDef, Guid.NewGuid()));
     //  program.SystemModuleManager.CreateArrowTypeDecl(2);// this doesn't work for some reason, prolly bcs it's done after parsing :(
   }
+
+  private static IEnumerable<Statement> statementsOf(Expression e) => e switch {
+    StmtExpr se => Concat(statementsOf(se.S), statementsOf(se.E)),
+    ConcreteSyntaxExpression cse => cse.PreResolveSubExpressions.SelectMany(statementsOf),
+    DatatypeValue dv => dv.Bindings.ArgumentBindings.SelectMany(ab => statementsOf(ab.Actual)),
+    _ => e.SubExpressions.SelectMany(statementsOf),
+  };
+  private static IEnumerable<Expression> expressionsOf(Expression e) => Concat([e], e switch {
+    StmtExpr se => Concat(expressionsOf(se.S), expressionsOf(se.E)),
+    ConcreteSyntaxExpression cse => cse.PreResolveSubExpressions.SelectMany(expressionsOf),
+    DatatypeValue dv => dv.Bindings.ArgumentBindings.SelectMany(ab => expressionsOf(ab.Actual)),
+    _ => e.SubExpressions.SelectMany(expressionsOf),
+  });
+
+  // curious things happen in `AssignOrReturnStmt` and you will NOT catch me asking questions;
+  // for example, issues regarding `PreResolveSubEXpressions` and, in particular, the part
+  // originating from `Rhss` will be handled as they appear
+  private static IEnumerable<Statement> statementsOf(Statement s) =>
+    Concat([s], s.PreResolveSubStatements.SelectMany(statementsOf), s.PreResolveSubExpressions.SelectMany(statementsOf)
+  );
+  private static IEnumerable<Expression> expressionsOf(Statement s) =>
+    Concat(s.PreResolveSubStatements.SelectMany(expressionsOf), s.PreResolveSubExpressions.SelectMany(expressionsOf));
   internal override void PreResolve(ModuleDefinition moduleDefinition) {
     Contract.Requires(moduleDefinition.DefaultClass is not null);
     Contract.Requires(moduleDefinition.TopLevelDecls.OfType<AbstractModuleDecl>().None());
     Contract.Requires(moduleDefinition.TopLevelDecls.None(d => d is TypeParameter or AmbiguousTopLevelDecl
                                                                  or InternalTypeSynonymDecl or NonNullTypeDecl));
-    //moduleDefinition.SourceDecls.Add(new AliasModuleDecl(
-    //  Options,
-    //  new SourceOrigin(Token.NoToken, Token.NoToken)/*maybe this'll work?*/,
-    //  new([new("_ITP")]),
-    //  new("_ITP"),
-    //  null,
-    //  moduleDefinition,
-    //  true,
-    //  [],
-    //  Guid.NewGuid()
-    //));
-    static IEnumerable<AssertStmt> assertStatementsOfExpression(Microsoft.Dafny.Expression e) {
-      if (e is StmtExpr statementExpression) {
-        foreach (var assertStatementFromStatementExpression in assertStatementsOfStatement(statementExpression.S)) {
-          yield return assertStatementFromStatementExpression;
-        }
-      }
-      foreach (var assertStatementFromSubExpressions in e.SubExpressions.SelectMany(assertStatementsOfExpression)) {
-        yield return assertStatementFromSubExpressions;
-      }
-    }
-    static IEnumerable<AssertStmt> assertStatementsOfStatement(Statement s) {
-      if (s is AssertStmt assertStatement) {
-        yield return assertStatement;
-      }
-      foreach (var assertStatementFromSubStatement in s.SubStatements.SelectMany(assertStatementsOfStatement)) {
-        yield return assertStatementFromSubStatement;
-      }
-    }
 
     static void ReplaceExpressionInAssertStatement(AssertStmt a) {
       if (Attributes.Contains(a.Attributes, "ipm")) {
@@ -95,13 +89,13 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
             //Console.WriteLine($"ensures clause: {ens.E}");
           }
           switch (member) {
-            case Function f:
-              if (f.Body is null) { break; }
-              assertStatementsOfExpression(f.Body).ForEach(ReplaceExpressionInAssertStatement);
+            case Function { Body: { } } f:
+              statementsOf(f.Body).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
+              //expressionsOf(f.Body).OfType<ApplySuffix>().ForEach(null);
               break;
-            case MethodOrConstructor mc:
-              if (mc.Body is null) { break; }
-              mc.Body.Body.SelectMany(assertStatementsOfStatement).ForEach(ReplaceExpressionInAssertStatement);
+            case MethodOrConstructor { Body: { } } mc:
+              mc.Body.Body.SelectMany(statementsOf).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
+              //mc.Body.Body.SelectMany(expressionsOf).OfType<ApplySuffix>().ForEach(null);
               break;
             default:
               throw new UnreachableException();
@@ -109,9 +103,9 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         }
         break;
       case SubsetTypeDecl decl:
-        assertStatementsOfExpression(decl.Constraint).ForEach(ReplaceExpressionInAssertStatement);
+        statementsOf(decl.Constraint).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
         if (decl.Witness is not null) {
-          assertStatementsOfExpression(decl.Witness).ForEach(ReplaceExpressionInAssertStatement);
+          statementsOf(decl.Witness).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
         }
         break;
       case ConcreteTypeSynonymDecl:
