@@ -32,6 +32,14 @@ namespace Microsoft.Dafny
     //   new ActualBinding(null, new StringLiteralExpr(SourceOrigin.NoToken, e.ToString(), false))
     // ], null);
 
+    public static IList<T> ModifyAllInPlace<T>(this IList<T> l, Func<T, T> transformer) {
+      for (int i = 0; i < l.Count; i += 1) {
+        l[i] = transformer(l[i]);
+      }
+      return l;
+    }
+    public static IEnumerable<T> EvaluateEagerly<T>(this IEnumerable<T> es) => es.ToList();
+    public static IEnumerable<T> RunOnEach<T>(this IEnumerable<T> es, Action<T> action) => es.Select(e => { action(e); return e; });
     public static IEnumerable<T> Concat<T>(params IEnumerable<T>[] es) {
       if (es.Length == 0) { return []; }
       IEnumerable<T> r = es.First();
@@ -40,10 +48,10 @@ namespace Microsoft.Dafny
       }
       return r;
     }
-    public static bool None<T>(this IEnumerable<T> e) => !e.Any();
-    public static bool None<T>(this IEnumerable<T> e, Func<T, bool> f) => !e.Any(f);
+    public static bool None<T>(this IEnumerable<T> es) => !es.Any();
+    public static bool None<T>(this IEnumerable<T> es, Func<T, bool> f) => !es.Any(f);
 #nullable enable
-    public static IEnumerable<T> IgnoreNulls<T>(this IEnumerable<T?> e) => e.OfType<T>();
+    public static IEnumerable<T> IgnoreNulls<T>(this IEnumerable<T?> es) => es.OfType<T>();
 #nullable disable
     public static IEnumerable<T> IgnoreNulls<T>(params T[] values)
     {

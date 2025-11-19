@@ -41,6 +41,7 @@ namespace Microsoft.Dafny {
     public readonly List<Func<Bpl.Cmd>> CreateAsserts;
     public readonly bool LValueContext;
     public readonly Bpl.QKeyValue AssertKv;
+#if IPM
     public bool IPM_AttributeActive { get; private set; } = false;
 #nullable enable
     private class IPM_AttributeActivatorContextManager : IDisposable {
@@ -56,6 +57,7 @@ namespace Microsoft.Dafny {
     }
     public IDisposable Activate_IPM_AttributeIfNecessary(DafnyOptions options, Attributes? attrs) => new IPM_AttributeActivatorContextManager(this, options, attrs);
 #nullable disable
+#endif
     public WFOptions() {
     }
 
@@ -144,6 +146,21 @@ namespace Microsoft.Dafny {
   }
 
   public partial class BoogieGenerator {
+#if IPM
+#nullable enable
+    private Expr BoogieProtectToProveCallOn(ExpressionTranslator etran, Expression e, Expr wfCheck, string asString, Type type = null!, IEnumerable<Expression> scope = null!) {
+      var f = currentModule.ProtectToProve;
+      var tok = GetToken(e); // TODO: GetToken(e) might not be good, see if you can get something equivalent from wfCheck
+      return CondApplyUnbox(tok, new NAryExpr(tok, new FunctionCall(new Bpl.IdentifierExpr(tok, f.FullSanitizedName, Bpl.Type.Bool)), [
+        TypeToTy(Type.Bool),
+        GetRevealConstant(f),
+        AdaptBoxing(tok, wfCheck, type ?? Type.Bool, f.Ins[0].Type),
+        etran.TranslateString(asString, false),
+        etran.TranslateSeqOfElements(scope ?? []),
+      ]), f.ResultType, type ?? Type.Bool);
+    }
+#nullable disable
+#endif
 
     public void CheckWellformedAndAssume(Expression expr, WFOptions wfOptions, Variables locals, BoogieStmtListBuilder builder, ExpressionTranslator etran, string comment) {
       Contract.Requires(expr != null);
@@ -909,6 +926,7 @@ namespace Microsoft.Dafny {
                     }
                     List<Expression> contextDecreases = codeContext.Decreases.Expressions;
                     List<Expression> calleeDecreases = e.Function.Decreases.Expressions;
+                    using var ctx = wfOptions.Activate_IPM_AttributeIfNecessary(options, e.Function.Decreases.Attributes);
                     CheckCallTermination(callExpr.Origin, contextDecreases, calleeDecreases, allowance, e.Receiver, substMap, directSubstMap, e.GetTypeArgumentSubstitutions(),
                       etran, false, builder, codeContext.InferredDecreases, hint);
                   }
@@ -1064,25 +1082,11 @@ namespace Microsoft.Dafny {
                   }
                   CheckWellformed(e.E1, wfOptions, locals, builder, etran);
                   Expr wfCheck = Expr.Neq(etran.TrExpr(e.E1), zero);
-                  if (wfOptions.IPM_AttributeActive) { // TODO: abstract into a function once u get the OK from ciobi
-                    // is there a need to add wf checks related to being able to call `_protectToProve(wfCheck)`,
-                    // since we're sending the unwrapped expression to boogie anyway?
-
-                    var f = currentModule.ProtectToProve;
-                    var tok = GetToken(expr); // TODO: GetToken(expr) might not be good, see if you can get something equivalent from wfCheck
-                    
-                    var id = new Bpl.IdentifierExpr(tok, f.FullSanitizedName, Bpl.Type.Bool);
-                    List<Expr> args = [
-                      TypeToTy(Type.Bool),
-                      GetRevealConstant(f),
-                      AdaptBoxing(tok, wfCheck, e.E1.Type, f.Ins[0].Type),
-                      etran.TranslateString($"{e.E1} != 0", false),
-                      etran.TranslateSeqOfElements([]),
-                    ];
-                    Expr result = new NAryExpr(tok, new FunctionCall(id), args);
-                    result = CondApplyUnbox(tok, result, f.ResultType, Type.Bool);
-                    wfCheck = result;
+#if IPM
+                  if (wfOptions.IPM_AttributeActive) {
+                    wfCheck = BoogieProtectToProveCallOn(etran, e, wfCheck, $"{e.E1} != 0");
                   }
+#endif
                   builder.Add(Assert(GetToken(expr), wfCheck,
                     new DivisorNonZero(e.E1), builder.Context, wfOptions.AssertKv));
                 }

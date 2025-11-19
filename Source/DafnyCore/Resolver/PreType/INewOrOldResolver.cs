@@ -3,6 +3,9 @@ using System.Collections.Generic;
 namespace Microsoft.Dafny;
 
 public interface INewOrOldResolver {
+#if IPM
+  internal IEnumerable<Expression> ScopeArgsFrom(ResolutionContext context) => [];
+#endif
 
   DafnyOptions Options { get; }
   ErrorReporter Reporter { get; }

@@ -18,8 +18,6 @@ namespace DafnyCore.IPM {
     ], Token.NoToken) {
       Contract.Ensures(IsValidPreResolve);
     }
-
-    public SeqDisplayExpr Seq => (Bindings.ArgumentBindings[2].Actual as SeqDisplayExpr)!;
     public bool IsValidPreResolve => Bindings.ArgumentBindings is [ { }, { }, { Actual: SeqDisplayExpr { Elements: [] } } ];
     internal void AddScopeArgs(INewOrOldResolver resolver, ResolutionContext context) {
       Contract.Requires(IsValidPreResolve);
@@ -36,7 +34,7 @@ namespace DafnyCore.IPM {
       //  ns.Type = id.Type.UseInternalSynonym();
       //  return e;
       //}));
-      Seq.Elements.AddRange(resolver.Scope.Names.IgnoreNulls().Distinct().Select(ProtectScopeFunction.CallOn));
+      (Bindings.ArgumentBindings[2].Actual as SeqDisplayExpr).Elements.AddRange(resolver.ScopeArgsFrom(context));
       //System.Console.WriteLine('[' + string.Join(", ", Seq.Elements) + ']');
     }
   }

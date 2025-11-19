@@ -5867,6 +5867,11 @@ namespace Microsoft.Dafny {
       return rr;
     }
 
+#if IPM
+    IEnumerable<Expression> INewOrOldResolver.ScopeArgsFrom(ResolutionContext context) {
+      return Scope.Names.IgnoreNulls().Distinct().Select(DafnyCore.IPM.ProtectScopeFunction.CallOn);
+    }
+#endif
     public MethodCallInformation ResolveApplySuffix(ApplySuffix e, ResolutionContext resolutionContext, bool allowMethodCall) {
       Contract.Requires(e != null);
       Contract.Requires(resolutionContext != null);

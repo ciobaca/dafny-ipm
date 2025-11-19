@@ -72,9 +72,21 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
         //Console.WriteLine($"assert statement: {a.Expr}");
       }
     }
+    static FrameExpression ReplacedFrameExpression(FrameExpression rf) => new (rf.Origin, ExprReplacer.ReplaceExpr(rf.OriginalExpression), rf.FieldName);
     foreach (var d in moduleDefinition.TopLevelDecls.Where(d => d is not ModuleDecl)) { switch (d) {
       case TopLevelDeclWithMembers decl:
         foreach (var member in decl.Members.OfType<MethodOrFunction>()) {
+          foreach (var p in member.Ins.Where(i => i.DefaultValue is not null)) {
+            Contract.Assert(p.DefaultValue is not null);
+            //if (Attributes.Contains(p.Attributes, "ipm")) {
+            //  p.DefaultValue = ProtectToProveFunction.CallOn(p.DefaultValue);
+            //  // TODO: adding a scope here as usual would result in a cycle (default value of `p` would depend on `p`); this isn't a priority right now
+            //} else {
+              p.DefaultValue = ExprReplacer.ReplaceExpr(p.DefaultValue);
+            //}
+          }
+          member.Decreases.Expressions?.ModifyAllInPlace(ExprReplacer.ReplaceExpr);
+          member.Reads.Expressions?.ModifyAllInPlace(ReplacedFrameExpression);
           foreach (var req in member.Req) {
             req.E = ExprReplacer.ReplaceExpr(req.E);
             //Console.WriteLine($"requires clause: {req.E}");
@@ -91,11 +103,10 @@ public class ProtectRewriter(ErrorReporter r) : IRewriter(r) { // TODO: Figure o
           switch (member) {
             case Function { Body: { } } f:
               statementsOf(f.Body).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
-              //expressionsOf(f.Body).OfType<ApplySuffix>().ForEach(null);
               break;
             case MethodOrConstructor { Body: { } } mc:
+              mc.Mod.Expressions?.ModifyAllInPlace(ReplacedFrameExpression);
               mc.Body.Body.SelectMany(statementsOf).OfType<AssertStmt>().ForEach(ReplaceExpressionInAssertStatement);
-              //mc.Body.Body.SelectMany(expressionsOf).OfType<ApplySuffix>().ForEach(null);
               break;
             default:
               throw new UnreachableException();
